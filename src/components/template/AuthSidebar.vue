@@ -4,8 +4,8 @@
     height="100%"
   >
     <p class="sidebar--text">
-      Proteção,<br />Segurança e<br />
-      Confiabilidade
+      Sistema de<br />Controle<br />
+      Teletrabalho.
     </p>
   </v-sheet>
 </template>
@@ -16,7 +16,7 @@ export default {};
 
 <style scoped>
 .authsidebar-bg {
-  background: url('../../assets/images/authSidebar.svg') no-repeat;
+  background: url('#') no-repeat;
   background-position: center;
   background-size: cover;
 }

@@ -74,7 +74,7 @@
               class="px-4 py-2 ml-2 text-button"
               :disabled="loginLoading"
               @click="setMode(4)"
-              ><span class="text-lowercase">{{ bottomQuestion.text }}</span>
+              >
             </v-btn>
           </v-card-text>
         </v-card>
@@ -109,8 +109,7 @@ export default {
         textForgotPassword: 'Esqueci minha Senha',
       },
       bottomQuestion: {
-        question: 'Ainda não tem registro no Blood?',
-        text: 'Criar uma conta',
+
       },
       email: '',
       password: '',

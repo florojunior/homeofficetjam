@@ -34,7 +34,7 @@
       <v-toolbar-title>
         <v-row>
           <v-col>
-            <p class="white--text">Blood</p>
+            <p class="white--text">Controle Teletrabalho</p>
           </v-col>
         </v-row>
       </v-toolbar-title>
