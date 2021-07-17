@@ -6,6 +6,8 @@ import { administration } from './administration/administration';
 import { authentication } from './authentication/authentication';
 import { snackbar } from './snackbar/snackbar';
 import { modal } from './modal/modal';
+import { group } from './group/group';
+import { unit } from './unit/unit';
 
 Vue.use(Vuex);
 
@@ -15,6 +17,8 @@ export default new Vuex.Store({
     administration,
     authentication,
     snackbar,
-    modal
+    modal,
+    group,
+    unit
   },
 });
