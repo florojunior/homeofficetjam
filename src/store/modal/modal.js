@@ -34,7 +34,17 @@ const state = {
   },
   modalMeta: {
     show: false,
-  }
+  },
+  modalJustificativaServidor: {
+    show: false,
+  },
+  modalAvaliacao: {
+    show: false,
+  },
+  modalAlterarDados:{
+    show: false,
+    data: null
+  },
 };
 
 export const modal = {

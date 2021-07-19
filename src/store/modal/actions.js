@@ -8,6 +8,15 @@ export const actions = {
   setModalMeta(state, payload) {
     state.commit('setModalMeta', payload);
   },
+  setModalAlterarDados(state, payload) {
+    state.commit('setModalAlterarDados', payload);
+  },
+  setModalJustificativaServidor(state, payload) {
+    state.commit('setModalJustificateServidor', payload);
+  },
+  setModalAvaliacao(state, payload) {
+    state.commit('setModalAvaliacao', payload);
+  },
   setModalAcceptUsers(state, payload) {
     state.commit('setModalAcceptUsers', payload);
   },

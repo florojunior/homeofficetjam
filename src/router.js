@@ -26,6 +26,13 @@ const router = new Router({
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/user/Users.vue'
         ),
+    }, {
+      path: '/home/servidor',
+      name: 'PrincipalServidor',
+      component: () =>
+        import(
+          /* webpackChunkName: "patients" */ '@/views/administrator/user/HomeServidor.vue'
+        ),
     }
   ],
 });

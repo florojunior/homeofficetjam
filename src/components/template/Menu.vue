@@ -94,8 +94,19 @@ export default {
     },
   },
   created: function() {
-    var usrAdm = true;
-    if (usrAdm) {
+    var usrAdm = localStorage.getItem('token_sistema_user_name');
+    if (usrAdm == 'GESTOR') {
+      this.menu.push(
+        {
+          descricao: 'Principal',
+          menu: [
+            {
+              descricao: 'Minha Metas',
+              path: '/home/servidor'
+            }
+          ]
+        });
+    }else{
       this.menu.push(
         {
           descricao: 'Principal',
