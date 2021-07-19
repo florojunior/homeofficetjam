@@ -26,12 +26,28 @@ const router = new Router({
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/user/Users.vue'
         ),
-    }, {
+    },
+    {
       path: '/home/servidor',
       name: 'PrincipalServidor',
       component: () =>
         import(
-          /* webpackChunkName: "patients" */ '@/views/administrator/user/HomeServidor.vue'
+          /* webpackChunkName: "patients" */ '@/views/administrator/user/HomeServidor.vue')
+    },
+    {
+      path: '/groups',
+      name: 'Grupos',
+      component: () =>
+        import(
+          /* webpackChunkName: "patients" */ '@/views/administrator/group/Groups.vue'
+        ),
+    },
+    {
+      path: '/units',
+      name: 'Unidades',
+      component: () =>
+        import(
+          /* webpackChunkName: "patients" */ '@/views/administrator/unit/Units.vue'
         ),
     }
   ],

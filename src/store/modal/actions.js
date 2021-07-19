@@ -54,5 +54,16 @@ export const actions = {
   closeSeeTransfusion() { },
   rejectTransfusionRequisition() { },
   checkIntegrity(){},
-  closeCheckIntegrity(){}
+  closeCheckIntegrity(){},
+
+  addGroup(){},
+
+
+  addUnit(){},
+  editUnit(){},
+
+  addGestor(){},
+  editGestor(){},
+
+
 };

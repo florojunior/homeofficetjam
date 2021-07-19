@@ -116,6 +116,22 @@ export default {
               path: '/users'
             }
           ]
+        },{
+          descricao: 'Cadastros',
+          menu: [
+            {
+              descricao: 'Grupos',
+              path: '/groups'
+            },
+            {
+              descricao: 'Unidades',
+              path: '/units'
+            },
+            {
+              descricao: 'Gestor',
+              path: '/gestor'
+            }
+          ]
         });
     }
   },
