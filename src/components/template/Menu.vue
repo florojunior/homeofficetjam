@@ -115,6 +115,10 @@ export default {
             {
               descricao: 'Unidades',
               path: '/units'
+            },
+            {
+              descricao: 'Gestor',
+              path: '/gestor'
             }
           ]
         });

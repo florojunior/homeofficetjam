@@ -1,0 +1,168 @@
+<template>
+  <PageWrapper>
+    <PageHeader>
+      <template v-slot:header-extra-content>
+        <AddButton :onClick="addUnit">Adicionar novo</AddButton>
+      </template>
+    </PageHeader>
+    <PageContent>
+      <v-card>
+        <v-card-title>
+          <v-container pa-0>
+            <v-row no-gutters align="center" justify="center">
+              <v-col cols="12" sm="7" md="8" class="mb-4 mb-sm-0"
+                >Listagem de Gestor</v-col
+              >
+              <v-col cols="12" sm="5" md="4">
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  placeholder="Buscar"
+                  label="Buscar"
+                  single-line
+                  hide-details
+                  outlined
+                  dense
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-title>
+        <v-card-text>
+          <v-container pa-0>
+            <v-row no-gutters>
+              <v-col cols="12">
+                <v-data-table
+                  :items="getList"
+                  :search="search"
+                  :items-per-page="10"
+                  :headers="headers"
+                  loading-text="Carregando..."
+                >
+                  <template v-slot:item.ativo="{ item }">
+                    <v-chip
+                      small
+                      class="font-weight-bold"
+                      :color="chips[`${item.ativo}`].background"
+                      :text-color="chips[`${item.ativo}`].labelColor"
+                    >
+                      <v-icon left large> mdi-circle-small </v-icon>
+                      <span>
+                        {{ chips[`${item.ativo}`].label }}
+                      </span>
+                    </v-chip>
+                  </template>
+
+                  <template v-slot:{ item }>
+                    <EditButton
+                      class="mr-1"
+                      :onClick="() => handleEditGestor(item)"
+                    />
+
+                    <DeleteButton :onClick="() => deleteGestorShow(item)" />
+                  </template>
+                </v-data-table>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+      </v-card>
+      <AddGestorModal />
+      <EditGestorModal :gestorSelected="gestorSelected" />
+      <DeleteGestorModal :gestorSelected="gestorSelected" />
+    </PageContent>
+  </PageWrapper>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex';
+import PageHeader from '@/components/template/PageHeader.vue';
+import PageWrapper from '@/components/template/PageWrapper.vue';
+import PageContent from '@/components/template/PageContent.vue';
+import AddButton from '@/components/template/buttons/AddButton.vue';
+import DeleteButton from '@/components/template/buttons/DeleteButton.vue';
+import AddGestorModal from '@/components/application/administrator/gestor/AddGestorModal.vue';
+import EditGestorModal from '@/components/application/administrator/gestor/EditGestorModal.vue';
+import DeleteGestorModal from '@/components/application/administrator/gestor/DeleteGestorModal.vue';
+import EditButton from '@/components/template/buttons/EditButton.vue';
+
+export default {
+  components: {
+    PageWrapper,
+    PageHeader,
+    PageContent,
+    AddGestorModal,
+    EditGestorModal,
+    DeleteGestorModal,
+    AddButton,
+    DeleteButton,
+    EditButton,
+  },
+  data() {
+    return {
+      gestorSelected: {
+        id: null,
+        description: null,
+        status: null,
+      },
+      search: '',
+      headers: [
+        {
+          text: 'Nome',
+          align: 'start',
+          sortable: true,
+          value: 'nm_unidade',
+          class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
+        },
+        {
+          text: 'Ação',
+          value: 'acoes',
+          align: 'center',
+          class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
+        },
+      ],
+      chips: {
+        T: {
+          label: 'Ativo',
+          labelColor: '#007F00',
+          background: '#CDFFCD',
+        },
+        F: {
+          label: 'Inativo',
+          labelColor: '#DE0129',
+          background: '#FCE6EA',
+        },
+      },
+    };
+  },
+  computed: {
+    ...mapGetters('gestor', [
+      'getList'
+    ]),
+  },
+  async created() {
+    await this.getAll();
+  },
+  methods: {
+    ...mapActions('gestor', ['getAll']),
+    ...mapActions('modal', [
+      'addGestor',
+      'editGestor',
+      'deleteGestor',
+    ]),
+    async deleteGestorShow(selected) {
+      this.gestorSelected = selected;
+      this.deleteGestor();
+    },
+    handleEditGestor(item) {
+      this.gestorSelected = item;
+
+      this.editGestor();
+    },
+  },
+  async beforeRouteUpdate(to, from, next) {
+    await this.fetchGroupList();
+    next();
+  },
+};
+</script>

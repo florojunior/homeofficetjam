@@ -8,6 +8,7 @@ import { snackbar } from './snackbar/snackbar';
 import { modal } from './modal/modal';
 import { group } from './group/group';
 import { unit } from './unit/unit';
+import { gestor} from './gestor/gestor';
 
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     snackbar,
     modal,
     group,
-    unit
+    unit,
+    gestor
   },
 });

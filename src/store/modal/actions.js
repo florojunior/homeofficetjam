@@ -51,5 +51,10 @@ export const actions = {
 
 
   addUnit(){},
-  editUnit(){}
+  editUnit(){},
+
+  addGestor(){},
+  editGestor(){},
+
+
 };
