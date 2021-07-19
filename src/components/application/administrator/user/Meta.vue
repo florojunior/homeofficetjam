@@ -64,6 +64,7 @@
       </v-card-text>
     </v-card>
     <ModalMeta :metaSelected="metaSelected"/>
+    {{metaSelected}}
   </div>
 </template>
 
@@ -83,10 +84,6 @@ export default {
       default: () => null,
     },
   },
-  async mounted() {
-    console.log(4)
-    await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);;
-  },
   data() {
     return {
       metaSelected: null
@@ -94,11 +91,19 @@ export default {
   },
   watch: {
     async tab() {
-      await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
+      await this.fetchUseMetaByCPF('49304178215');
+      //await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
     }
+  },
+  async mounted() {
+    console.log(4)
+    //await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
+    await this.fetchUseMetaByCPF('49304178215');
+
   },
   computed: {
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta']),
+
   },
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),

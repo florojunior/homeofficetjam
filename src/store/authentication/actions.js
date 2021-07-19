@@ -2,7 +2,7 @@ import { validateRecaptcha } from '@/services/api/recaptcha.js';
 import {
   sendRecoverPasswordEmail,
 } from '@/services/api/user.js';
-import router from '@/router';
+
 import authentication from '@/services/api/authentication';
 
 export const actions = {
@@ -30,12 +30,62 @@ export const actions = {
         },
         { root: true }
       );
-      console.log(response)
-
-      localStorage.setItem('token_sistema', response.data.token);
-      router.push('/users',{});
+      localStorage.setItem('token_sistema', response.data.data.token);
+      localStorage.setItem('sistema_perfil', payload.perfil);
+      localStorage.setItem('token_sistema_user_name', response.data.data.userData.nomeUsuario);
+      return response.data.data.userData.nomeUsuario;
     } catch (error) {
-      state.commit('LOGIN_ERROR', error);
+      state.dispatch(
+        'snackbar/error',
+        {
+          message: 'Falha na  Autenticação',
+        },
+        { root: true }
+      );
+      state.commit('LOGIN_ERROR');
+    }
+  },
+  async getManagerInformation(state, payload) {
+    try {
+      const response = await authentication.getManagerInformation(payload);
+      localStorage.setItem('token_sistema_gestor_data', JSON.stringify(response.data.data));
+      return true;
+    } catch (error) {
+      state.dispatch(
+        'snackbar/error',
+        {
+          message: 'Falha na  Autenticação',
+        },
+        { root: true }
+      );
+      state.commit('LOGIN_ERROR');
+    }
+  },
+  async checkUserInformation(state, payload) {
+    try {
+      const response = await authentication.checkUserInformation(payload);
+      localStorage.setItem('token_sistema_user_data', JSON.stringify(response.data));
+      if (response.data.data.id_unidade != null) {
+        return response.data.data.cpf_usuario;
+      }else{
+        state.dispatch(
+          'modal/setModalAlterarDados',
+          {
+            show: true
+          },
+          { root: true }
+        );
+        return false;
+      }
+    } catch (error) {
+      state.dispatch(
+        'snackbar/error',
+        {
+          message: 'Falha na  Autenticação',
+        },
+        { root: true }
+      );
+      state.commit('LOGIN_ERROR');
     }
   },
   async fetchRecaptchaValidation(state, payload) {

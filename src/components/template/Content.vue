@@ -4,6 +4,7 @@
     <router-view></router-view>
     <Modal />
     <SnackbarNotification />
+    <AlterarDados />
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import { mapGetters } from 'vuex';
 
 import Modal from '@/components/utils/Modal.vue';
+import AlterarDados from '@/components/application/administrator/user/AlterarDados.vue';
 import Menu from '@/components/template/Menu.vue';
 import SnackbarNotification from '@/components/utils/SnackbarNotification.vue';
 
@@ -19,6 +21,7 @@ export default {
     Modal,
     Menu,
     SnackbarNotification,
+    AlterarDados
   },
   computed: {
     ...mapGetters('main', ['authenticated']),

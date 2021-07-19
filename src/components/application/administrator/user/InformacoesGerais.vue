@@ -1,6 +1,6 @@
 <template>
   <v-card flat class="ma-4 mt-0">
-    <v-card-text>
+    <v-card-text v-if="getUserSelectedPeriod">
       <v-row>
         <v-col>
           <p class="text-xl-h6 text-lg-h6">
@@ -21,6 +21,7 @@
             label="Área"
             dense
             outlined
+            :value="getUserData.id_area"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -28,6 +29,7 @@
             label="Unidade"
             dense
             outlined
+            :value="getUserData.id_unidade"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -35,7 +37,7 @@
             label="Grupo de trabalho"
             dense
             outlined
-            :value="getUserSelectedGroup ? getUserSelectedGroup.id : null"
+            :value="getUserSelectedGroup ? getUserData.grupousuario[0].id_grupo : null"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -45,6 +47,7 @@
             label="Nome do gestor"
             dense
             outlined
+            :value="getUserData.gestorusuario[0].id_gestor"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -52,7 +55,7 @@
             label="Inicio do Teletrabalho"
             dense
             outlined
-            :value="formatDate(getUserSelectedPeriod.dt_inicio_teletrabalho)"
+            :value="getUserData.periodoteletrabalho[0].dt_inicio_teletrabalho ? formatDate(getUserData.periodoteletrabalho[0].dt_inicio_teletrabalho) : ''"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -66,18 +69,22 @@ import { mapActions, mapGetters } from 'vuex';
 import date from '@/utils/date';
 
 export default {
-  async mounted() {
-    await this.fetchUserGroupByCPF(this.userSelected.cpf_usuario);
-    await this.fetchUsePeriodByCPF(this.userSelected.cpf_usuario);;
-  },
   props: {
     userSelected: {
       type: Object,
       default: () => null,
     },
   },
+  async mounted() {
+    console.log('chamou mounted');
+    await this.fetchUserGroupByCPF();
+    await this.fetchUsePeriodByCPF();
+  },
   computed: {
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedPeriod']),
+    getUserData(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    },
   },
   methods: {
     ...mapActions('administration', ['fetchUserGroupByCPF', 'fetchUsePeriodByCPF']),

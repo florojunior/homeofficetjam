@@ -26,5 +26,6 @@ export const getters = {
   getPatientInformationError: (state) => state.patientInformation.error,
   getCitiesList: (state) => state.cities.list,
   getCitiesListLoading: (state) => state.cities.loading,
+  isGestor: (state) => localStorage.getItem('sistema_perfil') == 'GESTOR'
 
 };

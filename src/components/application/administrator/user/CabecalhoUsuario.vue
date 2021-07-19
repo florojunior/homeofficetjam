@@ -95,7 +95,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{formatDate(getUserSelectedPeriod.dt_inicio_teletrabalho)}}</p>
+            <p class="mb-0 pa-2">{{getUserSelectedPeriod.dt_inicio_teletrabalho ? formatDate(getUserSelectedPeriod.dt_inicio_teletrabalho) : null}}</p>
           </v-card>
         </v-col>
       </v-row>

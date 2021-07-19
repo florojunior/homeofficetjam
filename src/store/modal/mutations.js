@@ -15,11 +15,17 @@ export const mutations = {
       show: false,
     };
   },
-  setModalAcceptUsers(state, payload) {
-    state.modalAcceptUsers = payload;
+  setModalAvaliacao(state, payload) {
+    state.modalAvaliacao = payload;
   },
   setModalMeta(state, payload) {
     state.modalMeta = payload;
+  },
+  setModalJustificateServidor(state, payload) {
+    state.modalJustificativaServidor = payload;
+  },
+  setModalAlterarDados(state, payload) {
+    state.modalAlterarDados = payload;
   },
   setModalDeclineUsers(state, payload) {
     state.modalDeclineUsers = payload;

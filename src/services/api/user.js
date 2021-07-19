@@ -8,6 +8,21 @@ const listUsers = async () => {
 };
 
 /**
+ * API to list unidades
+ */
+const listUnidades = async () => {
+  return httpClient.get(`/unidade/list`);
+};
+
+/**
+ * API to list areas
+ */
+const listAreas = async () => {
+  return httpClient.get(`/area/list`);
+};
+
+
+/**
  * API to get user group
  */
 const getUserGroupByCPF = async (cpf) => {
@@ -28,6 +43,27 @@ const getUsePeriodByCPF = async (cpf) => {
 const getUsetMetaByCPF = async (cpf) => {
   console.log(2)
   return httpClient.get(`/metausuario/cpf/${cpf}`);
+};
+
+/**
+ * Protocol: 0002 - API to pre-register a new user
+ */
+const updateUserRegister = async (user) => {
+  return httpClient.post('/usuario/update', user);
+};
+
+/**
+ * API to send a assess
+ */
+const sendAvaliacao = async (assess) => {
+  return httpClient.post('/gestoravaliacaojustificativa/add', assess);
+};
+
+/**
+ * Protocol: 0002 - API to pre-register a new user
+ */
+const updateMetaUsuario = async (metausuario) => {
+  return httpClient.post('/metausuario/update', metausuario);
 };
 
 
@@ -117,4 +153,9 @@ export {
   blockUserStatus,
   unblockUserStatus,
   sendRecoverPasswordEmail,
+  listUnidades,
+  listAreas,
+  updateUserRegister,
+  updateMetaUsuario,
+  sendAvaliacao
 };

@@ -66,8 +66,8 @@ export default {
     itemMenu: true,
   }),
   created: function () {
-    var usrAdm = false;
-    if (usrAdm) {
+    var usrAdm = localStorage.getItem('token_sistema_user_name');
+    if (usrAdm == 'GESTOR') {
       this.menu.push(
         {
           descricao: 'Sangue Nativo',
@@ -107,8 +107,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions('main', ['setAuthenticated']),
     logout() {
       localStorage.setItem('token_hemoam', null);
+      this.setAuthenticated(false);
       localStorage.setItem('perfil', null);
       router.push({ name: 'login' }, {});
     },

@@ -23,6 +23,14 @@
                 :label="`${formLabels.login}`"
                 outlined
               ></v-text-field>
+
+              <v-text-field
+                v-model="cpf"
+                outlined
+                name="cpf"
+                label="CPF"
+                :rules="[cpfRules.required, cpfRules.validCpf]"
+              ></v-text-field>
               <v-text-field
                 v-model="password"
                 name="password"
@@ -34,6 +42,14 @@
                 outlined
                 @click:append="showPassword = !showPassword"
               ></v-text-field>
+              <v-select
+                v-model="perfil"
+                :items="perfis"
+                item-text="name"
+                item-value="id"
+                outlined
+                label="Standard"
+              ></v-select>
             </v-form>
           </v-card-text>
           <v-card-actions
@@ -85,8 +101,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import router from '@/router';
 
 import { loginRules, passwordRules } from '@/validations';
+import {
+  cpfRules
+} from '@/validations';
+
 
 import Logo from '@/components/template/Logo.vue';
 
@@ -96,6 +117,18 @@ export default {
   },
   data() {
     return {
+      cpfRules,
+      perfil: 'SERVIDOR',
+      perfis:[
+        {
+          id: 'SERVIDOR',
+          name: 'Servidor'
+        },
+        {
+          id: 'GESTOR',
+          name: 'Gestor'
+        }
+      ],
       card: {
         title: 'Login',
         subtitle: 'Acesse sua conta com e-mail e senha.',
@@ -122,13 +155,24 @@ export default {
     ...mapGetters('authentication', ['loginLoading']),
   },
   methods: {
-    ...mapActions('authentication', ['setMode', 'handleLogin']),
+    ...mapActions('authentication', ['setMode', 'handleLogin','checkUserInformation','getManagerInformation']),
     ...mapActions('main', ['setAuthenticated']),
     ...mapActions('modal', ['showModal']),
     async submitForm() {
       if (this.$refs.form.validate()) {
-        await this.handleLogin({ login: this.email, senha: this.password });
-        this.setAuthenticated(true);
+        const returnLogin =  await this.handleLogin({ login: this.email, senha: this.password, perfil: this.perfil });
+        if(returnLogin){
+        const usuario =  await this.checkUserInformation(this.cpf);
+        if(usuario){
+          if(localStorage.getItem('sistema_perfil') == 'GESTOR'){
+            await this.getManagerInformation('45645043200');
+            router.push('/users',{});
+          }else{
+            router.push('/home/servidor',{});
+          }
+
+          this.setAuthenticated(true);
+        }}
       }
     },
   },
