@@ -77,7 +77,6 @@ export default {
   name: 'PatientForm',
   components: {
     InformacoesGerais,
-    CabecalhoUsuario,
     Produtividade,
     Meta
   },

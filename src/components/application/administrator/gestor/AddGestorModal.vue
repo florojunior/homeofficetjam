@@ -2,13 +2,13 @@
   <v-dialog v-model="visible" persistent max-width="600">
     <v-card>
       <v-card-title class="primary pa-8 pb-10">
-        <span class="white--text text-h5">Nova Unidade</span>
+        <span class="white--text text-h5">Novo Gestor</span>
       </v-card-title>
 
       <v-card-text class="text-body-2 pt-12 px-8">
         <v-form id="form" ref="form">
           <v-text-field
-            v-model="newGestor.nm_unidade"
+            v-model="newGestor.nm_gestor"
             outlined
             name="description"
             maxlength="80"
@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       newGestor: {
-        nm_unidade: null,
+        nm_gestor: null,
         status: null,
       },
       nameRules,
@@ -88,7 +88,7 @@ export default {
         try {
           this.loading = true;
           await this.createGestor({
-            nm_unidade: this.newGestor.nm_unidade.trim()
+            nm_gestor: this.newGestor.nm_gestor.trim()
           });
           this.closeModal();
         } catch (error) {

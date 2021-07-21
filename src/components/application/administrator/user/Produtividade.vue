@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CabecalhoUsuario :title="'Produtividade'"/>
+    <CabecalhoUsuario :title="'Produtividade'" :userSelected="userSelected"/>
     <v-card flat class="pl-6 pr-6">
       <v-card-text>
         <v-row>
@@ -51,18 +51,6 @@
                     <td class="text-center">{{ item.justificativa_meta_ajustada }}</td>
                     <td class="text-right">
                       <v-btn
-                        v-if="!item.justificativa_meta_nao_cumprida && !isGestor"
-                          fab
-                          dark
-                          x-small
-                          color="primary"
-                          @click="justificar(item)"
-                        >
-                        <v-icon color="white">
-                          mdi-file-chart
-                        </v-icon>
-                      </v-btn>
-                      <v-btn
                         v-if="item.justificativa_meta_nao_cumprida && isGestor && !item.gestoravaliacaojustificativa"
                           fab
                           dark
@@ -96,7 +84,7 @@
       </v-card-text>
     </v-card>
     <ModalJustificativa :metaSelected="metaSelected"/>
-    <ModalAvaliacao :metaSelected="metaSelected"/>
+    <ModalAvaliacao :metaSelected="metaSelected" :userSelected="userSelected"/>
   </div>
 </template>
 

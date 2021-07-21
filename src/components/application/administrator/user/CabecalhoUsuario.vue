@@ -23,7 +23,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">Área</p>
+            <p class="mb-0 pa-2">{{getAreaName ? getAreaName.nm_area : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pr-0 pb-0">
@@ -41,7 +41,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">Unidade</p>
+            <p class="mb-0 pa-2">{{getUnidadeName ? getUnidadeName.nm_unidade : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -59,7 +59,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{getUserSelectedGroup.id_grupo}}</p>
+            <p class="mb-0 pa-2">{{getGrupos ? getGrupos.nm_grupo : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -77,7 +77,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">Gestor</p>
+            <p class="mb-0 pa-2">{{getGestor ? getGestor.nm_gestor : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -95,7 +95,8 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{getUserSelectedPeriod.dt_inicio_teletrabalho ? formatDate(getUserSelectedPeriod.dt_inicio_teletrabalho) : null}}</p>
+
+            <p class="mb-0 pa-2">{{userSelected.periodoteletrabalho[0] ? formatDate(userSelected.periodoteletrabalho[0].dt_inicio_teletrabalho) : null}}</p>
           </v-card>
         </v-col>
       </v-row>
@@ -118,10 +119,42 @@ export default {
       default: () => null,
     },
   },
+  data() {
+    return {
+      model:{},
+      areas: [],
+      unidades: [],
+      grupos: [],
+      gestores: []
+    };
+  },
   computed: {
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedPeriod']),
+     getUserData(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    },
+    getAreaName(){
+      return this.areas.find((element) => element.id == this.userSelected.id_area)
+    },
+    getUnidadeName(){
+      return this.unidades.find((element) => element.id == this.userSelected.id_unidade)
+    },
+    getGestor(){
+      return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)
+    },
+    getGrupos(){
+        return this.grupos.find((element) => element.id == this.userSelected.grupousuario[0].id_grupo)
+    }
+  },
+   async mounted() {
+    this.areas = await this.fetchAreasList();
+    this.unidades = await this.fetchUnidadesList();
+    this.grupos = await this.fetchGruposList();
+    this.gestores = await this.fetchGestorList();
   },
   methods: {
+    ...mapActions('administration', ['fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),
+
     formatDate(value) {
       return date.formatToDDMMYYYY(value);
     }

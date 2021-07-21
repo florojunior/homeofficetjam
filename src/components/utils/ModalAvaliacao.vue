@@ -1,25 +1,48 @@
 <template>
-  <v-dialog v-model="getModalAvaliacao.show" persistent max-width="560px">
+  <v-dialog v-model="getModalAvaliacao.show" persistent >
     <v-card>
-      <v-card-title class="text-subtitle-1 mb-4">Avaliar Relatório</v-card-title>
+      <v-card-title class="text-h6 mb-4 text-center d-flex justify-center"><p class=" text-center">Acompanhamento de teletrabalhador para o gestor</p></v-card-title>
       <v-card-text class="text-body-2">
+        <v-divider></v-divider>
+        <v-row class="pa-0 ma-0">
+          <v-col class="pa-0 ma-0">
+            <CabecalhoUsuario :userSelected="userSelected"/>
+          </v-col>
+        </v-row>
         <v-row>
+          <v-col>
+            <v-divider></v-divider>
+          </v-col>
+
+        </v-row>
+        <v-row>
+          <v-col cols=12>
+            <p class="font-weight-bold">
+              1. Favor preencher o quadro abaixo com relação a meta.
+            </p>
+          </v-col>
           <v-col>
             <v-textarea
               v-model="model.justificativa_meta_nao_cumprida"
               disabled
               dense
-              label="Relatório Enviado"
+              label="1.1 Justificativa para o não-cumprimento da meta:"
               >
             </v-textarea>
           </v-col>
         </v-row>
         <v-row>
           <v-col cols=12>
+            <p class="font-weight-bold">
+              2. Relatório de feedback do gestor em relação ao relatório do servidor.
+            </p>
+          </v-col>
+          <v-col cols=12>
             <v-textarea
               v-model="model.descricao"
+              disabled
               dense
-              label="Relatório"
+              label="Resposta"
               >
             </v-textarea>
           </v-col>
@@ -39,10 +62,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import CabecalhoUsuario from '../application/administrator/user/CabecalhoUsuario.vue'
 export default {
-
+components:{
+  CabecalhoUsuario
+},
   props: {
     metaSelected: {
+      type: Object,
+      default: () => null,
+    },
+    userSelected: {
       type: Object,
       default: () => null,
     },

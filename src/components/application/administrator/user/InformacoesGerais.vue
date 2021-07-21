@@ -1,6 +1,6 @@
 <template>
   <v-card flat class="ma-4 mt-0">
-    <v-card-text v-if="getUserSelectedPeriod">
+    <v-card-text >
       <v-row>
         <v-col>
           <p class="text-xl-h6 text-lg-h6">
@@ -21,7 +21,7 @@
             label="Área"
             dense
             outlined
-            :value="getUserData.id_area"
+            :value="getAreaName ? getAreaName.nm_area : ''"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -29,7 +29,7 @@
             label="Unidade"
             dense
             outlined
-            :value="getUserData.id_unidade"
+            :value="getUnidadeName ? getUnidadeName.nm_unidade : ''"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -37,7 +37,7 @@
             label="Grupo de trabalho"
             dense
             outlined
-            :value="getUserSelectedGroup ? getUserData.grupousuario[0].id_grupo : null"
+            :value="getGrupos ? getGrupos.nm_grupo : ''"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -47,7 +47,7 @@
             label="Nome do gestor"
             dense
             outlined
-            :value="getUserData.gestorusuario[0].id_gestor"
+            :value="getGestor ? getGestor.nm_gestor : ''"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -73,21 +73,43 @@ export default {
     userSelected: {
       type: Object,
       default: () => null,
-    },
+    }
+  },
+  data() {
+    return {
+      model:{},
+      areas: [],
+      unidades: [],
+      grupos: [],
+      gestores: []
+    };
   },
   async mounted() {
-    console.log('chamou mounted');
-    await this.fetchUserGroupByCPF();
-    await this.fetchUsePeriodByCPF();
+    this.areas = await this.fetchAreasList();
+    this.unidades = await this.fetchUnidadesList();
+    this.grupos = await this.fetchGruposList();
+    this.gestores = await this.fetchGestorList();
   },
   computed: {
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedPeriod']),
     getUserData(){
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
     },
+    getAreaName(){
+      return this.areas.find((element) => element.id == this.userSelected.id_area)
+    },
+    getUnidadeName(){
+      return this.unidades.find((element) => element.id == this.userSelected.id_unidade)
+    },
+    getGestor(){
+      return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)
+    },
+    getGrupos(){
+        return this.grupos.find((element) => element.id == this.userSelected.grupousuario[0].id_grupo)
+    }
   },
   methods: {
-    ...mapActions('administration', ['fetchUserGroupByCPF', 'fetchUsePeriodByCPF']),
+    ...mapActions('administration', ['fetchUserGroupByCPF', 'fetchUsePeriodByCPF','fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),
     formatDate(value) {
       return date.formatToDDMMYYYY(value);
     },

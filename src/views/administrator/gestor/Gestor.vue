@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import List from '@/components/application/administrator/user/List.vue';
+import List from '@/components/application/administrator/gestor/List.vue';
 
 export default {
   components: {

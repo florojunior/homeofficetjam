@@ -2,7 +2,8 @@ import {
   listUsers,
   listUnidades,
   listAreas,
-  getUserGroupByCPF,
+  listGrupos,
+  listGestores,
   getUsePeriodByCPF,
   getUsetMetaByCPF,
   updateUserRegister,
@@ -84,6 +85,42 @@ export const actions = {
     try {
       const dataUnidades = await listUnidades();
       return dataUnidades.data.data;
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
+  },
+  async fetchGruposList(state) {
+    try {
+      const dataGrupos = await listGrupos();
+      return dataGrupos.data.data;
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
+  },
+  async fetchGestorList(state) {
+    try {
+      const dataGestores = await listGestores();
+      return dataGestores.data.data;
     } catch (error) {
       state.dispatch(
         'modal/showModal',

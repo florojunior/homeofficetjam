@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CabecalhoUsuario/>
+    <CabecalhoUsuario :userSelected="userSelected"/>
     <v-card flat class="pl-6 pr-6">
       <v-card-text>
         <v-row>
@@ -63,7 +63,7 @@
         </v-row>
       </v-card-text>
     </v-card>
-    <ModalMeta :metaSelected="metaSelected"/>
+    <ModalMeta :metaSelected="metaSelected" :userSelected="userSelected"/>
     {{metaSelected}}
   </div>
 </template>

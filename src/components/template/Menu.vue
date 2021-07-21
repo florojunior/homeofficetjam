@@ -43,13 +43,7 @@
           @click.stop="drawer = !drawer"
         ></v-app-bar-nav-icon>
 
-        <v-img
-          v-if="desktopBreakpoint"
-          src="@/assets/images/logo-light.svg"
-          max-width="90px"
-          alt="Blood logo"
-        ></v-img>
-        <v-toolbar-title v-else>
+        <v-toolbar-title>
           <span class="surface--text text-h6">
             {{ pageName }}
           </span>
@@ -95,7 +89,7 @@ export default {
   },
   created: function() {
     var usrAdm = localStorage.getItem('token_sistema_user_name');
-    if (usrAdm == 'GESTOR') {
+    if (usrAdm != 'GESTOR') {
       this.menu.push(
         {
           descricao: 'Principal',

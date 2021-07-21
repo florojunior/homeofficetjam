@@ -2,7 +2,7 @@
   <PageWrapper>
     <PageHeader>
       <template v-slot:header-extra-content>
-        <AddButton :onClick="addUnit">Adicionar novo</AddButton>
+        <AddButton :onClick="addGestor">Adicionar novo</AddButton>
       </template>
     </PageHeader>
     <PageContent>
@@ -53,7 +53,7 @@
                     </v-chip>
                   </template>
 
-                  <template v-slot:{ item }>
+                  <template v-slot:item.acoes="{ item }">
                     <EditButton
                       class="mr-1"
                       :onClick="() => handleEditGestor(item)"
@@ -111,7 +111,7 @@ export default {
           text: 'Nome',
           align: 'start',
           sortable: true,
-          value: 'nm_unidade',
+          value: 'nm_gestor',
           class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
         },
         {

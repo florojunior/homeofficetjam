@@ -8,7 +8,7 @@ const state = {
   list : []
 };
 
-export const unit = {
+export const gestor = {
   namespaced,
   state,
   getters,

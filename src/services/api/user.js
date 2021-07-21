@@ -21,6 +21,22 @@ const listAreas = async () => {
   return httpClient.get(`/area/list`);
 };
 
+/**
+ * API to list grupos
+ */
+const listGrupos = async () => {
+  return httpClient.get(`/grupo/list`);
+};
+
+/**
+ * API to list grupos
+ */
+const listGestores = async () => {
+  return httpClient.get(`/gestor/list`);
+};
+
+
+
 
 /**
  * API to get user group
@@ -157,5 +173,7 @@ export {
   listAreas,
   updateUserRegister,
   updateMetaUsuario,
-  sendAvaliacao
+  sendAvaliacao,
+  listGrupos,
+  listGestores
 };

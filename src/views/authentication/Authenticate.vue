@@ -50,6 +50,7 @@
                 outlined
                 label="Standard"
               ></v-select>
+              {{perfil}}
             </v-form>
           </v-card-text>
           <v-card-actions
@@ -164,7 +165,7 @@ export default {
         if(returnLogin){
         const usuario =  await this.checkUserInformation(this.cpf);
         if(usuario){
-          if(localStorage.getItem('sistema_perfil') == 'GESTOR'){
+          if(this.perfil == 'GESTOR'){
             await this.getManagerInformation('45645043200');
             router.push('/users',{});
           }else{

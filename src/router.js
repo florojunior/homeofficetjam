@@ -21,7 +21,7 @@ const router = new Router({
     },
     {
       path: '/users',
-      name: 'Usuarios',
+      name: 'Gestão de Teletrabalho',
       component: () =>
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/user/Users.vue'
@@ -29,7 +29,7 @@ const router = new Router({
     },
     {
       path: '/home/servidor',
-      name: 'PrincipalServidor',
+      name: 'Gestão de Teletrabalho',
       component: () =>
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/user/HomeServidor.vue')
@@ -48,6 +48,14 @@ const router = new Router({
       component: () =>
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/unit/Units.vue'
+        ),
+    },
+    {
+      path: '/gestor',
+      name: 'Gestor',
+      component: () =>
+        import(
+          /* webpackChunkName: "patients" */ '@/views/administrator/gestor/Gestor.vue'
         ),
     }
   ],

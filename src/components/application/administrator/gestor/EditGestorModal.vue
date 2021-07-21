@@ -2,13 +2,13 @@
   <v-dialog v-model="visible" persistent max-width="600">
     <v-card>
       <v-card-title class="primary pa-8 pb-10">
-        <span class="white--text text-h5">Editar Unidade {{gestorSelected}}</span>
+        <span class="white--text text-h5">Editar Gestor</span>
       </v-card-title>
 
       <v-card-text class="text-body-2 pt-12 px-8">
         <v-form id="form" ref="form">
           <v-text-field
-            v-model="nm_unidade"
+            v-model="nm_gestor"
             outlined
             name="description"
             maxlength="80"
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       id: null,
-      nm_unidade: null,
+      nm_gestor: null,
       nameRules,
       visible: false,
       loading: false,
@@ -76,7 +76,7 @@ export default {
       after: (action) => {
         if (action.type === 'modal/editGestor') {
           this.id = this.gestorSelected.id;
-          this.nm_unidade = this.gestorSelected.nm_unidade;
+          this.nm_gestor = this.gestorSelected.nm_gestor;
           this.visible = true;
         }
       },
@@ -103,7 +103,7 @@ export default {
           this.loading = true;
             await this.updateGestor({
               id: this.id,
-              nm_unidade: this.nm_unidade.trim(),
+              nm_gestor: this.nm_gestor.trim(),
             });
 
           this.closeModal();
