@@ -47,7 +47,7 @@
             label="Nome do gestor"
             dense
             outlined
-            :value="getGestor ? getGestor.nm_gestor : ''"
+            :value="userSelectedTable ? userSelectedTable.gestor.nm_gestor : ''"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -71,6 +71,10 @@ import date from '@/utils/date';
 export default {
   props: {
     userSelected: {
+      type: Object,
+      default: () => null,
+    },
+    userSelectedTable: {
       type: Object,
       default: () => null,
     }

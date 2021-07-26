@@ -4,10 +4,34 @@ import httpClient from '@/plugins/axios';
  * Protocol: 0001 - Initial authentication API that returns a token to validate
  * access to other API's endpoints
  */
-const loginUser = async ({ login, senha }) =>
+const loginUser = async ({ login, senha, cpf }) =>
   httpClient.post('/authenticate/operador', {
     login,
     senha,
+  });
+
+/**
+ * Protocol: 0001 - Initial authentication API that returns a token to validate
+ * access to other API's endpoints
+ */
+const loginUserServidor = async ({ login, senha, cpf }) =>
+  httpClient.post('/authenticate/servidor', {
+    username: login,
+    password: senha,
+    perfil: 'SERVIDOR',
+    cpf
+  });
+
+/**
+ * Protocol: 0001 - Initial authentication API that returns a token to validate
+ * access to other API's endpoints
+ */
+const loginUserGestor = async ({ login, senha, cpf }) =>
+  httpClient.post('/authenticate/gestor', {
+    username: login,
+    password: senha,
+    perfil: 'GESTOR',
+    cpf
   });
 
 /**
@@ -22,4 +46,4 @@ const checkUserInformation = async (cpf) =>
 const getManagerInformation = async (cpf) =>
   httpClient.get('/gestor/cpf/' + cpf);
 
-export default { loginUser, checkUserInformation, getManagerInformation };
+export default { loginUser, checkUserInformation, getManagerInformation, loginUserServidor, loginUserGestor };

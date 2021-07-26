@@ -17,10 +17,10 @@
             <v-icon>mdi-account-box</v-icon>
           </v-tab>
 
-          <v-tab href="#tab-2">
+          <!--<v-tab href="#tab-2">
             Meta
             <v-icon>mdi-target</v-icon>
-          </v-tab>
+          </v-tab>-->
 
           <v-tab href="#tab-3">
             Produtividade
@@ -32,18 +32,18 @@
             :value="'tab-1'"
           >
 
-            <InformacoesGerais :userSelected="userSelected"/>
+            <InformacoesGerais :userSelected="servidor" :userSelectedTable="userSelected"/>
 
           </v-tab-item>
-          <v-tab-item
+          <!--<v-tab-item
             :value="'tab-2'"
           >
-            <Meta :tab="tab" :userSelected="userSelected"/>
-          </v-tab-item>
+            <Meta :tab="tab" :userSelected="servidor" :userSelectedTable="userSelected"/>
+          </v-tab-item>-->
           <v-tab-item
             :value="'tab-3'"
           >
-            <Produtividade :tab="tab" :userSelected="userSelected"/>
+            <Produtividade :tab="tab" :userSelected="servidor" :userSelectedTable="userSelected"/>
           </v-tab-item>
         </v-tabs-items>
 
@@ -75,13 +75,13 @@ import CabecalhoUsuario from './CabecalhoUsuario';
 import Produtividade from './Produtividade';
 
 export default {
+  name: 'PatientForm',
   components: {
     InformacoesGerais,
     CabecalhoUsuario,
     Produtividade,
     Meta
   },
-  name: 'PatientForm',
   props: {
     userSelected: {
       type: Object,
@@ -90,6 +90,7 @@ export default {
   },
   data() {
     return {
+      servidor: {},
       paciente: {
       },
       visible: false,
@@ -105,8 +106,10 @@ export default {
       after: async (action) => {
         if (action.type === 'modal/editPatient') {
           if (this.userSelected !== null) {
-
+            this.tab = "tab-1";
             this.visible = true;
+            console.log(this.userSelected.usuario.cpf_usuario);
+            this.servidor = await this.fetchUserByCpf(this.userSelected.usuario.cpf_usuario)
           }
         }
       },
@@ -116,7 +119,7 @@ export default {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('administration', ['editPatient', 'fetchCities']),
+    ...mapActions('administration', ['editPatient', 'fetchCities','fetchUserByCpf']),
     keepModalOpen() {
       this.loading = false;
     },

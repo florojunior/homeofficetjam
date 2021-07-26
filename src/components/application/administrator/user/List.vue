@@ -94,21 +94,21 @@ export default {
           text: 'Código',
           align: 'start',
           sortable: true,
-          value: 'cd_usuario',
+          value: 'usuario.cd_usuario',
           class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
         },
         {
           text: 'Nome',
           align: 'start',
           sortable: true,
-          value: 'nm_usuario',
+          value: 'usuario.nm_usuario',
           class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
         },
         {
           text: 'CPF',
           align: 'start',
           sortable: true,
-          value: 'cpf_usuario',
+          value: 'usuario.cpf_usuario',
           class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
         },
         {
@@ -139,7 +139,7 @@ export default {
     ]),
   },
   async created() {
-    await this.fetchUsersList();
+    await this.fetchUsersList(JSON.parse(localStorage.getItem('token_sistema_user_data')).data.cpf_usuario);
   },
   methods: {
     ...mapActions('administration', ['fetchUsersList']),
@@ -159,7 +159,7 @@ export default {
     },
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.fetchUsersList();
+    await this.fetchUsersList(JSON.parse(localStorage.getItem('token_sistema_user_data')).data.cpf_usuario);
     next();
   },
 };

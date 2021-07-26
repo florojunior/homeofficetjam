@@ -1,6 +1,6 @@
 import { validateRecaptcha } from '@/services/api/recaptcha.js';
 import {
-  sendRecoverPasswordEmail,
+  sendRecoverPasswordEmail
 } from '@/services/api/user.js';
 
 import authentication from '@/services/api/authentication';
@@ -19,7 +19,12 @@ export const actions = {
     try {
       state.commit('LOGIN_PENDING');
 
-      const response = await authentication.loginUser(payload);
+      let response;
+      if (payload.perfil == 'GESTOR') {
+        response = await authentication.loginUserGestor(payload);
+      }else{
+        response = await authentication.loginUserServidor(payload);
+      }
 
       state.commit('LOGIN_SUCCESS');
 

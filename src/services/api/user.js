@@ -3,8 +3,15 @@ import httpClient from '@/plugins/axios';
 /**
  * API to list users
  */
-const listUsers = async () => {
-  return httpClient.get(`/usuario/list`);
+const listUsers = async (cpf) => {
+  return httpClient.get(`/gestorusuario/cpfgestor/${cpf}`);
+};
+
+/**
+ * API to list users
+ */
+const userByCpf = async (cpf) => {
+  return httpClient.get(`/usuario/${cpf}`);
 };
 
 /**
@@ -175,5 +182,6 @@ export {
   updateMetaUsuario,
   sendAvaliacao,
   listGrupos,
-  listGestores
+  listGestores,
+  userByCpf
 };

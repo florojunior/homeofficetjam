@@ -20,30 +20,19 @@
           Meta
           <v-icon>mdi-target</v-icon>
         </v-tab>
-
-        <v-tab href="#tab-3">
-          Produtividade
-
-          <v-icon>mdi-bullseye-arrow</v-icon>
-        </v-tab>
       </v-tabs>
-      <v-tabs-items v-if="userSelected.cpf_usuario" v-model="tab">
+      <v-tabs-items v-model="tab">
         <v-tab-item
           :value="'tab-1'"
         >
 
-          <InformacoesGerais :userSelected="userSelected"/>
+          <InformacoesGerais :userSelected="userSelected ? userSelected : userSelectedComp"/>
 
         </v-tab-item>
         <v-tab-item
           :value="'tab-2'"
         >
-          <Meta :tab="tab" :userSelected="userSelected"/>
-        </v-tab-item>
-        <v-tab-item
-          :value="'tab-3'"
-        >
-          <Produtividade :tab="tab" :userSelected="userSelected"/>
+          <Meta :tab="tab" :userSelected="userSelected ? userSelected : userSelectedComp"/>
         </v-tab-item>
       </v-tabs-items>
 
@@ -70,7 +59,6 @@ import unmaskText from '@/utils/unmaskText';
 import formattedBirthdate from '@/utils/formattedBirthdate';
 import InformacoesGerais from '../InformacoesGerais';
 import Meta from '../Meta';
-import CabecalhoUsuario from '../CabecalhoUsuario';
 import Produtividade from '../Produtividade';
 
 export default {
@@ -79,6 +67,12 @@ export default {
     InformacoesGerais,
     Produtividade,
     Meta
+  },
+  props: {
+    userSelected: {
+      type: Object,
+      default: () => null,
+    },
   },
   data() {
     return {
@@ -91,9 +85,12 @@ export default {
     };
   },
   computed: {
-    userSelected(){
+    userSelectedComp(){
       console.log(JSON.parse(localStorage.getItem('token_sistema_user_data')).data);
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data;
+    },
+    isGestor(){
+      return localStorage.getItem('sistema_perfil') == 'GESTOR';
     }
   },
   created() {
@@ -101,8 +98,7 @@ export default {
       after: async (action) => {
         if (action.type === 'modal/editPatient') {
           if (this.userSelected !== null) {
-
-            this.visible = true;
+            this.tab = 'tab-1';
           }
         }
       },

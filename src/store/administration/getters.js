@@ -16,7 +16,11 @@ export const getters = {
   getUsersList: (state) => state.users.list,
   getUserSelectedGroup: (state) => state.userSelected.data.group,
   getUserSelectedPeriod: (state) => state.userSelected.data.period,
-  getUserSelectedMeta: (state) => state.userSelected.data.meta,
+  getUserSelectedMeta: (state) => {
+    return state.userSelected.data.meta.sort(function(a, b) {
+      return new Date(b.ano_meta, b.mes_meta, 0) - new Date(a.ano_meta,a.mes_meta,0);
+    });
+  },
   getUsersListLoading: (state) => state.users.loading,
   //PATIENT INFORMATION
   getPatientInformation: (state) => state.patientInformation.data,

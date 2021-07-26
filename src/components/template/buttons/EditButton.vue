@@ -7,7 +7,7 @@
     @click="onClick"
   >
     <v-icon left small color="tertiary lighten-2"> mdi-pencil </v-icon>
-    <span class="text-caption font-weight-bold"> Editar </span>
+    <span class="text-caption font-weight-bold"> Visualizar </span>
   </v-btn>
 </template>
 

@@ -1,10 +1,12 @@
 <template>
   <div>
-    <CabecalhoUsuario :title="'Produtividade'" :userSelected="userSelected"/>
     <v-card flat class="pl-6 pr-6">
       <v-card-text>
         <v-row>
-          <v-col cols=12>
+          <v-col>
+          <CabecalhoUsuario :title="'Produtividade'" :userSelected="userSelected" :userSelectedTable="userSelectedTable"/>
+        </v-col>
+        <v-col cols=12>
             <p class="text-xl-h6 text-lg-h6">
               Histórico
             </p>
@@ -28,10 +30,10 @@
                       % de comprimento
                     </th>
                     <th class="text-center">
-                      Justificativa
+                      Justificativa não cumprimento
                     </th>
                     <th class="text-right">
-                      Ações
+                      Relatório
                     </th>
                   </tr>
                 </thead>
@@ -40,7 +42,7 @@
                     v-for="item in getUserSelectedMeta"
                     :key="item.name"
                   >
-                    <td class="text-left">{{ `${item.mes_meta}/${item.ano_meta}` }}</td>
+                    <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
                     <td class="text-center">{{ item.meta_estabelecida}} </td>
                     <td class="text-center">{{ item.meta_alcancada }}</td>
                     <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida , item.meta_alcancada) + '%' }}
@@ -48,10 +50,10 @@
                         mdi-check-circle
                       </v-icon>
                     </td>
-                    <td class="text-center">{{ item.justificativa_meta_ajustada }}</td>
+                    <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
                     <td class="text-right">
                       <v-btn
-                        v-if="item.justificativa_meta_nao_cumprida && isGestor && !item.gestoravaliacaojustificativa"
+                        v-if="item.tx_relatorio && isGestor && !item.gestoravaliacaojustificativa"
                           fab
                           dark
                           x-small
@@ -63,7 +65,7 @@
                         </v-icon>
                       </v-btn>
                       <v-btn
-                        v-if="item.justificativa_meta_nao_cumprida && isGestor && item.gestoravaliacaojustificativa"
+                        v-if="item.tx_relatorio && isGestor && item.gestoravaliacaojustificativa"
                           fab
                           dark
                           x-small
@@ -83,8 +85,8 @@
         </v-row>
       </v-card-text>
     </v-card>
-    <ModalJustificativa :metaSelected="metaSelected"/>
-    <ModalAvaliacao :metaSelected="metaSelected" :userSelected="userSelected"/>
+    <ModalJustificativa :metaSelected="metaSelected" :userSelectedTable="userSelectedTable"/>
+    <ModalAvaliacao :metaSelected="metaSelected" :userSelected="userSelected" :userSelectedTable="userSelectedTable"/>
   </div>
 </template>
 
@@ -109,6 +111,10 @@ export default {
       type: String,
       default: () => null,
     },
+    userSelectedTable: {
+      type: Object,
+      default: () => null,
+    }
   },
   data() {
     return {
@@ -117,14 +123,14 @@ export default {
   },
   watch: {
     async tab() {
-      await this.fetchUseMetaByCPF('49304178215');
-      //await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
+      //await this.fetchUseMetaByCPF('49304178215');
+
     }
   },
   async mounted() {
-    console.log(localStorage.getItem('sistema_perfil'))
     //await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
-    await this.fetchUseMetaByCPF('49304178215');
+    //await this.fetchUseMetaByCPF('49304178215');
+    await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
   },
   computed: {
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta'])
@@ -157,6 +163,9 @@ export default {
       this.setModalAvaliacao({
         show: true
       });
+    },
+    getPeriodo(mes, ano){
+      return `${("00" + mes).slice(-2)}/${ano}`;
     }
   }
 }

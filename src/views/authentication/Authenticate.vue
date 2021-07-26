@@ -161,12 +161,12 @@ export default {
     ...mapActions('modal', ['showModal']),
     async submitForm() {
       if (this.$refs.form.validate()) {
-        const returnLogin =  await this.handleLogin({ login: this.email, senha: this.password, perfil: this.perfil });
+        const returnLogin =  await this.handleLogin({ login: this.email, senha: this.password, cpf: this.cpf, perfil: this.perfil });
         if(returnLogin){
         const usuario =  await this.checkUserInformation(this.cpf);
         if(usuario){
           if(this.perfil == 'GESTOR'){
-            await this.getManagerInformation('45645043200');
+            await this.getManagerInformation(this.cpf);
             router.push('/users',{});
           }else{
             router.push('/home/servidor',{});

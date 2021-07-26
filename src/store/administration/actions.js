@@ -4,7 +4,7 @@ import {
   listAreas,
   listGrupos,
   listGestores,
-  getUsePeriodByCPF,
+  userByCpf,
   getUsetMetaByCPF,
   updateUserRegister,
   updateMetaUsuario,
@@ -62,9 +62,9 @@ export const actions = {
       );
     }
   },
-  async fetchUsersList(state, status) {
+  async fetchUsersList(state, cpf) {
     try {
-      const dataUsers = await listUsers(status);
+      const dataUsers = await listUsers(cpf);
       state.commit('setUsersList', dataUsers.data.data);
       return dataUsers;
     } catch (error) {
@@ -209,6 +209,24 @@ export const actions = {
       });
 
       return true;
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
+  },
+  async fetchUserByCpf(state, cpf) {
+    try {
+      const result = await userByCpf(cpf);
+      return result.data.data;
     } catch (error) {
       state.dispatch(
         'modal/showModal',

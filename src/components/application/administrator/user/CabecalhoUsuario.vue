@@ -1,7 +1,7 @@
 <template>
   <v-card flat>
-    <v-card-text>
-      <v-row class="pl-6 pr-6">
+    <v-card-text class="pa-0 pb-4">
+      <v-row class="pl-0 pr-0">
         <v-col cols=12>
           <p class="text-xl-h6 text-lg-h6">
             {{title? title : 'Meta'}}
@@ -14,7 +14,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2 font-weight-medium">Área</p>
+            <p class="mb-0 pa-0 font-weight-medium">Área</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pb-0 pl-0">
@@ -23,7 +23,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{getAreaName ? getAreaName.nm_area : ""}}</p>
+            <p class="mb-0 pa-0">{{getAreaName ? getAreaName.nm_area : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pr-0 pb-0">
@@ -32,7 +32,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2 font-weight-medium">Unidade</p>
+            <p class="mb-0 pa-0 font-weight-medium">Unidade</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pl-0">
@@ -41,7 +41,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{getUnidadeName ? getUnidadeName.nm_unidade : ""}}</p>
+            <p class="mb-0 pa-0">{{getUnidadeName ? getUnidadeName.nm_unidade : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -50,7 +50,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2 font-weight-medium">Grupo de Trabalho</p>
+            <p class="mb-0 pa-0 font-weight-medium">Grupo de Trabalho</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pl-0">
@@ -59,7 +59,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{getGrupos ? getGrupos.nm_grupo : ""}}</p>
+            <p class="mb-0 pa-0">{{getGrupos ? getGrupos.nm_grupo : ""}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -68,7 +68,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2 font-weight-medium">Gestor</p>
+            <p class="mb-0 pa-0 font-weight-medium">Gestor</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pl-0">
@@ -77,7 +77,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2">{{getGestor ? getGestor.nm_gestor : ""}}</p>
+            <p class="mb-0 pa-0">{{userSelectedTable ? userSelectedTable.gestor.nm_gestor : ''}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -86,7 +86,25 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-2 font-weight-medium">Inicio do Teletrabalho</p>
+            <p class="mb-0 pa-0 font-weight-medium">Nome do servidor</p>
+          </v-card>
+        </v-col>
+        <v-col cols=6 class="pt-0 pb-0 pl-0">
+          <v-card
+            class="pa-0 pl-1"
+            outlined
+            tile
+          >
+            <p class="mb-0 pa-0">{{userSelected ? userSelected.nm_usuario : ''}}</p>
+          </v-card>
+        </v-col>
+        <v-col cols=6 class="pt-0 pb-0 pr-0">
+          <v-card
+            class="pa-0 pl-1"
+            outlined
+            tile
+          >
+            <p class="mb-0 pa-0 font-weight-medium">Inicio do Teletrabalho</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pl-0">
@@ -96,9 +114,29 @@
             tile
           >
 
-            <p class="mb-0 pa-2">{{userSelected.periodoteletrabalho[0] ? formatDate(userSelected.periodoteletrabalho[0].dt_inicio_teletrabalho) : null}}</p>
+            <p class="mb-0 pa-0">{{userSelected.periodoteletrabalho[0] ? formatDate(userSelected.periodoteletrabalho[0].dt_inicio_teletrabalho) : null}}</p>
           </v-card>
         </v-col>
+        <v-col v-if="periodo" cols=6 class="pt-0 pb-0 pr-0">
+          <v-card
+            class="pa-0 pl-1"
+            outlined
+            tile
+          >
+            <p class="mb-0 pa-0 font-weight-medium">Periodo</p>
+          </v-card>
+        </v-col>
+        <v-col v-if="periodo" cols=6 class="pt-0 pb-0 pl-0">
+          <v-card
+            class="pa-0 pl-1"
+            outlined
+            tile
+          >
+            <p class="mb-0 pa-0">{{periodo}}</p>
+          </v-card>
+        </v-col>
+        {{metaSelected}}
+
       </v-row>
     </v-card-text>
   </v-card>
@@ -118,6 +156,14 @@ export default {
       type: String,
       default: () => null,
     },
+    periodo: {
+      type: Object,
+      default: () => null,
+    },
+    userSelectedTable: {
+      type: Object,
+      default: () => null,
+    }
   },
   data() {
     return {

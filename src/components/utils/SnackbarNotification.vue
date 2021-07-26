@@ -4,7 +4,7 @@
     centered
     top
     tile
-    :timeout="getSnackbar.timeout"
+    :timeout="3000"
     :color="getSnackbar.type"
   >
     <span
