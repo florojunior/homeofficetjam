@@ -77,7 +77,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-0">{{userSelectedTable ? userSelectedTable.gestor.nm_gestor : ''}}</p>
+            <p class="mb-0 pa-0">{{userSelectedTable ? userSelectedTable.gestor.nm_gestor : userSelected.gestorusuario[0].gestor.nm_gestor}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">

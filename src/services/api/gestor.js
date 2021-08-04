@@ -6,6 +6,12 @@ import httpClient from '@/plugins/axios';
 const getAllGestor = async () =>
   httpClient.get('/gestor/list');
 
+/**
+* Protocol: 0064 - List all Groups
+*/
+const getGestorByCpf = async (cpf) =>
+  httpClient.get('/gestorusuario/gestores/'+cpf);
+
   /**
  * Protocol: 0063 - delete Group
  */
@@ -32,5 +38,6 @@ export {
   getAllGestor,
   deleteGestor,
   createGestor,
-  updateGestor
+  updateGestor,
+  getGestorByCpf
 };
