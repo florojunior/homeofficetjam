@@ -24,10 +24,13 @@
                       Meta Estabelecida
                     </th>
                     <th class="text-center">
+                      Meta Ajustada
+                    </th>
+                    <th class="text-center">
                       Pontuação Obtida
                     </th>
                     <th class="text-center">
-                      % de comprimento
+                      % de cumprimento
                     </th>
                     <th class="text-center">
                       Justificativa não cumprimento
@@ -44,12 +47,13 @@
                   >
                     <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
                     <td class="text-center">{{ item.meta_estabelecida}} </td>
+                    <td class="text-center">{{ item.meta_ajustada}} </td>
                     <td class="text-center">{{ item.meta_alcancada }}</td>
-                    <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida , item.meta_alcancada) + '%' }}
-                      <v-icon :color="calculaAlcancouMeta(item.meta_estabelecida , item.meta_alcancada) > 99 ? 'green' : 'red'">
-                        mdi-check-circle
-                      </v-icon>
-                    </td>
+                    <td class="text-center">{{ calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) + '%' }}
+                  <v-icon :color="calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) > 99 ? 'green' : 'red'">
+                    mdi-check-circle
+                  </v-icon>
+                </td>
                     <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
                     <td class="text-right">
                       <v-btn

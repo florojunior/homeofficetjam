@@ -48,9 +48,8 @@
                 item-text="name"
                 item-value="id"
                 outlined
-                label="Standard"
+                label="Perfil"
               ></v-select>
-              {{perfil}}
             </v-form>
           </v-card-text>
           <v-card-actions
@@ -65,18 +64,6 @@
               :loading="loginLoading"
               @click.prevent="submitForm()"
               >{{ button.text }}</v-btn
-            >
-
-            <v-btn
-              depressed
-              text
-              color="primary"
-              class="py-2 ml-2 text-button"
-              :disabled="loginLoading"
-              @click="setMode(1)"
-              ><span class="text-lowercase font-weight-regular">{{
-                button.textForgotPassword
-              }}</span></v-btn
             >
           </v-card-actions>
 
@@ -132,7 +119,7 @@ export default {
       ],
       card: {
         title: 'Login',
-        subtitle: 'Acesse sua conta com e-mail e senha.',
+        subtitle: 'Acesse sua conta com usuário de rede e senha.',
       },
       formLabels: {
         login: 'Login',

@@ -31,7 +31,7 @@
                   Meta alcançada
                 </th>
                 <th class="text-center">
-                  % de comprimento
+                  % de cumprimento
                 </th>
                 <th class="text-center">
                   Justificativa ajuste de meta
@@ -46,7 +46,7 @@
             </thead>
             <tbody>
               <tr
-                v-for="item in getUserSelectedMeta.sort()"
+                v-for="item in getUserSelectedMeta"
                 :key="item.name"
               >
                 <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
@@ -132,15 +132,10 @@ export default {
   },
   watch: {
     async tab() {
-      //await this.fetchUseMetaByCPF('49304178215');
-      //alert(this.userSelected.cpf_usuario);
-      //await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
     }
   },
   async mounted() {
-    console.log(4)
     await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
-   // await this.fetchUseMetaByCPF('49304178215');
 
   },
   computed: {

@@ -18,7 +18,8 @@
         <v-row>
           <v-col cols=12>
               <v-checkbox
-                v-model="model.fl_afastamento_legal"
+              v-model="model.fl_afastamento_legal"
+                disabled
                 label="Servidor esteve durante todo o periodo em afastamento legal(periodo de atestados médicos, licenças, afastamentos, férias, outros)"
               ></v-checkbox>
               <v-text-field
@@ -30,6 +31,26 @@
                 style="max-width:300px">
               </v-text-field>
 
+          </v-col>
+          <v-col cols=6>
+            <v-text-field
+                v-model="model.meta_ajustada"
+                dense
+                disabled
+                label="Meta Ajustada"
+                :value="metaSelected.meta_ajustada"
+                style="max-width:300px">
+              </v-text-field>
+          </v-col>
+
+          <v-col cols=6>
+            <v-textarea
+              v-model="model.justificativa_meta_ajustada"
+              disabled
+              dense
+              label="Justificativa de meta ajustada"
+              >
+            </v-textarea>
           </v-col>
           <v-col cols=12>
             <p class="font-weight-bold">

@@ -47,7 +47,7 @@
             label="Nome do gestor"
             dense
             outlined
-            :value="userSelectedTable ? userSelectedTable.gestor.nm_gestor : 'Jose Maria Drumond'"
+            :value="userSelectedTable ? userSelectedTable.gestor.nm_gestor : (userSelected && userSelected.gestorusuario? userSelected.gestorusuario[0].gestor.nm_gestor : '')"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
