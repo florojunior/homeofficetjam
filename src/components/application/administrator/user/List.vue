@@ -8,7 +8,7 @@
           <v-container pa-0>
             <v-row no-gutters align="center" justify="center">
               <v-col cols="12" sm="7" md="8" class="mb-4 mb-sm-0"
-                >Listagem de usuários</v-col
+                >Listagem de servidores</v-col
               >
               <v-col cols="12" sm="5" md="4">
                 <v-text-field
@@ -40,10 +40,18 @@
                   <template v-slot:item.acoes="{ item }">
                     <EditButton
                       class="mr-1"
+                      :nome="'Metas'"
                       :onClick="() => handleEdit(item)"
                     />
-
-                    <DeleteButton :onClick="() => handleDelete(item)" />
+                    <v-btn
+                      depressed
+                      color="green lighten-1 py-4"
+                      x-small
+                      @click="onClick"
+                    >
+                      <v-icon left small color="black lighten-2"> mdi-pencil </v-icon>
+                      <span class="text-caption font-weight-bold"> Atividades </span>
+                    </v-btn>
                   </template>
                 </v-data-table>
               </v-col>
@@ -69,7 +77,7 @@ import EditUserModal from '@/components/application/administrator/user/EditUserM
 /*import AddPatientModal from '@/components/application/administrator/user/AddPatientModal.vue';
 import DeleteButton from '@/components/template/buttons/DeleteButton.vue';
 import DeletePatientModal from '@/components/application/administrator/patients/DeletePatientModal.vue';
-import EditPatientModal from '@/components/application/administrator/patients/EditPatientModal.vue';
+import editMetasModal from '@/components/application/administrator/patients/editMetasModal.vue';
 import AddPatientModal from '@/components/application/administrator/patients/AddPatientModal.vue';*/
 
 export default {
@@ -82,7 +90,7 @@ export default {
     EditUserModal,
     /*DeleteButton,
     DeletePatientModal,
-    EditPatientModal,
+    editMetasModal,
     AddPatientModal,*/
   },
   data() {
@@ -146,12 +154,12 @@ export default {
     ...mapActions('modal', [
       'addPreTransfusion',
       'addPatient',
-      'editPatient',
+      'editMetas',
       'deletePatient',
     ]),
     handleEdit(item) {
       this.userSelected = item;
-      this.editPatient();
+      this.editMetas();
     },
     handleDelete(item) {
       this.userSelected = item;

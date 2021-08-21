@@ -95,8 +95,12 @@ export default {
           descricao: 'Principal',
           menu: [
             {
-              descricao: 'Minha Metas',
+              descricao: 'Minhas Metas',
               path: '/home/servidor'
+            },
+            {
+              descricao: 'Minhas atividade',
+              path: '/listaAtividades'
             }
           ]
         });

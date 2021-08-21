@@ -9,6 +9,7 @@ import { modal } from './modal/modal';
 import { group } from './group/group';
 import { unit } from './unit/unit';
 import { gestor} from './gestor/gestor';
+import { atividade } from './atividades/atividade';
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     modal,
     group,
     unit,
-    gestor
+    gestor,
+    atividade
   },
 });

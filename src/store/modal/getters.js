@@ -8,6 +8,8 @@ export const getters = {
   getUnblockUserModal: (state) => state.modalUnblockUser,
   getModalAcceptUsers: (state) => state.modalAcceptUsers,
   getModalDeclineUsers: (state) => state.modalDeclineUsers,
+  getModalAtividade: (state) => state.modalAtividade,
+  getModalAvaliarAtividade: (state) => state.modalAvaliarAtividade,
   getHealthcare: (state) => state.healthcare,
   getClinic: (state) => state.clinic,
 };

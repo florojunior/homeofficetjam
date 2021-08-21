@@ -40,7 +40,7 @@ export const actions = {
   blockHealthcareAssociation() { },
   deletePatient() { },
   addPatient() { },
-  editPatient() { },
+  editMetas() { },
   cancelTransfusionRequisition() { },
   addPreTransfusion() {
   },
@@ -65,5 +65,10 @@ export const actions = {
   addGestor(){},
   editGestor(){},
 
+  addAtividade() { },
+  editAtividade() { },
+  deleteAtividade() { },
 
+  avaliarAtividade() { },
+  closeAvaliarAtividade() { },
 };

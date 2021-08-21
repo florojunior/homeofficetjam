@@ -4,14 +4,14 @@ import httpClient from '@/plugins/axios';
  * API to list users
  */
 const listUsers = async (cpf) => {
-  return httpClient.get(`/gestorusuario/cpfgestor/${cpf}`);
+  return httpClient.get(`/gestorusuario/cpfgestor/`);
 };
 
 /**
  * API to list users
  */
 const userByCpf = async (cpf) => {
-  return httpClient.get(`/usuario/${cpf}`);
+  return httpClient.get(`/usuario/`);
 };
 
 /**

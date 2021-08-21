@@ -35,7 +35,8 @@ export const actions = {
         },
         { root: true }
       );
-      localStorage.setItem('token_sistema', response.data.data.token);
+      console.log(response.data.data);
+      localStorage.setItem('token_sistema', response.data.data.token.token);
       localStorage.setItem('sistema_perfil', payload.perfil);
       localStorage.setItem('token_sistema_user_name', response.data.data.userData.nomeUsuario);
       return response.data.data.userData.nomeUsuario;
@@ -68,9 +69,10 @@ export const actions = {
   },
   async checkUserInformation(state, payload) {
     try {
-      const response = await authentication.checkUserInformation(payload);
+      const response = await authentication.checkUserInformation(payload.cpf);
+      console.log(response);
       localStorage.setItem('token_sistema_user_data', JSON.stringify(response.data));
-      if (response.data.data.id_unidade != null) {
+      if (response.data.data.id_unidade != null || payload.isGestor) {
         return response.data.data.cpf_usuario;
       }else{
         state.dispatch(

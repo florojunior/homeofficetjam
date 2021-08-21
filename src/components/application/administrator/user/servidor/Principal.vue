@@ -96,7 +96,7 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribeAction({
       after: async (action) => {
-        if (action.type === 'modal/editPatient') {
+        if (action.type === 'modal/editMetas') {
           if (this.userSelected !== null) {
             this.tab = 'tab-1';
           }
@@ -108,7 +108,7 @@ export default {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('administration', ['editPatient', 'fetchCities']),
+    ...mapActions('administration', ['editMetas', 'fetchCities']),
     keepModalOpen() {
       this.loading = false;
     },
@@ -132,7 +132,7 @@ export default {
 
         try {
           this.loading = true;
-          await this.editPatient(payload);
+          await this.editMetas(payload);
 
           this.closeModal();
         } catch (error) {

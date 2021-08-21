@@ -24,7 +24,7 @@ const setupInterceptors = (store, router) => {
 
   httpClient.interceptors.request.use(
     function (config) {
-      config.headers['Authorization'] = `Bearer ${localStorage.getItem(
+      config.headers['Authorization'] = `${localStorage.getItem(
         'token_sistema'
       )}`;
 

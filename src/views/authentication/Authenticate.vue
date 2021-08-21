@@ -141,6 +141,9 @@ export default {
   },
   computed: {
     ...mapGetters('authentication', ['loginLoading']),
+    isGestor(){
+      return this.perfil == 'GESTOR';
+    }
   },
   methods: {
     ...mapActions('authentication', ['setMode', 'handleLogin','checkUserInformation','getManagerInformation']),
@@ -149,8 +152,14 @@ export default {
     async submitForm() {
       if (this.$refs.form.validate()) {
         const returnLogin =  await this.handleLogin({ login: this.email, senha: this.password, cpf: this.cpf, perfil: this.perfil });
+
         if(returnLogin){
-        const usuario =  await this.checkUserInformation(this.cpf);
+          const usuario =  await this.checkUserInformation({
+            cpf: this.cpf,
+            isGestor: !!this.isGestor
+          });
+
+          console.log("1"+usuario);
         if(usuario){
           if(this.perfil == 'GESTOR'){
             await this.getManagerInformation(this.cpf);

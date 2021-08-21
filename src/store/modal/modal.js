@@ -41,10 +41,16 @@ const state = {
   modalAvaliacao: {
     show: false,
   },
+  modalAtividade: {
+    show: false,
+  },
   modalAlterarDados:{
     show: false,
     data: null
   },
+  modalAvaliarAtividade: {
+    show: false,
+  }
 };
 
 export const modal = {

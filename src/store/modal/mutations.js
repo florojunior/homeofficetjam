@@ -51,6 +51,11 @@ export const mutations = {
   blockHealthcareAssociation() {},
   deletePatient() {},
   addPatient() {},
-  editPatient() {},
+  editMetas() {},
   cancelTransfusionRequisition() {},
+  addAtividade() { },
+  editAtividade() { },
+
+  avaliarAtividade() { },
+  closeAvaliarAtividade() { }
 };

@@ -11,6 +11,10 @@ export const nameRules = {
     'Tamanho máximo do campo é de 150 caracteres.',
 };
 
+export const fieldRules = {
+  required: (v) => !!v || 'Este campo precisa ser informado.',
+};
+
 export const loginRules = {
   required: (v) => !!v || 'O campo login precisa ser informado.',
 };

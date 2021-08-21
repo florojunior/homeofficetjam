@@ -2,7 +2,7 @@
   <PageWrapper>
     <PageHeader>
       <template v-slot:header-extra-content>
-        <AddButton :onClick="addGestor">Adicionar novo</AddButton>
+        <AddButton :onClick="addAtividade">Adicionar atividade</AddButton>
       </template>
     </PageHeader>
     <PageContent>
@@ -11,7 +11,7 @@
           <v-container pa-0>
             <v-row no-gutters align="center" justify="center">
               <v-col cols="12" sm="7" md="8" class="mb-4 mb-sm-0"
-                >Listagem de servidores</v-col
+                >Listagem de Atividades</v-col
               >
               <v-col cols="12" sm="5" md="4">
                 <v-text-field
@@ -54,12 +54,12 @@
                   </template>
 
                   <template v-slot:item.acoes="{ item }">
-                    <EditButton
+                    <!--<EditButton
                       class="mr-1"
-                      :onClick="() => handleEditGestor(item)"
-                    />
+                      :onClick="() => handleEditAtividade(item)"
+                    />-->
 
-                    <DeleteButton :onClick="() => deleteGestorShow(item)" />
+                    <DeleteButton :onClick="() => deleteAtividadeShow(item)" />
                   </template>
                 </v-data-table>
               </v-col>
@@ -67,9 +67,9 @@
           </v-container>
         </v-card-text>
       </v-card>
-      <AddGestorModal />
-      <EditGestorModal :gestorSelected="gestorSelected" />
-      <DeleteGestorModal :gestorSelected="gestorSelected" />
+      <AddAtividadeModal />
+      <EditAtividadeModal :atividadeSelected="atividadeSelected" />
+      <DeleteAtividadeModal :atividadeSelected="atividadeSelected" />
     </PageContent>
   </PageWrapper>
 </template>
@@ -81,9 +81,9 @@ import PageWrapper from '@/components/template/PageWrapper.vue';
 import PageContent from '@/components/template/PageContent.vue';
 import AddButton from '@/components/template/buttons/AddButton.vue';
 import DeleteButton from '@/components/template/buttons/DeleteButton.vue';
-import AddGestorModal from '@/components/application/administrator/gestor/AddGestorModal.vue';
-import EditGestorModal from '@/components/application/administrator/gestor/EditGestorModal.vue';
-import DeleteGestorModal from '@/components/application/administrator/gestor/DeleteGestorModal.vue';
+import AddAtividadeModal from '@/components/application/administrator/user/servidor/AddAtividadeModal.vue';
+import EditAtividadeModal from '@/components/application/administrator/user/servidor/EditAtividadeModal.vue';
+import DeleteAtividadeModal from '@/components/application/administrator/user/servidor/DeleteAtividadeModal.vue';
 import EditButton from '@/components/template/buttons/EditButton.vue';
 
 export default {
@@ -91,16 +91,16 @@ export default {
     PageWrapper,
     PageHeader,
     PageContent,
-    AddGestorModal,
-    EditGestorModal,
-    DeleteGestorModal,
+    AddAtividadeModal,
+    EditAtividadeModal,
+    DeleteAtividadeModal,
     AddButton,
     DeleteButton,
     EditButton,
   },
   data() {
     return {
-      gestorSelected: {
+      atividadeSelected: {
         id: null,
         description: null,
         status: null,
@@ -108,10 +108,24 @@ export default {
       search: '',
       headers: [
         {
-          text: 'Nome',
+          text: 'MÊS/ANO (Período)',
           align: 'start',
           sortable: true,
-          value: 'nm_gestor',
+          value: 'periodo',
+          class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
+        },
+        {
+          text: 'Descrição',
+          align: 'start',
+          sortable: true,
+          value: 'descricao_atividade',
+          class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
+        },
+        {
+          text: 'Produtividade',
+          align: 'start',
+          sortable: true,
+          value: 'pontuacao_atividade',
           class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
         },
         {
@@ -136,32 +150,35 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('gestor', [
+    ...mapGetters('atividade', [
       'getList'
     ]),
+    getUserData(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    }
   },
   async created() {
-    await this.getAll();
+    await this.getByCpfServidor(this.getUserData.cpf_usuario);
   },
   methods: {
-    ...mapActions('gestor', ['getAll']),
+    ...mapActions('atividade', ['getAll','getByCpfServidor']),
     ...mapActions('modal', [
-      'addGestor',
-      'editGestor',
-      'deleteGestor',
+      'addAtividade',
+      'editAtividade',
+      'deleteAtividade',
     ]),
-    async deleteGestorShow(selected) {
-      this.gestorSelected = selected;
-      this.deleteGestor();
+    async deleteAtividadeShow(selected) {
+      this.atividadeSelected = selected;
+      this.deleteAtividade();
     },
-    handleEditGestor(item) {
-      this.gestorSelected = item;
+    handleEditAtividade(item) {
+      this.atividadeSelected = item;
 
-      this.editGestor();
+      this.editAtividade();
     },
   },
   async beforeRouteUpdate(to, from, next) {
-    await this.fetchGroupList();
+    // await this.fetchGroupList();
     next();
   },
 };

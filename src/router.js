@@ -57,6 +57,14 @@ const router = new Router({
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/gestor/Gestor.vue'
         ),
+    },
+    {
+      path: '/listaAtividades',
+      name: 'Listas de Atividades',
+      component: () =>
+        import(
+          /* webpackChunkName: "listasAtividades" */ '@/views/administrator/user/ListasAtividades.vue'
+        ),
     }
   ],
 });
