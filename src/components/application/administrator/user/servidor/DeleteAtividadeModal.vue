@@ -53,6 +53,9 @@ export default {
   },
   computed: {
     ...mapGetters('modal', ['getAtividade']),
+    getUserData(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    }
   },
   created() {
     this.unsubscribe = this.$store.subscribeAction({
@@ -67,7 +70,7 @@ export default {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('atividade', ['deleteAtividade']),
+    ...mapActions('atividade', ['deleteAtividade','getByCpfServidor']),
     keepModalOpen() {
       this.loading = false;
     },
@@ -79,6 +82,7 @@ export default {
       try {
         this.loading = true;
         await this.deleteAtividade(this.atividadeSelected);
+        await this.getByCpfServidor(this.getUserData.cpf_usuario);
         this.closeModal();
       } catch (error) {
         this.keepModalOpen();

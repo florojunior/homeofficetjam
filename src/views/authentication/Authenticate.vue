@@ -158,8 +158,6 @@ export default {
             cpf: this.cpf,
             isGestor: !!this.isGestor
           });
-
-          console.log("1"+usuario);
         if(usuario){
           if(this.perfil == 'GESTOR'){
             await this.getManagerInformation(this.cpf);
@@ -167,7 +165,7 @@ export default {
           }else{
             router.push('/home/servidor',{});
           }
-
+          localStorage.setItem('autenticado_sistema', true);
           this.setAuthenticated(true);
         }}
       }

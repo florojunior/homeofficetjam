@@ -147,17 +147,18 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribeAction((action) => {
       if (action.type === 'modal/addAtividade') {
+        this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario;
         this.visible = true;
       }
     });
 
-    this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario;
+
   },
   beforeDestroy() {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('atividade', ['createAtividade']),
+    ...mapActions('atividade', ['createAtividade','getByCpfServidor']),
     keepModalOpen() {
       this.loading = false;
     },
@@ -177,9 +178,12 @@ export default {
               dt_atividade: this.formatDateToSave(this.newAtividade.dt_atividade)
             }
           );
+          await this.getByCpfServidor(this.getUserData.cpf_usuario);
           this.closeModal();
         } catch (error) {
           this.keepModalOpen();
+        } finally{
+          await this.getByCpfServidor(this.getUserData.cpf_usuario);
         }
       }
     },

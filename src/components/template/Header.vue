@@ -111,6 +111,7 @@ export default {
     logout() {
       localStorage.setItem('token_hemoam', null);
       this.setAuthenticated(false);
+      localStorage.setItem('autenticado_blood', false);
       localStorage.setItem('perfil', null);
       router.push({ name: 'login' }, {});
     },

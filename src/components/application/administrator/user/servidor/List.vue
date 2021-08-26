@@ -68,7 +68,6 @@
         </v-card-text>
       </v-card>
       <AddAtividadeModal />
-      <EditAtividadeModal :atividadeSelected="atividadeSelected" />
       <DeleteAtividadeModal :atividadeSelected="atividadeSelected" />
     </PageContent>
   </PageWrapper>

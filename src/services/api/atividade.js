@@ -16,11 +16,7 @@ const getAtividadeByCpf = async (cpf) =>
  * Protocol: 0063 - delete Group
  */
 const deleteAtividade = async (idAtividade) =>
-  httpClient.delete('/atividade',{
-  data:{
-    idAtividade: idAtividade
-  }
-});
+  httpClient.delete(`/atividade/${idAtividade}`);
 
 /**
  * Protocol: 0061 - Create a new Group
@@ -29,15 +25,33 @@ const createAtividade = async (Gestor) =>
   httpClient.post('/atividade/add', Gestor);
 
   /**
- * Protocol: 0062 - Update a Group
+ * Protocol: 0062 - Update de atividade
  */
-const updateAtividade = async (Gestor) =>
-  httpClient.post('/atividade/update', Gestor);
+const updateAtividade = async (atividade) =>
+  httpClient.post('/atividade/update', atividade);
+
+const updateAtividadeAvaliacao = async (atividadeAvaliacao) =>
+  httpClient.post('/atividadeavaliacao/update', atividadeAvaliacao);
+
+const createAtividadeAvaliacao = async (atividadeAvaliacao) =>
+  httpClient.post('/atividadeavaliacao/add', atividadeAvaliacao);
+
+const createAtividadeAvaliacaoEmLote = async (atividadeAvaliacao) =>
+  httpClient.put(`/atividadeavaliacao/approveall/${atividadeAvaliacao.cpf}/${atividadeAvaliacao.mes}/${atividadeAvaliacao.ano}`, atividadeAvaliacao);
+
+
+const getAtividadeByUser = async (filtro) =>{
+  return httpClient.get(`/atividade/listbyperiodo/${filtro.cpf}/${filtro.mes}/${filtro.ano}`);
+}
 
 export {
   getAllAtividade,
   deleteAtividade,
   createAtividade,
   updateAtividade,
-  getAtividadeByCpf
+  getAtividadeByCpf,
+  getAtividadeByUser,
+  updateAtividadeAvaliacao,
+  createAtividadeAvaliacao,
+  createAtividadeAvaliacaoEmLote
 };

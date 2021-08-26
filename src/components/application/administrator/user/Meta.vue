@@ -53,11 +53,10 @@
                 <td class="text-center">{{ item.meta_estabelecida }}</td>
                 <td class="text-center">{{ item.meta_ajustada }}</td>
                 <td class="text-center">{{ item.meta_alcancada }}</td>
-                <td class="text-center">{{ calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) + '%' }}
+                <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.meta_alcancada)) + '%' }}
                   <v-icon :color="calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) > 99 ? 'green' : 'red'">
                     mdi-check-circle
                   </v-icon>
-                </td>
                 <td class="text-center">{{ item.justificativa_meta_ajustada }}</td>
                 <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
 
@@ -144,6 +143,9 @@ export default {
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),
     ...mapActions('modal', ['setModalMeta']),
+    metaAlcancada(metaObject){
+      return metaObject ? metaObject.pontos : 0;
+    },
     editMeta(meta) {
       this.setModalMeta({ show: true });
       this.metaSelected = meta;

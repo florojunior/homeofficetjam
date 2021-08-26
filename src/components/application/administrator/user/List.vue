@@ -47,7 +47,7 @@
                       depressed
                       color="green lighten-1 py-4"
                       x-small
-                      @click="onClick"
+                      @click="openModalAvaliarAtividade(item)"
                     >
                       <v-icon left small color="black lighten-2"> mdi-pencil </v-icon>
                       <span class="text-caption font-weight-bold"> Atividades </span>
@@ -60,6 +60,7 @@
         </v-card-text>
       </v-card>
       <EditUserModal :userSelected="userSelected" />
+      <AvaliarAtividadesModal :userSelected="userSelected"/>>
     </PageContent>
   </PageWrapper>
 </template>
@@ -73,6 +74,7 @@ import PageContent from '@/components/template/PageContent.vue';
 import AddButton from '@/components/template/buttons/AddButton.vue';
 import EditButton from '@/components/template/buttons/EditButton.vue';
 import EditUserModal from '@/components/application/administrator/user/EditUserModal.vue';
+import AvaliarAtividadesModal from '@/components/application/administrator/user/gestor/AvaliarAtividadesModal.vue';
 
 /*import AddPatientModal from '@/components/application/administrator/user/AddPatientModal.vue';
 import DeleteButton from '@/components/template/buttons/DeleteButton.vue';
@@ -88,6 +90,7 @@ export default {
     AddButton,
     EditButton,
     EditUserModal,
+    AvaliarAtividadesModal
     /*DeleteButton,
     DeletePatientModal,
     editMetasModal,
@@ -156,10 +159,16 @@ export default {
       'addPatient',
       'editMetas',
       'deletePatient',
+      'avaliarAtividade'
     ]),
     handleEdit(item) {
+      console.log(item);
       this.userSelected = item;
       this.editMetas();
+    },
+    openModalAvaliarAtividade(item){
+      this.userSelected = item;
+      this.avaliarAtividade();
     },
     handleDelete(item) {
       this.userSelected = item;

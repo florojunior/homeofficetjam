@@ -42,6 +42,7 @@ export default {
   created() {
     localStorage.setItem('token_sistema', null);
     this.setAuthenticated(false);
+    localStorage.setItem('autenticado_sistema',false);
     this.loadModeNewPassword();
   },
   methods: {

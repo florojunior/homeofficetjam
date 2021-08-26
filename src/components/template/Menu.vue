@@ -56,7 +56,7 @@
             <v-btn
               icon
               color="onPrimaryHighEmphasis"
-              @click="handleLogOut()"
+              @click="logout()"
               v-on="on"
             >
               <v-icon>mdi-keyboard-return</v-icon>
@@ -99,7 +99,7 @@ export default {
               path: '/home/servidor'
             },
             {
-              descricao: 'Minhas atividade',
+              descricao: 'Minhas atividades',
               path: '/listaAtividades'
             }
           ]
@@ -134,7 +134,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions('main', ['handleLogOut']),
+    ...mapActions('main', ['handleLogOut','setAuthenticated']),
+    logout(){
+      this.setAuthenticated(true);
+      this.setAuthenticated(false);
+      localStorage.setItem('token_sistema', null);
+      localStorage.setItem('autenticado_sistema', false);
+      this.handleLogOut();
+    }
   },
 };
 </script>

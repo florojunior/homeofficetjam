@@ -11,7 +11,7 @@ const listUsers = async (cpf) => {
  * API to list users
  */
 const userByCpf = async (cpf) => {
-  return httpClient.get(`/usuario/`);
+  return httpClient.get(`/usuario/${cpf}`);
 };
 
 /**

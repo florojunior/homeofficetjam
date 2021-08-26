@@ -48,8 +48,8 @@
                     <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
                     <td class="text-center">{{ item.meta_estabelecida}} </td>
                     <td class="text-center">{{ item.meta_ajustada}} </td>
-                    <td class="text-center">{{ item.meta_alcancada }}</td>
-                    <td class="text-center">{{ calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) + '%' }}
+                    <td class="text-center">{{ metaAlcancada(item.meta_alcancada)}}</td>
+                    <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.meta_alcancada)) + '%' }}
                   <v-icon :color="calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) > 99 ? 'green' : 'red'">
                     mdi-check-circle
                   </v-icon>
@@ -148,6 +148,9 @@ export default {
      ...mapActions('modal', ['setModalJustificativaServidor','setModalAvaliacao']),
     calculaAlcancouMeta(meta_estabelecida, meta_alcancada) {
       return (Math.round((meta_alcancada / meta_estabelecida) * 100))
+    },
+    metaAlcancada(metaObject){
+      return metaObject ? metaObject.pontos : 0;
     },
     justificar(item){
       console.log(item)
