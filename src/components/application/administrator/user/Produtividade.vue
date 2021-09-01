@@ -24,9 +24,6 @@
                       Meta Estabelecida
                     </th>
                     <th class="text-center">
-                      Meta Ajustada
-                    </th>
-                    <th class="text-center">
                       Pontuação Obtida
                     </th>
                     <th class="text-center">
@@ -46,18 +43,17 @@
                     :key="item.name"
                   >
                     <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
-                    <td class="text-center">{{ item.meta_estabelecida}} </td>
-                    <td class="text-center">{{ item.meta_ajustada}} </td>
+                    <td class="text-center">{{ Math.floor(item.meta_estabelecida)}} </td>
                     <td class="text-center">{{ metaAlcancada(item.meta_alcancada)}}</td>
                     <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.meta_alcancada)) + '%' }}
-                  <v-icon :color="calculaAlcancouMeta((!item.meta_ajustada? item.meta_estabelecida:item.meta_ajustada) , item.meta_alcancada) > 99 ? 'green' : 'red'">
-                    mdi-check-circle
-                  </v-icon>
+                    <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.meta_alcancada)) > 99 ? 'green' : 'red'">
+                      mdi-check-circle
+                    </v-icon>
                 </td>
                     <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
                     <td class="text-right">
                       <v-btn
-                        v-if="item.tx_relatorio && isGestor && !item.gestoravaliacaojustificativa"
+                        v-if="isGestor && !item.gestoravaliacaojustificativa"
                           fab
                           dark
                           x-small
@@ -69,7 +65,7 @@
                         </v-icon>
                       </v-btn>
                       <v-btn
-                        v-if="item.tx_relatorio && isGestor && item.gestoravaliacaojustificativa"
+                        v-else
                           fab
                           dark
                           x-small
@@ -90,7 +86,7 @@
       </v-card-text>
     </v-card>
     <ModalJustificativa :metaSelected="metaSelected" :userSelectedTable="userSelectedTable"/>
-    <ModalAvaliacao :metaSelected="metaSelected" :userSelected="userSelected" :userSelectedTable="userSelectedTable"/>
+    <ModalAvaliacao v-if="getModalAvaliacao.show" :metaSelected="metaSelected" :userSelected="userSelected" :userSelectedTable="userSelectedTable"/>
   </div>
 </template>
 
@@ -137,8 +133,8 @@ export default {
     await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
   },
   computed: {
-    ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta'])
-    ,
+    ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta']),
+    ...mapGetters('modal', ['getModalAvaliacao']),
     isGestor(){
       return localStorage.getItem('sistema_perfil') == 'GESTOR';
     }

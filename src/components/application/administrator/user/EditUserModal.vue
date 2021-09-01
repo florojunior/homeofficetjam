@@ -35,11 +35,11 @@
             <InformacoesGerais :userSelected="servidor" :userSelectedTable="userSelected"/>
 
           </v-tab-item>
-          <!--<v-tab-item
+          <v-tab-item
             :value="'tab-2'"
           >
             <Meta :tab="tab" :userSelected="servidor" :userSelectedTable="userSelected"/>
-          </v-tab-item>-->
+          </v-tab-item>
           <v-tab-item
             :value="'tab-3'"
           >
@@ -100,6 +100,7 @@ export default {
     };
   },
   computed: {
+
   },
   created() {
     this.unsubscribe = this.$store.subscribeAction({

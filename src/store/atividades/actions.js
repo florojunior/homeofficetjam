@@ -6,7 +6,7 @@ export const actions = {
   async getAtividadeByUser(state, filtro) {
     try {
       const dataGroups = await getAtividadeByUser(filtro);
-      // state.commit('setList', dataGroups.data.data);
+      state.commit('setList', dataGroups.data.data);
       return dataGroups.data.data;
     } catch (error) {
       state.dispatch(
@@ -87,7 +87,7 @@ export const actions = {
   async updateAtividade (state, payload){
     try {
       await updateAtividade(payload);
-      await state.dispatch('getAll');
+      //await state.dispatch('getAll');
 
       state.dispatch(
         'snackbar/success',
@@ -181,7 +181,7 @@ export const actions = {
   },
   async deleteAtividade(state, payload) {
     try {
-      await deleteAtividade(payload.id);
+      await deleteAtividade(payload);
       //await state.dispatch('getAll');
 
       state.dispatch(

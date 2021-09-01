@@ -1,11 +1,10 @@
 <template>
-  <PageWrapper>
-    <PageHeader>
+  <PageWrapper class="pa-0">
+    <PageHeader v-if="!cpfServidor" class="mb-4">
       <template v-slot:header-extra-content>
         <AddButton :onClick="addAtividade">Adicionar atividade</AddButton>
       </template>
     </PageHeader>
-    <PageContent>
       <v-card>
         <v-card-title>
           <v-container pa-0>
@@ -20,6 +19,7 @@
                   placeholder="Buscar"
                   label="Buscar"
                   single-line
+                  disabled
                   hide-details
                   outlined
                   dense
@@ -52,24 +52,47 @@
                       </span>
                     </v-chip>
                   </template>
-
-                  <template v-slot:item.acoes="{ item }">
+                  <template v-if="!cpfServidor" v-slot:item.acoes="{ item }">
                     <!--<EditButton
                       class="mr-1"
                       :onClick="() => handleEditAtividade(item)"
                     />-->
-
-                    <DeleteButton :onClick="() => deleteAtividadeShow(item)" />
+                    <v-btn
+                    icon
+                    color="primary"
+                    small
+                    @click="editAtividadeShow(item)">
+                      <v-icon>
+                        mdi-pencil
+                      </v-icon>
+                    </v-btn>
+                    <DeleteButton :onClick="() => deleteAtividadeShow(item)" class="ml-4"/>
                   </template>
+                  <template v-if="cpfServidor" v-slot:item.acoes="{ item }">
+                    <!--<EditButton
+                      class="mr-1"
+                      :onClick="() => handleEditAtividade(item)"
+                    />-->
+                    <v-btn
+                    icon
+                    color="primary"
+                    small
+                    @click="editAtividadeShow(item)">
+                      <v-icon>
+                        mdi-eye
+                      </v-icon>
+                    </v-btn>
+                  </template>
+
                 </v-data-table>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
       </v-card>
-      <AddAtividadeModal />
+      <AddAtividadeModal :ano="ano" :mes="mes" />
+      <EditAtividadeModal :ano="ano" :mes="mes" :atividade="atividadeSelected"  />
       <DeleteAtividadeModal :atividadeSelected="atividadeSelected" />
-    </PageContent>
   </PageWrapper>
 </template>
 
@@ -97,6 +120,20 @@ export default {
     DeleteButton,
     EditButton,
   },
+  props: {
+    ano: {
+      type: Number,
+      default: () => null,
+    },
+    mes: {
+      type: Number,
+      default: () => null,
+    },
+    cpfServidor: {
+      type: String,
+      default: () => null,
+    }
+  },
   data() {
     return {
       atividadeSelected: {
@@ -104,7 +141,7 @@ export default {
         description: null,
         status: null,
       },
-      search: '',
+      search: ``,
       headers: [
         {
           text: 'MÊS/ANO (Período)',
@@ -149,6 +186,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters('modal', ['getModalMeta']),
     ...mapGetters('atividade', [
       'getList'
     ]),
@@ -156,19 +194,30 @@ export default {
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
     }
   },
-  async created() {
-    await this.getByCpfServidor(this.getUserData.cpf_usuario);
+  async mounted() {
+    this.search = `${this.mes.replace("0","")}/${this.ano}`;
+    if(!this.cpfServidor){
+      await this.getByCpfServidor(this.getUserData.cpf_usuario);
+    }else{
+      await this.getAtividadeByUser({cpf: this.cpfServidor, mes: this.mes, ano: this.ano});
+    }
+
   },
   methods: {
-    ...mapActions('atividade', ['getAll','getByCpfServidor']),
+    ...mapActions('atividade', ['getAll','getByCpfServidor',
+      'getAtividadeByUser']),
     ...mapActions('modal', [
       'addAtividade',
       'editAtividade',
-      'deleteAtividade',
+      'deleteAtividade'
     ]),
     async deleteAtividadeShow(selected) {
-      this.atividadeSelected = selected;
+      this.atividadeSelected = { ...selected};
       this.deleteAtividade();
+    },
+    async editAtividadeShow(selected) {
+      this.atividadeSelected = selected;
+      this.editAtividade();
     },
     handleEditAtividade(item) {
       this.atividadeSelected = item;

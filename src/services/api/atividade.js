@@ -15,8 +15,8 @@ const getAtividadeByCpf = async (cpf) =>
   /**
  * Protocol: 0063 - delete Group
  */
-const deleteAtividade = async (idAtividade) =>
-  httpClient.delete(`/atividade/${idAtividade}`);
+const deleteAtividade = async (atividade) =>
+  httpClient.post(`/atividade/delete`, atividade);
 
 /**
  * Protocol: 0061 - Create a new Group

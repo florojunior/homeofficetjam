@@ -38,7 +38,7 @@
 
     </v-card-text>
 
-    <v-card-actions
+    <!--<v-card-actions
       class="pb-2 px-8 d-flex justify-center align-center flex-column-reverse flex-sm-row justify-sm-end"
     >
       <v-btn
@@ -49,7 +49,7 @@
         @click="closeModal()"
         >CANCELAR</v-btn
       >
-    </v-card-actions>-
+    </v-card-actions>-->
   </v-card>
 </template>
 

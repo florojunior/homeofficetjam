@@ -2,7 +2,7 @@
   <v-dialog v-model="visible" persistent max-width="600">
     <v-card>
       <v-card-title class="primary pa-8 pb-10">
-        <span class="white--text text-h5">Nova Atividade</span>
+        <span class="white--text text-h5">Nova Atividade </span>
       </v-card-title>
 
       <v-card-text class="text-body-2 pt-12 px-8">
@@ -20,16 +20,33 @@
                 class="mb-4"
               ></v-text-field>
             </v-col>
+            <v-col cols=6></v-col>
             <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
               <v-text-field
-                v-model="newAtividade.dt_atividade"
+                v-model="newAtividade.dt_inicio_atividade"
                 v-mask="'##/##/####'"
                 outlined
-                name="dt_atividade"
+                name="dt_inicio_atividade"
                 dense
-                label="Data da Atividade"
+                label="Data do inicio da atividade"
                 :rules="[
                   birthdateRules.required,
+                  dateRules.isValidDate,
+                  dateRules.isValidYear
+                ]"
+                validate-on-blur
+              ></v-text-field>
+            </v-col>
+            <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
+              <v-text-field
+                v-if="newAtividade.id"
+                v-model="newAtividade.dt_fim_atividade"
+                v-mask="'##/##/####'"
+                outlined
+                name="dt_fim_atividade"
+                dense
+                label="Data fim da atividade"
+                :rules="[
                   dateRules.isValidDate,
                   dateRules.isValidYear
                 ]"
@@ -44,6 +61,7 @@
                 dense
                 name="description"
                 label="Ano"
+                disabled
                 :rules="[fieldRules.required]"
                 number
                 class="mb-4"
@@ -57,6 +75,7 @@
                 dense
                 name="description"
                 label="Mes"
+                disabled
                 :rules="[fieldRules.required]"
                 number
                 class="mb-4"
@@ -121,15 +140,25 @@ import { nameRules, fieldRules, birthdateRules,dateRules } from '@/validations';
 
 export default {
   name: 'AddAtividadeModal',
+  props: {
+    ano: {
+      type: Number,
+      default: () => null,
+    },
+    mes: {
+      type: Number,
+      default: () => null,
+    },
+  },
   data() {
     return {
       newAtividade: {
-        mes_periodo: null,
-        ano_periodo: null,
+        mes_periodo: '',
+        ano_periodo: '',
         descricao_atividade:null,
         pontuacao_atividade:null,
         dt_cadastro_atividade: new Date().toISOString(),
-        dt_atividade : ""
+        dt_inicio_atividade : ""
       },
       nameRules,
       birthdateRules,
@@ -147,6 +176,8 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribeAction((action) => {
       if (action.type === 'modal/addAtividade') {
+        this.newAtividade.mes_periodo = this.mes;
+        this.newAtividade.ano_periodo = this.ano;
         this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario;
         this.visible = true;
       }
@@ -171,17 +202,20 @@ export default {
       if (this.$refs.form.validate()) {
         try {
           this.loading = true;
+          /*let jsonModel = {
+            ...this.newAtividade,
+            id_grupo: this.getUserData.grupousuario[0].id_grupo,
+            dt_inicio_atividade: this.formatDateToSave(this.newAtividade.dt_inicio_atividade)
+          };*/
           await this.createAtividade(
             {
               ...this.newAtividade,
               id_grupo: this.getUserData.grupousuario[0].id_grupo,
-              dt_atividade: this.formatDateToSave(this.newAtividade.dt_atividade)
+              dt_inicio_atividade: this.formatDateToSave(this.newAtividade.dt_inicio_atividade)
             }
           );
           await this.getByCpfServidor(this.getUserData.cpf_usuario);
           this.closeModal();
-        } catch (error) {
-          this.keepModalOpen();
         } finally{
           await this.getByCpfServidor(this.getUserData.cpf_usuario);
         }

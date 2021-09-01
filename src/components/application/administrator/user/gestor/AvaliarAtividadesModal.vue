@@ -68,7 +68,7 @@
                   >
                     <td>{{ item.descricao_atividade }}</td>
                     <td>{{ item.pontuacao_atividade }}</td>
-                    <td>{{ new Date(item.dt_atividade).toLocaleDateString() }}</td>
+                    <td>{{ new Date(item.dt_inicio_atividade).toLocaleDateString() }}</td>
                     <td>
                       {{  item.atividadeavaliacao ? item.atividadeavaliacao.atividade_status.nm_status : 'AGUARDANDO AVALIAÇÃO' }}
                     </td>

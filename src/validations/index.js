@@ -20,7 +20,7 @@ export const loginRules = {
 };
 
 export const birthdateRules = {
-  required: (v) => !!v || 'O campo data de nascimento precisa ser informado.',
+  required: (v) => !!v || 'O campo data precisa ser informado.',
 };
 
 export const emailRules = {

@@ -2,7 +2,7 @@
   <v-dialog v-model="visible" persistent max-width="600">
     <v-card>
       <v-card-title class="primary pa-8 pb-10">
-        <span class="white--text text-h5">Nova Atividade</span>
+        <span class="white--text text-h5">Editar Atividade </span>
       </v-card-title>
 
       <v-card-text class="text-body-2 pt-12 px-8">
@@ -10,7 +10,7 @@
           <v-row>
             <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
               <v-text-field
-                v-model="newAtividade.cpf_usuario"
+                v-model="editAtividadeModel.cpf_usuario"
                 disabled
                 outlined
                 dense
@@ -20,14 +20,16 @@
                 class="mb-4"
               ></v-text-field>
             </v-col>
+            <v-col cols=6></v-col>
             <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
               <v-text-field
-                v-model="newAtividade.dt_atividade"
+                v-model="editAtividadeModel.dt_inicio_atividade"
                 v-mask="'##/##/####'"
+                :disabled="isGestor"
                 outlined
-                name="dt_atividade"
+                name="dt_inicio_atividade"
                 dense
-                label="Data da Atividade"
+                label="Data do inicio da atividade"
                 :rules="[
                   birthdateRules.required,
                   dateRules.isValidDate,
@@ -36,14 +38,31 @@
                 validate-on-blur
               ></v-text-field>
             </v-col>
+            <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
+              <v-text-field
+                v-model="editAtividadeModel.dt_fim_atividade"
+                v-mask="'##/##/####'"
+                outlined
+                name="dt_fim_atividade"
+                dense
+                :disabled="isGestor"
+                label="Data fim da atividade"
+                :rules="[
+                  dateRules.isValidDate,
+                  dateRules.isValidYear
+                ]"
+                validate-on-blur
+              ></v-text-field>
+            </v-col>
             <v-col cols=6 md=3 xl=3 lg=3 class="pb-0 pt-0">
               <v-text-field
-                v-model="newAtividade.ano_periodo"
+                v-model="editAtividadeModel.ano_periodo"
                 v-mask="'####'"
                 outlined
                 dense
                 name="description"
                 label="Ano"
+                disabled
                 :rules="[fieldRules.required]"
                 number
                 class="mb-4"
@@ -51,12 +70,13 @@
             </v-col>
             <v-col cols=6 md=3 xl=3 lg=3 class="pb-0 pt-0">
               <v-text-field
-                v-model="newAtividade.mes_periodo"
+                v-model="editAtividadeModel.mes_periodo"
                 v-mask="'##'"
                 outlined
                 dense
                 name="description"
                 label="Mes"
+                disabled
                 :rules="[fieldRules.required]"
                 number
                 class="mb-4"
@@ -64,11 +84,12 @@
             </v-col>
             <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
               <v-text-field
-                v-model="newAtividade.pontuacao_atividade"
+                v-model="editAtividadeModel.pontuacao_atividade"
                 outlined
                 dense
                 name="Produtividade"
                 label="Produtividade"
+                :disabled="isGestor"
                 :rules="[fieldRules.required]"
                 number
                 class="mb-4"
@@ -76,9 +97,10 @@
             </v-col>
             <v-col cols=12 class="pb-0 pt-0">
               <v-textarea
-                v-model="newAtividade.descricao_atividade"
+                v-model="editAtividadeModel.descricao_atividade"
                 outlined
                 dense
+                :disabled="isGestor"
                 name="descricao"
                 label="Descrição"
                 :rules="[fieldRules .required]"
@@ -102,6 +124,7 @@
           >CANCELAR</v-btn
         >
         <v-btn
+          v-if="!isGestor"
           type="submit"
           form="form"
           class="secondary lighten-2 mx-0 ml-sm-2"
@@ -120,16 +143,31 @@ import { mapActions } from 'vuex';
 import { nameRules, fieldRules, birthdateRules,dateRules } from '@/validations';
 
 export default {
-  name: 'AddAtividadeModal',
+  name: 'EditAtividadeModal',
+  props: {
+    ano: {
+      type: String,
+      default: () => null,
+    },
+    mes: {
+      type: String,
+      default: () => null,
+    },
+    atividade: {
+      type: Object,
+      default: () => null,
+    }
+  },
   data() {
     return {
-      newAtividade: {
+      editAtividadeModel: {
         mes_periodo: null,
         ano_periodo: null,
         descricao_atividade:null,
         pontuacao_atividade:null,
         dt_cadastro_atividade: new Date().toISOString(),
-        dt_atividade : ""
+        dt_inicio_atividade : null,
+        dt_fim_atividade: null
       },
       nameRules,
       birthdateRules,
@@ -143,49 +181,84 @@ export default {
     getUserData(){
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
     },
+    isGestor(){
+      return localStorage.getItem('sistema_perfil') == 'GESTOR';
+    }
+  },
+  watch:{
+    visible(){
+        this.editAtividadeModel.id = this.atividade.id;
+        this.editAtividadeModel.pontuacao_atividade = this.atividade.pontuacao_atividade;
+        this.editAtividadeModel.dt_inicio_atividade = this.getDate(this.atividade.dt_inicio_atividade);
+        if(this.atividade.dt_fim_atividade){
+          this.editAtividadeModel.dt_fim_atividade = this.getDate(this.atividade.dt_fim_atividade);
+        }
+        this.editAtividadeModel.descricao_atividade = this.atividade.descricao_atividade;
+        this.editAtividadeModel.mes_periodo = this.atividade.mes_periodo;
+        this.editAtividadeModel.ano_periodo = this.atividade.ano_periodo;
+        this.editAtividadeModel.cpf_usuario = this.getUserData.cpf_usuario;
+    }
   },
   created() {
     this.unsubscribe = this.$store.subscribeAction((action) => {
-      if (action.type === 'modal/addAtividade') {
+      if (action.type === 'modal/editAtividade') {
+        /*this.editAtividadeModel.id = this.atividade.id;
+        this.editAtividadeModel.pontuacao_atividade = this.atividade.pontuacao_atividade;
+        this.editAtividadeModel.dt_inicio_atividade = this.getDate(this.atividade.dt_inicio_atividade);
+        this.editAtividadeModel.descricao_atividade = this.atividade.descricao_atividade;
+        this.editAtividadeModel.mes_periodo = this.mes;
+        this.editAtividadeModel.ano_periodo = this.ano;
+        this.editAtividadeModel.cpf_usuario = this.getUserData.cpf_usuario;
+*/
         this.visible = true;
       }
     });
-
-    this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario;
   },
   beforeDestroy() {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('atividade', ['createAtividade']),
+    ...mapActions('atividade', ['updateAtividade','getByCpfServidor']),
     keepModalOpen() {
       this.loading = false;
     },
+    getDate(param){
+      const date = new Date(param);
+      return `${('0' + parseInt(date.getDate()+1)).slice(-2)}/${('0' + (parseInt(date.getMonth())+1)).slice(-2)}/${date.getFullYear()}`;
+    },
     closeModal() {
+      //this.$refs.form.reset();
       this.loading = false;
       this.visible = false;
-      this.$refs.form.reset();
+
     },
     async submit() {
       if (this.$refs.form.validate()) {
         try {
           this.loading = true;
-          await this.createAtividade(
+          /*let jsonModel = {
+            ...this.editAtividadeModel,
+            id_grupo: this.getUserData.grupousuario[0].id_grupo,
+            dt_inicio_atividade: this.formatDateToSave(this.editAtividadeModel.dt_inicio_atividade)
+          };*/
+          await this.updateAtividade(
             {
-              ...this.newAtividade,
+              ...this.editAtividadeModel,
               id_grupo: this.getUserData.grupousuario[0].id_grupo,
-              dt_atividade: this.formatDateToSave(this.newAtividade.dt_atividade)
+              dt_inicio_atividade: this.formatDateToSave(this.editAtividadeModel.dt_inicio_atividade),
+              dt_fim_atividade: this.formatDateToSave(this.editAtividadeModel.dt_fim_atividade)
             }
           );
+          await this.getByCpfServidor(this.getUserData.cpf_usuario);
           this.closeModal();
-        } catch (error) {
-          this.keepModalOpen();
+        } finally{
+          await this.getByCpfServidor(this.getUserData.cpf_usuario);
         }
       }
     },
     formatDateToSave(dateToFormat){
       const dateSplit = dateToFormat.split("/");
-      return new Date(dateSplit[2]+"-"+dateSplit[1]+"-"+(parseInt(dateSplit[0]))).toISOString()
+      return new Date((parseInt(parseInt(dateSplit[2])+1))+"-"+dateSplit[1]+"-"+(parseInt(dateSplit[0]))).toISOString()
     }
   },
 };

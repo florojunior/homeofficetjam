@@ -40,8 +40,8 @@ export default {
     ...mapGetters('main', ['authenticated']),
   },
   created() {
-    localStorage.setItem('token_sistema', null);
     this.setAuthenticated(false);
+    localStorage.setItem('token_sistema', null);
     localStorage.setItem('autenticado_sistema',false);
     this.loadModeNewPassword();
   },

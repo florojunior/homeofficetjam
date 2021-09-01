@@ -9,7 +9,7 @@ const state = {
     mensagem: 'Mensagem',
     erro: true,
   },
-  authenticated: false
+  authenticated: null
 };
 
 export const main = {

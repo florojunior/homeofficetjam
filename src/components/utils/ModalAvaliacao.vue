@@ -32,26 +32,6 @@
               </v-text-field>
 
           </v-col>
-          <v-col cols=6>
-            <v-text-field
-                v-model="model.meta_ajustada"
-                dense
-                disabled
-                label="Meta Ajustada"
-                :value="metaSelected.meta_ajustada"
-                style="max-width:300px">
-              </v-text-field>
-          </v-col>
-
-          <v-col cols=6>
-            <v-textarea
-              v-model="model.justificativa_meta_ajustada"
-              disabled
-              dense
-              label="Justificativa de meta ajustada"
-              >
-            </v-textarea>
-          </v-col>
           <v-col cols=12>
             <p class="font-weight-bold">
               1. Favor preencher o quadro abaixo com relação a meta.
@@ -90,15 +70,63 @@
               >
             </v-textarea>
           </v-col>
+          <v-col cols=12 class="pa-0">
+            <List :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario"/>
+          </v-col>
         </v-row>
+
+        <v-dialog
+          v-model="dialogRejeitar"
+          width="300"
+        >
+
+          <v-card>
+            <v-card-title class="text-h5">
+              Justificativa
+            </v-card-title>
+
+            <v-card-text>
+              <v-textarea
+              v-model="model.descricao">
+
+              </v-textarea>
+            </v-card-text>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-btn
+                color="red"
+                text
+                @click="dialogRejeitar = false"
+              >
+                VOLTAR
+                <v-icon color="red">mdi-close</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+                v-if="model.descricao"
+                color="primary"
+                text
+                @click="save(2)"
+              >
+
+                REJEITAR
+                <v-icon color="primary">mdi-cancel</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card-text>
 
       <v-card-actions class="d-flex justify-center">
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="#69F0AE" text @click="save('ACEITA')">
-          <span class="green-accent-2--text">finalizar</span> <v-icon color="69F0AE">mdi-check</v-icon></v-btn>
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="red" text  @click="save('REJEITADO')">
-          REJEITAR<v-icon color="red">mdi-cancel</v-icon></v-btn>
-        <v-btn color="primary" text @click="handleClose()">CANCELAR<v-icon color="primary">mdi-close</v-icon></v-btn>
+        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="#69F0AE" outlined @click="save(1)">
+          <span class="green-accent-2--text">Aprovar Relatório</span> <v-icon color="69F0AE">mdi-check</v-icon></v-btn>
+        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="yellow darken-1" text  @click="save(3)">
+          Devolver Relatório<v-icon color="yellow darken-1">mdi-cancel</v-icon></v-btn>
+        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="red" text  @click="dialogRejeitar=true; model.descricao = null">
+          Rejeitar Relatório<v-icon color="red">mdi-cancel</v-icon></v-btn>
+        <v-btn color="primary" text @click="handleClose()">VOLTAR<v-icon color="primary">mdi-close</v-icon></v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -107,9 +135,11 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import CabecalhoUsuario from '../application/administrator/user/CabecalhoUsuario.vue'
+import List from '../application/administrator/user/servidor/List.vue'
 export default {
 components:{
-  CabecalhoUsuario
+  CabecalhoUsuario,
+  List
 },
   props: {
     metaSelected: {
@@ -131,6 +161,8 @@ components:{
   },
   data() {
     return {
+      justificativa: null,
+      dialogRejeitar: false,
       statusAvaliacao: null,
       model:{
         ...this.metaSelected
@@ -139,6 +171,18 @@ components:{
   },
   computed: {
     ...mapGetters('modal', ['getModalAvaliacao']),
+    getPeriodo(){
+      if(this.metaSelected)
+      return `${("00" + this.metaSelected.mes_meta).slice(-2)}/${this.metaSelected.ano_meta}`;
+      else
+      return "";
+    },
+    getAno(){
+      return this.getPeriodo.split("/")[1]
+    },
+    getMes(){
+      return this.getPeriodo.split("/")[0]
+    },
     getGestor(){
       return JSON.parse(localStorage.getItem('token_sistema_gestor_data'));
     },
@@ -148,7 +192,9 @@ components:{
           ...this.metaSelected
         },
         dt_avaliacao: new Date(),
-        status_avaliacao: this.statusAvaliacao,
+        status_avaliacao: {
+          id: this.statusAvaliacao
+          },
         descricao: this.model.descricao,
         id_gestor: this.getGestor.id
       }
