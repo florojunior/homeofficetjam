@@ -20,7 +20,34 @@
                 class="mb-4"
               ></v-text-field>
             </v-col>
-            <v-col cols=6></v-col>
+            <v-col cols=6 md=3 xl=3 lg=3 class="pb-0 pt-0">
+              <v-text-field
+                v-model="editAtividadeModel.ano_periodo"
+                v-mask="'####'"
+                outlined
+                dense
+                name="description"
+                label="Ano"
+                disabled
+                :rules="[fieldRules.required]"
+                number
+                class="mb-4"
+              ></v-text-field>
+            </v-col>
+            <v-col cols=6 md=3 xl=3 lg=3 class="pb-0 pt-0">
+              <v-text-field
+                v-model="editAtividadeModel.mes_periodo"
+                v-mask="'##'"
+                outlined
+                dense
+                name="description"
+                label="Mes"
+                disabled
+                :rules="[fieldRules.required]"
+                number
+                class="mb-4"
+              ></v-text-field>
+            </v-col>
             <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
               <v-text-field
                 v-model="editAtividadeModel.dt_inicio_atividade"
@@ -54,34 +81,7 @@
                 validate-on-blur
               ></v-text-field>
             </v-col>
-            <v-col cols=6 md=3 xl=3 lg=3 class="pb-0 pt-0">
-              <v-text-field
-                v-model="editAtividadeModel.ano_periodo"
-                v-mask="'####'"
-                outlined
-                dense
-                name="description"
-                label="Ano"
-                disabled
-                :rules="[fieldRules.required]"
-                number
-                class="mb-4"
-              ></v-text-field>
-            </v-col>
-            <v-col cols=6 md=3 xl=3 lg=3 class="pb-0 pt-0">
-              <v-text-field
-                v-model="editAtividadeModel.mes_periodo"
-                v-mask="'##'"
-                outlined
-                dense
-                name="description"
-                label="Mes"
-                disabled
-                :rules="[fieldRules.required]"
-                number
-                class="mb-4"
-              ></v-text-field>
-            </v-col>
+
             <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
               <v-text-field
                 v-model="editAtividadeModel.pontuacao_atividade"
@@ -92,6 +92,32 @@
                 :disabled="isGestor"
                 :rules="[fieldRules.required]"
                 number
+                class="mb-4"
+              ></v-text-field>
+            </v-col>
+            <v-col cols=3 class="pb-0 pt-0">
+              <v-text-field
+                v-model="editAtividadeModel.qtde_atividade"
+                outlined
+                dense
+                name="quantidade"
+                label="Quantidade"
+                :disabled="isGestor"
+                :rules="[fieldRules.required]"
+                number
+                class="mb-4"
+              ></v-text-field>
+            </v-col>
+            <v-col cols=3 class="pb-0 pt-0">
+              <v-text-field
+                outlined
+                dense
+                name="quantidade"
+                label="Pontuação final"
+                disabled
+                :rules="[fieldRules.required]"
+                number
+                :value="editAtividadeModel.qtde_atividade * editAtividadeModel.pontuacao_atividade"
                 class="mb-4"
               ></v-text-field>
             </v-col>
@@ -167,7 +193,8 @@ export default {
         pontuacao_atividade:null,
         dt_cadastro_atividade: new Date().toISOString(),
         dt_inicio_atividade : null,
-        dt_fim_atividade: null
+        dt_fim_atividade: null,
+        qtde_atividade: null
       },
       nameRules,
       birthdateRules,
@@ -188,6 +215,7 @@ export default {
   watch:{
     visible(){
         this.editAtividadeModel.id = this.atividade.id;
+        this.editAtividadeModel.qtde_atividade = this.atividade.qtde_atividade;
         this.editAtividadeModel.pontuacao_atividade = this.atividade.pontuacao_atividade;
         this.editAtividadeModel.dt_inicio_atividade = this.getDate(this.atividade.dt_inicio_atividade);
         if(this.atividade.dt_fim_atividade){

@@ -69,20 +69,24 @@ export const actions = {
   },
   async checkUserInformation(state, payload) {
     try {
-      const response = await authentication.checkUserInformation(payload.cpf);
-      console.log(response);
+      const response = await authentication.checkUserInformation(payload);
       localStorage.setItem('token_sistema_user_data', JSON.stringify(response.data));
       if (response.data.data.id_unidade != null || payload.isGestor) {
         return response.data.data.cpf_usuario;
       }else{
-        state.dispatch(
-          'modal/setModalAlterarDados',
-          {
-            show: true
-          },
-          { root: true }
-        );
-        return false;
+        if (!payload){
+          state.dispatch(
+            'modal/setModalAlterarDados',
+            {
+              show: true
+            },
+            { root: true }
+          );
+          return false;
+        }else{
+          return true;
+        }
+
       }
     } catch (error) {
       state.dispatch(

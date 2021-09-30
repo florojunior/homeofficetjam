@@ -32,6 +32,9 @@
                     <th class="text-center">
                       Justificativa não cumprimento
                     </th>
+                    <th class="text-center">
+                      Status
+                    </th>
                     <th class="text-right">
                       Relatório
                     </th>
@@ -46,11 +49,12 @@
                     <td class="text-center">{{ Math.floor(item.meta_estabelecida)}} </td>
                     <td class="text-center">{{ metaAlcancada(item.meta_alcancada)}}</td>
                     <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.meta_alcancada)) + '%' }}
-                    <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.meta_alcancada)) > 99 ? 'green' : 'red'">
-                      mdi-check-circle
-                    </v-icon>
-                </td>
+                      <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.meta_alcancada)) > 99 ? 'green' : 'red'">
+                        mdi-check-circle
+                      </v-icon>
+                    </td>
                     <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+                    <td class="text-center">{{ getStatusDesc(item.gestoravaliacaojustificativa)}}</td>
                     <td class="text-right">
                       <v-btn
                         v-if="isGestor && !item.gestoravaliacaojustificativa"
@@ -142,6 +146,11 @@ export default {
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),
      ...mapActions('modal', ['setModalJustificativaServidor','setModalAvaliacao']),
+     getStatusDesc(avaliacao){
+       if(avaliacao){
+         return avaliacao.status_avaliacao.nm_status;
+       }
+     },
     calculaAlcancouMeta(meta_estabelecida, meta_alcancada) {
       return (Math.round((meta_alcancada / meta_estabelecida) * 100))
     },

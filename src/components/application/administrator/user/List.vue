@@ -43,15 +43,6 @@
                       :nome="'Metas'"
                       :onClick="() => handleEdit(item)"
                     />
-                    <v-btn
-                      depressed
-                      color="green lighten-1 py-4"
-                      x-small
-                      @click="openModalAvaliarAtividade(item)"
-                    >
-                      <v-icon left small color="black lighten-2"> mdi-pencil </v-icon>
-                      <span class="text-caption font-weight-bold"> Atividades </span>
-                    </v-btn>
                   </template>
                 </v-data-table>
               </v-col>
@@ -60,7 +51,7 @@
         </v-card-text>
       </v-card>
       <EditUserModal :userSelected="userSelected" />
-      <AvaliarAtividadesModal :userSelected="userSelected"/>>
+      <AvaliarAtividadesModal :userSelected="userSelected"/>
     </PageContent>
   </PageWrapper>
 </template>

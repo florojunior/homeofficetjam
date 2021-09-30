@@ -55,7 +55,7 @@
             label="Inicio do Teletrabalho"
             dense
             outlined
-            :value="getUserData.periodoteletrabalho[0].dt_inicio_teletrabalho ? formatDate(getUserData.periodoteletrabalho[0].dt_inicio_teletrabalho) : ''"
+            :value="userInformation.periodoteletrabalho && userInformation.periodoteletrabalho[0].dt_inicio_teletrabalho ? formatDate(userInformation.periodoteletrabalho[0].dt_inicio_teletrabalho) : ''"
           ></v-text-field>
         </v-col>
       </v-row>
@@ -85,7 +85,8 @@ export default {
       areas: [],
       unidades: [],
       grupos: [],
-      gestores: []
+      gestores: [],
+      userInformation : {}
     };
   },
   async mounted() {
@@ -93,6 +94,7 @@ export default {
     this.unidades = await this.fetchUnidadesList();
     this.grupos = await this.fetchGruposList();
     this.gestores = await this.fetchGestorList();
+    this.userInformation = await this.fetchUserByCpf(this.userSelectedTable ? this.userSelectedTable.usuario.cpf_usuario : this.getUserData.cpf_usuario);
   },
   computed: {
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedPeriod']),
@@ -113,7 +115,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('administration', ['fetchUserGroupByCPF', 'fetchUsePeriodByCPF','fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),
+    ...mapActions('administration', ['fetchUserByCpf','fetchUserGroupByCPF', 'fetchUsePeriodByCPF','fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),
     formatDate(value) {
       return date.formatToDDMMYYYY(value);
     },

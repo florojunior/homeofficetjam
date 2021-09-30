@@ -39,41 +39,14 @@
                   :headers="headers"
                   loading-text="Carregando..."
                 >
-                  <template v-slot:item.ativo="{ item }">
-                    <v-chip
-                      small
-                      class="font-weight-bold"
-                      :color="chips[`${item.ativo}`].background"
-                      :text-color="chips[`${item.ativo}`].labelColor"
-                    >
-                      <v-icon left large> mdi-circle-small </v-icon>
-                      <span>
-                        {{ chips[`${item.ativo}`].label }}
-                      </span>
-                    </v-chip>
-                  </template>
-                  <template v-if="!cpfServidor" v-slot:item.acoes="{ item }">
-                    <!--<EditButton
+                  <template v-slot:item.acoes="{ item }">
+                    <EditButton
+                      v-if="!isGestor"
                       class="mr-1"
                       :onClick="() => handleEditAtividade(item)"
-                    />-->
+                    />
                     <v-btn
-                    icon
-                    color="primary"
-                    small
-                    @click="editAtividadeShow(item)">
-                      <v-icon>
-                        mdi-pencil
-                      </v-icon>
-                    </v-btn>
-                    <DeleteButton :onClick="() => deleteAtividadeShow(item)" class="ml-4"/>
-                  </template>
-                  <template v-if="cpfServidor" v-slot:item.acoes="{ item }">
-                    <!--<EditButton
-                      class="mr-1"
-                      :onClick="() => handleEditAtividade(item)"
-                    />-->
-                    <v-btn
+                    v-if="isGestor"
                     icon
                     color="primary"
                     small
@@ -144,6 +117,13 @@ export default {
       search: ``,
       headers: [
         {
+          text: 'ID',
+          align: 'start',
+          sortable: true,
+          value: 'id',
+          class: 'text-uppercase fontsPrimaryVariant--text background darken-2',
+        },
+        {
           text: 'MÊS/ANO (Período)',
           align: 'start',
           sortable: true,
@@ -192,6 +172,9 @@ export default {
     ]),
     getUserData(){
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    },
+    isGestor(){
+      return localStorage.getItem('sistema_perfil') == 'GESTOR';
     }
   },
   async mounted() {

@@ -109,7 +109,6 @@ export default {
           if (this.userSelected !== null) {
             this.tab = "tab-1";
             this.visible = true;
-            console.log(this.userSelected.usuario.cpf_usuario);
             this.servidor = await this.fetchUserByCpf(this.userSelected.usuario.cpf_usuario)
           }
         }

@@ -71,7 +71,7 @@
             </v-textarea>
           </v-col>
           <v-col cols=12 class="pa-0">
-            <List :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario"/>
+            <List v-if="userSelected.id_area == 1" :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario"/>
           </v-col>
         </v-row>
 

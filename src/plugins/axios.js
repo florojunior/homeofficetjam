@@ -28,6 +28,9 @@ const setupInterceptors = (store, router) => {
         'token_sistema'
       )}`;
 
+      config.headers['x-api-key'] = `GQaLYMBamB7ByECwmMXRlXqXzBlT32FC`;
+
+
       return config;
     },
     function (error) {

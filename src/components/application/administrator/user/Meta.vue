@@ -59,7 +59,7 @@
                           <td class="text-right">
                             <v-btn
                               v-if="isAreaAdministrativa"
-                              :disabled="(item.gestoravaliacaojustificativa && (item.gestoravaliacaojustificativa.status_avaliacao == 'ACEITA' || item.gestoravaliacaojustificativa.status_avaliacao == 'REJEITADA'))"
+                              :disabled="(item.gestoravaliacaojustificativa && (item.gestoravaliacaojustificativa.status_avaliacao.id  == 1 || item.gestoravaliacaojustificativa.status_avaliacao.id  == 2))"
                               fab
                               dark
                               x-small
@@ -71,7 +71,7 @@
                               </v-icon>
                             </v-btn>
                               <v-btn
-                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao == 'ACEITA'"
+                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 1"
                                 fab
                                 dark
                                 x-small
@@ -83,7 +83,7 @@
                               </v-icon>
                             </v-btn>
                             <v-btn
-                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao == 'REJEITADA'"
+                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 2"
                                 fab
                                 dark
                                 x-small

@@ -94,7 +94,7 @@
             </v-col>
           </PageWrapper>
           <v-col cols=12 class="pa-0">
-            <List :ano="getAno" :mes="getMes"/>
+            <List v-if="getUserData.id_area == 1" :ano="getAno" :mes="getMes"/>
           </v-col>
         </v-row>
       </v-card-text>
@@ -171,7 +171,10 @@ export default {
     },
     isGestor(){
       return localStorage.getItem('sistema_perfil') == 'GESTOR';
-    }
+    },
+    getUserData(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    },
   },
   watch:{
     metaSelected(){

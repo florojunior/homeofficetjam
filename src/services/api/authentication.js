@@ -38,8 +38,15 @@ const loginUserGestor = async ({ login, senha, cpf }) => {
 * Protocol: 0001 - Initial authentication API that returns a token to validate
 * access to other API's endpoints
 */
-const checkUserInformation = async (cpf) =>
-  httpClient.get('/usuario/');
+const checkUserInformation = async (isGestor) =>{
+  if(!isGestor){
+    return httpClient.get('/usuario/');
+  }else{
+    return httpClient.get('/gestor/');
+  }
+}
+
+
   //httpClient.get('/usuario/byName/' + nome );
 
 
