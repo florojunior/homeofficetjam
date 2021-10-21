@@ -35,6 +35,9 @@
                             % de cumprimento
                           </th>
                           <th class="text-center">
+                            Status
+                          </th>
+                          <th class="text-center">
                             Justificativa de meta nao atingida
                           </th>
                           <th class="text-right">
@@ -49,12 +52,27 @@
                         >
                           <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
                           <td class="text-center">{{ Math.floor(item.meta_estabelecida) }}</td>
-                          <td class="text-center">{{ item.meta_alcancada ? item.meta_alcancada.pontos : '' }}</td>
-                          <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.meta_alcancada)) + '%' }}
-                          <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.meta_alcancada)) > 99 ? 'green' : 'red'">
+                          <td class="text-center">{{ metaAlcancada(item.atividades) }}</td>
+                          <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.atividades)) + '%' }}
+                          <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.atividades)) > 99 ? 'green' : 'red'">
                             mdi-check-circle
                           </v-icon>
+                          <td class="text-center">
+                            <v-chip
+                              v-if="getStatusDescription(item.fl_relatorio_enviado,item.gestoravaliacaojustificativa)"
+                              small
+                              class="ma-2"
+                              :color="getColor(item.gestoravaliacaojustificativa)"
+                              dense
+                            >
+                              <span class="text-uppercase white--text" >{{ getStatusDescription(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa) }}</span>
+                            </v-chip>
+                            <span v-else>
+                              -
+                            </span>
+                          </td>
                           <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+
 
                           <td class="text-right">
                             <v-btn
@@ -152,6 +170,7 @@ export default {
   computed: {
     ...mapGetters('modal', ['getModalMeta']),
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta']),
+
     getUnidade(){
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data.id_area;
     },
@@ -162,8 +181,36 @@ export default {
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),
     ...mapActions('modal', ['setModalMeta']),
-    metaAlcancada(metaObject){
-      return metaObject ? metaObject.pontos : 0;
+    getColor(status){
+      if(status && status.status_avaliacao.id == 1){
+        return 'green';
+      }else if(status && status.status_avaliacao.id == 2){
+        return 'red';
+      }else if(status && status.status_avaliacao.id == 3){
+        return '#FF9800';
+      } else {
+        return 'primary';
+      }
+    },
+    getStatusDescription(flagAguardandoAvaliacao, gestorAvaliacao){
+
+      if(flagAguardandoAvaliacao){
+        return "Aguardando Avaliação"
+      }
+
+      if(!gestorAvaliacao)
+        return false;
+
+      return gestorAvaliacao.status_avaliacao.nm_status;
+    },
+    metaAlcancada(list){
+      const reducer = (previousValue, currentValue) => previousValue + currentValue;
+      const produtividade = list.map((item)=> parseInt(item.pontuacao_atividade) * parseInt(item.qtde_atividade));
+      if(produtividade.length > 0){
+        return produtividade.reduce(reducer)
+      }else{
+        return 0;
+      }
     },
     editMeta(meta) {
       this.setModalMeta({ show: true });

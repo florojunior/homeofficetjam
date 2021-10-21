@@ -2,13 +2,13 @@
   <v-dialog v-model="visible" persistent max-width="600">
     <v-card>
       <v-card-title class="primary pa-8 pb-10">
-        <span class="white--text text-h5">Editar Convênio</span>
+        <span class="white--text text-h5">Editar Grupo</span>
       </v-card-title>
 
       <v-card-text class="text-body-2 pt-12 px-8">
         <v-form id="form" ref="form">
           <v-text-field
-            v-model="healthcareDescription"
+            v-model="nm_grupo"
             outlined
             name="description"
             maxlength="80"
@@ -17,28 +17,6 @@
             :rules="[nameRules.required]"
             class="mb-4"
           ></v-text-field>
-
-          <label for="healthcareRadio" class="v-label">
-            <div class="font-weight-bold">Status</div>
-            <v-radio-group
-              id="healthcareRadio"
-              v-model="healthcareStatus"
-              row
-              :rules="[radioGroupRules.required]"
-              class="text-body-1"
-            >
-              <v-radio value="T">
-                <template v-slot:label>
-                  <div>Ativo</div>
-                </template>
-              </v-radio>
-              <v-radio value="F">
-                <template v-slot:label>
-                  <div>Inativo</div>
-                </template>
-              </v-radio>
-            </v-radio-group>
-          </label>
         </v-form>
       </v-card-text>
 
@@ -60,7 +38,7 @@
           :loading="loading"
           @click.prevent="submit()"
         >
-          <span class="px-5">Editar convênio</span>
+          <span class="px-5">Editar grupo</span>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -69,12 +47,12 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { nameRules, radioGroupRules } from '@/validations';
+import { nameRules} from '@/validations';
 
 export default {
-  name: 'EditGroupModal',
+  name: 'UpdateGroupModal',
   props: {
-    healthCareSelected: {
+    groupSelected: {
       required: true,
       type: Object,
       default: () => ({
@@ -86,11 +64,9 @@ export default {
   },
   data() {
     return {
-      healthcareId: null,
-      healthcareDescription: null,
-      healthcareStatus: null,
+      id: null,
+      nm_grupo: null,
       nameRules,
-      radioGroupRules,
       visible: false,
       loading: false,
     };
@@ -98,10 +74,9 @@ export default {
   created() {
     this.unsubscribe = this.$store.subscribeAction({
       after: (action) => {
-        if (action.type === 'modal/editHealthcare') {
-          this.healthcareId = this.healthCareSelected.id;
-          this.healthcareDescription = this.healthCareSelected.description;
-          this.healthcareStatus = this.healthCareSelected.status;
+        if (action.type === 'modal/editGroup') {
+          this.id = this.groupSelected.id;
+          this.nm_grupo = this.groupSelected.nm_grupo;
           this.visible = true;
         }
       },
@@ -111,9 +86,8 @@ export default {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('administration', [
-      'editHealthcareDescription',
-      'editHealthcareStatus',
+    ...mapActions('group', [
+      'updateGroup'
     ]),
     keepModalOpen() {
       this.loading = false;
@@ -127,22 +101,10 @@ export default {
       try {
         if (this.$refs.form.validate()) {
           this.loading = true;
-
-          if (
-            this.healthcareDescription !== this.healthCareSelected.description
-          ) {
-            await this.editHealthcareDescription({
-              id: this.healthcareId,
-              description: this.healthcareDescription.trim(),
+            await this.updateGroup({
+              id: this.id,
+              nm_grupo: this.nm_grupo.trim(),
             });
-          }
-
-          if (this.healthcareStatus !== this.healthCareSelected.status) {
-            await this.editHealthcareStatus({
-              id: this.healthcareId,
-              status: this.healthcareStatus,
-            });
-          }
 
           this.closeModal();
         }

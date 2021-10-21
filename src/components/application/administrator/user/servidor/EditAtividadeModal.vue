@@ -82,13 +82,13 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
+            <v-col cols=12 md=3 xl=3 lg=3 class="pb-0 pt-0">
               <v-text-field
                 v-model="editAtividadeModel.pontuacao_atividade"
                 outlined
                 dense
                 name="Produtividade"
-                label="Produtividade"
+                label="Pontuação"
                 :disabled="isGestor"
                 :rules="[fieldRules.required]"
                 number
@@ -108,12 +108,12 @@
                 class="mb-4"
               ></v-text-field>
             </v-col>
-            <v-col cols=3 class="pb-0 pt-0">
+            <v-col cols=6 class="pb-0 pt-0">
               <v-text-field
                 outlined
                 dense
                 name="quantidade"
-                label="Pontuação final"
+                label="Produtividade"
                 disabled
                 :rules="[fieldRules.required]"
                 number
@@ -251,8 +251,9 @@ export default {
       this.loading = false;
     },
     getDate(param){
-      const date = new Date(param);
-      return `${('0' + parseInt(date.getDate()+1)).slice(-2)}/${('0' + (parseInt(date.getMonth())+1)).slice(-2)}/${date.getFullYear()}`;
+      console.log(param);
+      const date = new Date(param.replace("Z",""));
+      return `${('0' + parseInt(date.getDate())).slice(-2)}/${('0' + (parseInt(date.getMonth())+1)).slice(-2)}/${date.getFullYear()}`;
     },
     closeModal() {
       //this.$refs.form.reset();
@@ -286,7 +287,7 @@ export default {
     },
     formatDateToSave(dateToFormat){
       const dateSplit = dateToFormat.split("/");
-      return new Date((parseInt(parseInt(dateSplit[2])+1))+"-"+dateSplit[1]+"-"+(parseInt(dateSplit[0]))).toISOString()
+      return new Date((parseInt(parseInt(dateSplit[2])))+"-"+dateSplit[1]+"-"+(parseInt(dateSplit[0]))).toISOString()
     }
   },
 };

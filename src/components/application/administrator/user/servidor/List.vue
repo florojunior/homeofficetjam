@@ -2,7 +2,9 @@
   <PageWrapper class="pa-0">
     <PageHeader v-if="!cpfServidor" class="mb-4">
       <template v-slot:header-extra-content>
-        <AddButton :onClick="addAtividade">Adicionar atividade</AddButton>
+        <div style="mix-width: 100% !important">
+          <AddButton :onClick="addAtividade" :disabled="disabled">Adicionar atividade</AddButton>
+        </div>
       </template>
     </PageHeader>
       <v-card>
@@ -23,6 +25,7 @@
                   hide-details
                   outlined
                   dense
+                  style="display: none"
                 ></v-text-field>
               </v-col>
             </v-row>
@@ -33,17 +36,35 @@
             <v-row no-gutters>
               <v-col cols="12">
                 <v-data-table
+                  :no-results-text="'Sem resultados'"
+                  :header-props="{ sortByText: 'Ordenar por'}"
+                  :footer-props="{
+                    itemsPerPageText: 'Itens por página',
+                    itemsPerPageAllText: 'Todos',
+                  }"
                   :items="getList"
                   :search="search"
                   :items-per-page="10"
                   :headers="headers"
                   loading-text="Carregando..."
                 >
+                  <template v-slot:item.pontuacao_atividade="{ item }">
+                      <span>
+                        {{ item.pontuacao_atividade * item.qtde_atividade }}
+                      </span>
+                  </template>
                   <template v-slot:item.acoes="{ item }">
                     <EditButton
                       v-if="!isGestor"
+                      :disabled="disabled"
                       class="mr-1"
                       :onClick="() => handleEditAtividade(item)"
+                    />
+                    <DeleteButton
+                      v-if="!isGestor"
+                      :disabled="disabled"
+                      class="mr-1"
+                      :onClick="() => deleteAtividadeShow(item)"
                     />
                     <v-btn
                     v-if="isGestor"
@@ -105,7 +126,11 @@ export default {
     cpfServidor: {
       type: String,
       default: () => null,
-    }
+    },
+    disabled: {
+      type: Boolean,
+      default: () => null,
+    },
   },
   data() {
     return {
@@ -178,7 +203,7 @@ export default {
     }
   },
   async mounted() {
-    this.search = `${this.mes.replace("0","")}/${this.ano}`;
+    this.search = `${parseInt(this.mes) < 10 ? this.mes.replace("0","") : this.mes}/${this.ano}`;
     if(!this.cpfServidor){
       await this.getByCpfServidor(this.getUserData.cpf_usuario);
     }else{

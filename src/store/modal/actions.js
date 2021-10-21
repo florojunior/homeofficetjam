@@ -65,6 +65,8 @@ export const actions = {
   addGestor(){},
   editGestor(){},
 
+  editGroup() { },
+
   addAtividade() { },
   editAtividade() { },
   deleteAtividade() { },

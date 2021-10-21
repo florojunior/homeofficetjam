@@ -249,7 +249,7 @@ export default {
           gestor_avaliador: {...this.getGestorData},
           atividade_status: {
             id: 1,
-            nm_status: 'ACEITA',
+            nm_status: 'APROVADO',
             dt_avaliacao: new Date().toISOString()
           },
           descricao_avaliacao: this.relatorio

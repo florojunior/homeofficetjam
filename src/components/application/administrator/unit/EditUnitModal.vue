@@ -2,7 +2,7 @@
   <v-dialog v-model="visible" persistent max-width="600">
     <v-card>
       <v-card-title class="primary pa-8 pb-10">
-        <span class="white--text text-h5">Editar Unidade {{unitSelected}}</span>
+        <span class="white--text text-h5">Editar Unidade</span>
       </v-card-title>
 
       <v-card-text class="text-body-2 pt-12 px-8">

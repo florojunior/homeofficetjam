@@ -8,7 +8,8 @@ import {
   getUsetMetaByCPF,
   updateUserRegister,
   updateMetaUsuario,
-  sendAvaliacao
+  sendAvaliacao,
+  enviarRelatorio
 } from '@/services/api/user';
 
 export const actions = {
@@ -247,6 +248,31 @@ export const actions = {
       if (dataUsers.data.data)
         state.commit('setUserMeta', dataUsers.data.data);
       return dataUsers;
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
+  },
+  async fetchEnviarRelatorio(state, id) {
+    try {
+      await enviarRelatorio(id);
+      state.dispatch(
+        'snackbar/success',
+        {
+          message: 'Dados salvos com sucesso.',
+        },
+        { root: true }
+      );
+      return true;
     } catch (error) {
       state.dispatch(
         'modal/showModal',

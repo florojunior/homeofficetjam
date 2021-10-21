@@ -48,6 +48,10 @@ const setupInterceptors = (store, router) => {
         console.error(error);
       }
 
+      if (error.response.data.exception == 'INVALID_JWT_TOKEN'){
+        window.location.href = "/login";
+      }
+
       if (error.response) {
         // client received an error response (5xx, 4xx)
         switch (error.response.status) {

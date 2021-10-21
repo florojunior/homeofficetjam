@@ -69,6 +69,16 @@ const getUsetMetaByCPF = async (cpf) => {
 };
 
 /**
+ * API to get user period
+ */
+const enviarRelatorio = async (id) => {
+  return httpClient.post(`/metausuario/enviarRelatorio`,
+    {
+      "id": id
+  });
+};
+
+/**
  * Protocol: 0002 - API to pre-register a new user
  */
 const updateUserRegister = async (user) => {
@@ -183,5 +193,6 @@ export {
   sendAvaliacao,
   listGrupos,
   listGestores,
-  userByCpf
+  userByCpf,
+  enviarRelatorio
 };

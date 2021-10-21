@@ -5,6 +5,7 @@
     class="secondary lighten-2 text-caption onPrimaryHighEmphasis--text"
     data-testid="add-button"
     :loading="loading"
+    :disabled="disabled"
     @click="onClick"
   >
     <slot></slot>
@@ -19,6 +20,10 @@ export default {
       required: true,
     },
     loading: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },

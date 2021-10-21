@@ -5,8 +5,86 @@
       <v-card-text class="text-body-2">
         <v-divider></v-divider>
         <v-row class="pa-0 ma-0">
-          <v-col class="pa-0 ma-0">
-            <CabecalhoUsuario :userSelected="userSelected" :periodo="getPeriodo" :userSelectedTable="userSelectedTable"/>
+          <v-col v-if="metaSelected.gestoravaliacaojustificativa && metaSelected.gestoravaliacaojustificativa.status_avaliacao.id == status_devolvido" cols=12 class="pa-0 pt-4">
+            <v-alert border="bottom"
+                colored-border
+                type="warning"
+                elevation="2"
+              >
+              <v-row>
+                <v-col cols=12>
+                  <span class="font-weight-bold">Data de avaliação</span> - {{new Date(metaSelected.gestoravaliacaojustificativa.dt_avaliacao).toLocaleDateString()}}
+                </v-col>
+                <v-col cols=12 class="pb-6">
+                  <span class="font-weight-bold">Descrição de Avaliação</span> - {{metaSelected.gestoravaliacaojustificativa.descricao}}
+                </v-col>
+              </v-row>
+            </v-alert>
+          </v-col>
+          <v-col cols=12 class="pa-0 ma-0">
+              <v-row>
+                <v-col cols=4>
+                  <v-card
+                    color="#039BE5"
+                    dark
+                  >
+                    <v-card-title class="text-h5">
+                      Meta estabelecida
+                    </v-card-title>
+
+                    <v-card-subtitle>Quantidade de pontos definidos para o período</v-card-subtitle>
+
+                    <v-card-actions>
+                      <p class="pl-2 text-h4">
+                        {{parseFloat(metaSelected.meta_estabelecida).toFixed(0)}}
+                      </p>
+
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <v-col cols=4>
+                  <v-card
+                    color="#385F73"
+                    dark
+                  >
+                    <v-card-title class="text-h5">
+                      Produtividade alcançada
+                    </v-card-title>
+
+                    <v-card-subtitle>Somatório dos pontos no período</v-card-subtitle>
+
+                    <v-card-actions>
+                      <p class="pl-2 text-h4">
+                        {{getTotalProdutividade ? getTotalProdutividade : 0}}
+                      </p>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <v-col cols=4>
+                  <v-card
+                    color="#2E7D32"
+                    dark
+                  >
+                    <v-card-title class="text-h5">
+                      % de produtividade
+                    </v-card-title>
+
+                    <v-card-subtitle>Produtividade em relação a meta estabelecida</v-card-subtitle>
+
+                    <v-card-actions>
+                      <p class="pl-2 text-h4">
+                        {{((getTotalProdutividade / parseFloat(metaSelected.meta_estabelecida).toFixed(0))*100).toFixed(0) }} %
+                      </p>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-col>
+          <v-col class="pa-0 ma-0 mt-4">
+            <CabecalhoUsuario :userSelected="userSelected" :periodo="getPeriodo" :userSelectedTable="userSelectedTable" :totalMeta="getTotalProdutividade"/>
+          </v-col>
+          <v-col cols=12 class="">
+            <List v-if="userSelected.id_area == 1" :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario"/>
           </v-col>
         </v-row>
         <v-row>
@@ -55,34 +133,14 @@
             </v-textarea>
           </v-col>
         </v-row>
-        <v-row>
-          <v-col cols=12>
-            <p class="font-weight-bold">
-              2. Observações gerais.
-            </p>
-          </v-col>
-          <v-col cols=12>
-            <v-textarea
-              v-model="model.descricao"
-              dense
-              label="Resposta"
-              :value="metaSelected.gestoravaliacaojustificativa ? metaSelected.gestoravaliacaojustificativa.descricao : ''"
-              >
-            </v-textarea>
-          </v-col>
-          <v-col cols=12 class="pa-0">
-            <List v-if="userSelected.id_area == 1" :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario"/>
-          </v-col>
-        </v-row>
 
         <v-dialog
           v-model="dialogRejeitar"
           width="300"
         >
-
           <v-card>
-            <v-card-title class="text-h5">
-              Justificativa
+            <v-card-title>
+              Confirmação de rejeição
             </v-card-title>
 
             <v-card-text>
@@ -105,7 +163,7 @@
               </v-btn>
               <v-spacer></v-spacer>
               <v-btn
-                v-if="model.descricao"
+                :disabled="!model.descricao"
                 color="primary"
                 text
                 @click="save(2)"
@@ -117,12 +175,90 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-dialog
+          v-model="dialogConfirmar"
+          width="300"
+        >
+          <v-card>
+            <v-card-title class="text-h6">
+              Confirmação de aprovação
+            </v-card-title>
+            <v-card-text>
+              <v-textarea
+                v-model="model.descricao">
+
+              </v-textarea>
+            </v-card-text>
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-btn
+                color="red"
+                text
+                @click="dialogConfirmar = false"
+              >
+                VOLTAR
+                <v-icon color="red">mdi-close</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+              :disabled="!model.descricao"
+                color="primary"
+                text
+                @click="save(1)"
+              >
+
+                  Confirmar
+                <v-icon color="primary">mdi-check</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog
+          v-model="dialogDevolver"
+          width="300"
+        >
+          <v-card>
+            <v-card-title class="text-h6">
+              Confirmação de devolução
+            </v-card-title>
+            <v-card-text>
+              <v-textarea
+                v-model="model.descricao">
+
+              </v-textarea>
+            </v-card-text>
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-btn
+                color="red"
+                text
+                @click="dialogDevolver = false"
+              >
+                VOLTAR
+                <v-icon color="red">mdi-close</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
+              :disabled="!model.descricao"
+                color="primary"
+                text
+                @click="save(3)"
+              >
+
+                  Confirmar
+                <v-icon color="primary">mdi-check</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card-text>
 
       <v-card-actions class="d-flex justify-center">
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="#69F0AE" outlined @click="save(1)">
+        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="#69F0AE" outlined @click="dialogConfirmar =  true">
           <span class="green-accent-2--text">Aprovar Relatório</span> <v-icon color="69F0AE">mdi-check</v-icon></v-btn>
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="yellow darken-1" text  @click="save(3)">
+        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="yellow darken-1" text  @click="dialogDevolver =  true">
           Devolver Relatório<v-icon color="yellow darken-1">mdi-cancel</v-icon></v-btn>
         <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="red" text  @click="dialogRejeitar=true; model.descricao = null">
           Rejeitar Relatório<v-icon color="red">mdi-cancel</v-icon></v-btn>
@@ -161,21 +297,38 @@ components:{
   },
   data() {
     return {
+      status_devolvido : 3,
       justificativa: null,
       dialogRejeitar: false,
+      dialogConfirmar: false,
+      dialogDevolver: false,
       statusAvaliacao: null,
       model:{
-        ...this.metaSelected
+        ...this.metaSelected,
+        descricao: ""
       }
     };
   },
   computed: {
+    ...mapGetters('atividade', [
+      'getList'
+    ]),
     ...mapGetters('modal', ['getModalAvaliacao']),
     getPeriodo(){
       if(this.metaSelected)
       return `${("00" + this.metaSelected.mes_meta).slice(-2)}/${this.metaSelected.ano_meta}`;
       else
       return "";
+    },
+    getTotalProdutividade(){
+      const reducer = (previousValue, currentValue) => previousValue + currentValue;
+      const produtividade = this.getList.filter((item) => parseInt(item.ano_periodo) == parseInt(this.getAno) && parseInt(item.mes_periodo) == parseInt(this.getMes) ).map((item)=> parseInt(item.pontuacao_atividade * item.qtde_atividade));
+      if(produtividade.length > 0){
+        return produtividade.reduce(reducer)
+      }else{
+        return null;
+      }
+
     },
     getAno(){
       return this.getPeriodo.split("/")[1]
@@ -198,12 +351,6 @@ components:{
         descricao: this.model.descricao,
         id_gestor: this.getGestor.id
       }
-    },
-    getPeriodo(){
-      if(this.metaSelected)
-      return `${("00" + this.metaSelected.mes_meta).slice(-2)}/${this.metaSelected.ano_meta}`;
-      else
-      return "";
     }
   },
   watch:{

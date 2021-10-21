@@ -80,13 +80,13 @@
               ></v-text-field>
             </v-col>
 
-            <v-col cols=12 md=6 xl=6 lg=6 class="pb-0 pt-0">
+            <v-col cols=12 md=3 xl=3 lg=3 class="pb-0 pt-0">
               <v-text-field
                 v-model="newAtividade.pontuacao_atividade"
                 outlined
                 dense
                 name="Produtividade"
-                label="Produtividade"
+                label="Pontuação"
                 :rules="[fieldRules.required]"
                 number
                 class="mb-4"
@@ -106,12 +106,12 @@
                 class="mb-4"
               ></v-text-field>
             </v-col>
-            <v-col cols=3 class="pb-0 pt-0">
+            <v-col cols=6 class="pb-0 pt-0">
               <v-text-field
                 outlined
                 dense
                 name="quantidade"
-                label="Pontuação final"
+                label="Produtividade"
                 disabled
                 :rules="[fieldRules.required]"
                 number
@@ -207,6 +207,7 @@ export default {
         this.newAtividade.mes_periodo = this.mes;
         this.newAtividade.ano_periodo = this.ano;
         this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario;
+        this.newAtividade.qtde_atividade = 1;
         this.visible = true;
       }
     });

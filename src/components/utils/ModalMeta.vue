@@ -6,14 +6,7 @@
       <v-card-text class="text-body-2">
         <v-row class="pa-0 ma-0">
           <PageWrapper class="pa-0">
-            <v-col class="pa-0 ma-0">
-              <CabecalhoUsuario :userSelected="userSelected" :periodo="getPeriodo"/>
-            </v-col>
-          </PageWrapper>
-        </v-row>
-        <v-row>
-          <PageWrapper class="pa-0">
-            <v-col v-if="metaSelected.gestoravaliacaojustificativa" cols=12 class="pa-0 pt-4">
+            <v-col v-if="metaSelected.gestoravaliacaojustificativa && metaSelected.gestoravaliacaojustificativa.status_avaliacao.id == status_devolvido" cols=12 class="pa-0 pt-4">
               <v-alert border="bottom"
                   colored-border
                   type="warning"
@@ -26,10 +19,80 @@
                   <v-col cols=12 class="pb-6">
                     <span class="font-weight-bold">Descrição de Avaliação</span> - {{metaSelected.gestoravaliacaojustificativa.descricao}}
                   </v-col>
-
                 </v-row>
               </v-alert>
             </v-col>
+            <v-col cols=12 class="pa-0 ma-0">
+              <v-row>
+                <v-col cols=4>
+                  <v-card
+                    color="#039BE5"
+                    dark
+                  >
+                    <v-card-title class="text-h5">
+                      Meta estabelecida
+                    </v-card-title>
+
+                    <v-card-subtitle>Quantidade de pontos definidos para o período</v-card-subtitle>
+
+                    <v-card-actions>
+                      <p class="pl-2 text-h4">
+                        {{parseFloat(metaSelected.meta_estabelecida).toFixed(0)}}
+                      </p>
+
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <v-col cols=4>
+                  <v-card
+                    color="#385F73"
+                    dark
+                  >
+                    <v-card-title class="text-h5">
+                      Produtividade alcançada
+                    </v-card-title>
+
+                    <v-card-subtitle>Somatório dos pontos no período</v-card-subtitle>
+
+                    <v-card-actions>
+                      <p class="pl-2 text-h4">
+                        {{getTotalProdutividade ? getTotalProdutividade : 0}}
+                      </p>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <v-col cols=4>
+                  <v-card
+                    color="#2E7D32"
+                    dark
+                  >
+                    <v-card-title class="text-h5">
+                      % de produtividade
+                    </v-card-title>
+
+                    <v-card-subtitle>Produtividade em relação a meta estabelecida</v-card-subtitle>
+
+                    <v-card-actions>
+                      <p class="pl-2 text-h4">
+                        {{((getTotalProdutividade / parseFloat(metaSelected.meta_estabelecida).toFixed(0))*100).toFixed(0) }} %
+                      </p>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-col>
+
+            <v-col class="pa-0 ma-0">
+              <CabecalhoUsuario :userSelected="userSelected" :periodo="getPeriodo" :totalMeta="getTotalProdutividade"/>
+            </v-col>
+          </PageWrapper>
+        </v-row>
+        <v-row>
+          <PageWrapper class="pa-0">
+            <v-col cols=12 class="pa-0">
+              <List v-if="getUserData.id_area == 1" :ano="getAno" :mes="getMes" :disabled="metaSelected.fl_relatorio_enviado"/>
+            </v-col>
+
             <v-col cols=12>
                 <v-checkbox
                   v-model="model.fl_afastamento_legal"
@@ -45,25 +108,6 @@
                 </v-text-field>
 
             </v-col>
-            <v-col cols=12>
-            <p class="font-weight-bold">
-              1. Favor preencher o quadro abaixo com relação a meta.
-            </p>
-            </v-col>
-            <v-col>
-              <p class="pa-0 ma-0 font-weight-medium">Legenda:</p>
-              <p class="pa-0 ma-0">Estabelecida = meta definida na inscrição ou alterada formalmente</p>
-              <p class="pa-0 ma-0">Alcançada = meta efetivamente cumprida pelo servidor</p>
-            </v-col>
-            <v-col cols=12>
-              <v-text-field
-              v-model="model.meta_estabelecida"
-                :disabled="!isGestor"
-                label="Meta esbabelecida"
-                style="max-width: 300px"
-                type="number">
-              </v-text-field>
-            </v-col>
             <!--<v-col cols=12>
               <v-textarea
               v-if="isGestor"
@@ -76,16 +120,18 @@
 
             <v-col cols=12>
               <v-textarea
-                  v-model="model.justificativa_meta_nao_cumprida"
-                  label="Justificativa de meta não cumprida "
-                  :value="metaSelected.justificativa_meta_nao_cumprida"
-                  outlined
-                  >
+                v-model="model.justificativa_meta_nao_cumprida"
+                :disabled="metaSelected.fl_relatorio_enviado"
+                label="Justificativa de meta não cumprida "
+                :value="metaSelected.justificativa_meta_nao_cumprida"
+                outlined
+              >
               </v-textarea>
             </v-col>
-            <v-col cols=12>
+            <v-col v-if="getUserData.id_area == 2" cols=12>
               <v-textarea
-              v-model="model.tx_relatorio"
+                v-model="model.tx_relatorio"
+                :disabled="metaSelected.fl_relatorio_enviado"
                 outlined
                 label="Relatório mensal"
                 :value="metaSelected.tx_relatorio"
@@ -93,14 +139,13 @@
               </v-textarea>
             </v-col>
           </PageWrapper>
-          <v-col cols=12 class="pa-0">
-            <List v-if="getUserData.id_area == 1" :ano="getAno" :mes="getMes"/>
-          </v-col>
+
         </v-row>
       </v-card-text>
 
       <v-card-actions class="pb-4">
         <v-spacer></v-spacer>
+        <v-btn v-if="!metaSelected.fl_relatorio_enviado" color="green" :loading="loading" @click="enviarRelatorio()"> <span class="white--text">ENVIAR RELATORIO</span> </v-btn>
         <v-btn color="primary" @click="save()">ATUALIZAR</v-btn>
         <v-btn color="primary" text @click="handleClose()">FECHAR</v-btn>
       </v-card-actions>
@@ -132,8 +177,11 @@ export default {
   },
   data() {
     return {
+      loading: false,
       show: true,
+      status_devolvido : 3,
       model:{
+
         meta_estabelecida: '',
         justificativa_meta_estabelecida: '',
         meta_ajustada: '',
@@ -150,12 +198,24 @@ export default {
     this.model.meta_estabelecida = Math.floor(this.model.meta_estabelecida);
   },
   computed: {
+    ...mapGetters('atividade', [
+      'getList'
+    ]),
     ...mapGetters('modal', ['getModalMeta']),
     getPeriodo(){
       if(this.metaSelected)
       return `${("00" + this.metaSelected.mes_meta).slice(-2)}/${this.metaSelected.ano_meta}`;
       else
       return "";
+    },
+    getTotalProdutividade(){
+      const reducer = (previousValue, currentValue) => previousValue + currentValue;
+      const produtividade = this.getList.filter((item) => parseInt(item.ano_periodo) == parseInt(this.getAno) && parseInt(item.mes_periodo) == parseInt(this.getMes) ).map((item)=> parseInt(item.pontuacao_atividade * item.qtde_atividade));
+      if(produtividade.length > 0){
+        return produtividade.reduce(reducer)
+      }else{
+        return null;
+      }
     },
     getAno(){
       return this.getPeriodo.split("/")[1]
@@ -186,11 +246,18 @@ export default {
   },
   methods: {
     ...mapActions('modal', ['setModalMeta']),
-    ...mapActions('administration', ['fetchJustificativa','fetchUseMetaByCPF']),
+    ...mapActions('administration', ['fetchJustificativa','fetchUseMetaByCPF','fetchEnviarRelatorio']),
     handleClose() {
       this.setModalMeta({
         show: false
       });
+    },
+    async enviarRelatorio(){
+      this.loading = true;
+      await this.fetchEnviarRelatorio(this.metaSelected.id);
+      await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
+      this.loading = false;
+      this.handleClose();
     },
     async save(){
       await this.fetchJustificativa(this.modelJSON);

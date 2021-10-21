@@ -30,6 +30,12 @@
             <v-row no-gutters>
               <v-col cols="12">
                 <v-data-table
+                  :no-results-text="'Sem resultados'"
+                  :header-props="{ sortByText: 'Ordenar por'}"
+                  :footer-props="{
+                    itemsPerPageText: 'Itens por página',
+                    itemsPerPageAllText: 'Todos',
+                  }"
                   :items="getUsersListLoading ? [] : getUsersList"
                   :search="search"
                   :items-per-page="10"

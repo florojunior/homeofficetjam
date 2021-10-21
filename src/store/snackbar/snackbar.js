@@ -8,7 +8,7 @@ const namespaced = true;
 // default timeout: 5 seconds
 const defaultOptions = Object.freeze({
   message: null,
-  timeout: null,
+  timeout: 3000,
   showClose: false,
   type: null,
   icon: null,

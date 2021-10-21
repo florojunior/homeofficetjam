@@ -20,13 +20,13 @@ httpClient.delete('/group-delete',{
  * Protocol: 0061 - Create a new Group
  */
 const createGroup = async (Group) =>
-  httpClient.post('/grupo', Group);
+  httpClient.post('/grupo/add', Group);
 
   /**
  * Protocol: 0062 - Update a Group
  */
 const updateGroup = async (Group) =>
-  httpClient.put('/grupo', Group);
+  httpClient.post('/grupo/update', Group);
 
 export {
   getAllGroups,

@@ -14,6 +14,7 @@
             dense
             outlined
             :value="userSelected.nm_usuario"
+            readonly
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -21,6 +22,7 @@
             label="Área"
             dense
             outlined
+            readonly
             :value="getAreaName ? getAreaName.nm_area : ''"
           ></v-text-field>
         </v-col>
@@ -28,6 +30,7 @@
           <v-text-field
             label="Unidade"
             dense
+            readonly
             outlined
             :value="getUnidadeName ? getUnidadeName.nm_unidade : ''"
           ></v-text-field>
@@ -36,6 +39,7 @@
           <v-text-field
             label="Grupo de trabalho"
             dense
+            readonly
             outlined
             :value="getGrupos ? getGrupos.nm_grupo : ''"
           ></v-text-field>
@@ -46,6 +50,7 @@
           <v-text-field
             label="Nome do gestor"
             dense
+            readonly
             outlined
             :value="userSelectedTable ? userSelectedTable.gestor.nm_gestor : (userSelected && userSelected.gestorusuario? userSelected.gestorusuario[0].gestor.nm_gestor : '')"
           ></v-text-field>
@@ -54,6 +59,7 @@
           <v-text-field
             label="Inicio do Teletrabalho"
             dense
+            readonly
             outlined
             :value="userInformation.periodoteletrabalho && userInformation.periodoteletrabalho[0].dt_inicio_teletrabalho ? formatDate(userInformation.periodoteletrabalho[0].dt_inicio_teletrabalho) : ''"
           ></v-text-field>

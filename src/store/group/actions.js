@@ -1,4 +1,4 @@
-import { getAllGroups } from '@/services/api/group.js';
+import { getAllGroups, updateGroup, createGroup  } from '@/services/api/group.js';
 
 export const actions = {
 
@@ -21,7 +21,52 @@ export const actions = {
       );
     }
   },
-  async createGroup (state, payload){
+  async createGroup(state, payload) {
+    try {
+      const dataGroups = await createGroup(payload);
+      await state.dispatch('getAll');
 
+      state.dispatch(
+        'snackbar/success',
+        { message: 'Adicionado com sucesso' },
+        { root: true }
+      );
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
+  },
+  async updateGroup(state, payload) {
+    try {
+      await updateGroup(payload);
+      await state.dispatch('getAll');
+
+      state.dispatch(
+        'snackbar/success',
+        { message: 'Atualizado com sucesso' },
+        { root: true }
+      );
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
   }
 };

@@ -4,6 +4,7 @@
     depressed
     color="secondary darken-3 py-4"
     x-small
+    :disabled="disabled"
     @click="onClick"
   >
     <v-icon left small color="tertiary lighten-2"> mdi-pencil </v-icon>
@@ -21,7 +22,11 @@ export default {
     nome: {
       type: String,
       required: false,
-    }
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

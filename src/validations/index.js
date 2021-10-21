@@ -159,7 +159,7 @@ export const dateRules = {
     (!!value && isValid(_parseDate(value))) || 'Data inválida.',
   isValidYear: (value) =>
     (!!value && getYear(_parseDate(value)) >= 1900) ||
-    'Ano de nascimento inválido.',
+    'Data inválida.',
   isYearFourDigits: (value) => {
     const yearDigitsAmmount = value
       ? getYear(_parseDate(value)).toString().length

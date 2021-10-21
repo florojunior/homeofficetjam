@@ -18,7 +18,10 @@ export default {
       type: Function,
       required: true,
     },
-    disabled: Boolean,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
 };
 </script>

@@ -115,6 +115,10 @@ export default {
         {
           id: 'GESTOR',
           name: 'Gestor'
+        },
+        {
+          id: 'ADM',
+          name: 'Administrador'
         }
       ],
       card: {

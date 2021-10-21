@@ -33,6 +33,12 @@
             <v-row no-gutters>
               <v-col cols="12">
                 <v-data-table
+                  :no-results-text="'Sem resultados'"
+                  :header-props="{ sortByText: 'Ordenar por'}"
+                  :footer-props="{
+                    itemsPerPageText: 'Itens por página',
+                    itemsPerPageAllText: 'Todos',
+                  }"
                   :items="getList"
                   :search="search"
                   :items-per-page="10"
@@ -58,6 +64,7 @@
                       class="mr-1"
                       :onClick="() => handleEditGroup(item)"
                     />
+
 
                     <DeleteButton :onClick="() => deleteGroupShow(item)" />
                   </template>
@@ -100,7 +107,7 @@ export default {
   },
   data() {
     return {
-      GroupSelected: {
+      groupSelected: {
         id: null,
         description: null,
         status: null,

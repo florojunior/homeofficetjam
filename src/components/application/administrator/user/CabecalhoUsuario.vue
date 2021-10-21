@@ -135,8 +135,6 @@
             <p class="mb-0 pa-0">{{periodo}}</p>
           </v-card>
         </v-col>
-        {{metaSelected}}
-
       </v-row>
     </v-card-text>
   </v-card>
@@ -162,6 +160,10 @@ export default {
     },
     userSelectedTable: {
       type: Object,
+      default: () => null,
+    },
+    totalMeta: {
+      type: Number,
       default: () => null,
     }
   },

@@ -74,7 +74,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
-    drawer: null,
+    drawer: true,
     isAdministrador: true,
     user: 'Foo', //pegar do vuex
     menu: []
@@ -88,8 +88,8 @@ export default {
     },
   },
   created: function() {
-    var usrAdm = localStorage.getItem('token_sistema_user_name');
-    if (usrAdm != 'GESTOR') {
+    var usrAdm = localStorage.getItem('sistema_perfil');
+    if (usrAdm == 'SERVIDOR') {
       this.menu.push(
         {
           descricao: 'Principal',
@@ -97,14 +97,10 @@ export default {
             {
               descricao: 'Minhas Metas',
               path: '/home/servidor'
-            },
-            {
-              descricao: 'Minhas atividades',
-              path: '/listaAtividades'
             }
           ]
         });
-    }else{
+    }else if (usrAdm == 'GESTOR'){
       this.menu.push(
         {
           descricao: 'Principal',
@@ -112,15 +108,18 @@ export default {
             {
               descricao: 'Usuarios',
               path: '/users'
-            }
-          ]
-        },{
-          descricao: 'Cadastros',
-          menu: [
+            },
             {
               descricao: 'Grupos',
               path: '/groups'
             },
+          ]
+        });
+    }else{
+      this.menu.push({
+          descricao: 'Cadastros',
+          menu: [
+
             {
               descricao: 'Unidades',
               path: '/units'
