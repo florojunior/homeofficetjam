@@ -42,7 +42,7 @@
                     itemsPerPageText: 'Itens por página',
                     itemsPerPageAllText: 'Todos',
                   }"
-                  :items="getList"
+                  :items="getListFilteredByPeriod"
                   :search="search"
                   :items-per-page="10"
                   :headers="headers"
@@ -85,7 +85,7 @@
         </v-card-text>
       </v-card>
       <AddAtividadeModal :ano="ano" :mes="mes" />
-      <EditAtividadeModal :ano="ano" :mes="mes" :atividade="atividadeSelected"  />
+      <EditAtividadeModal :ano="ano" :mes="mes" :atividade="atividadeSelected" :cpfServidor="cpfServidor" />
       <DeleteAtividadeModal :atividadeSelected="atividadeSelected" />
   </PageWrapper>
 </template>
@@ -200,6 +200,11 @@ export default {
     },
     isGestor(){
       return localStorage.getItem('sistema_perfil') == 'GESTOR';
+    },
+    getListFilteredByPeriod(){
+      return this.getList.filter((atividade) =>{
+        return atividade.mes_periodo == this.mes && atividade.ano_periodo == this.ano;
+      })
     }
   },
   async mounted() {

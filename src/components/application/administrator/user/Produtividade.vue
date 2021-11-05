@@ -13,7 +13,7 @@
             <v-divider ></v-divider>
           </v-col>
           <v-col cols=12>
-            <v-simple-table dense height="600px">
+            <v-simple-table v-if="userSelected.id_area == 1" dense height="600px">
               <template v-slot:default>
                 <thead>
                   <tr>
@@ -46,7 +46,7 @@
                     :key="item.name"
                   >
                     <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
-                    <td class="text-center">{{ Math.floor(item.meta_estabelecida) }}</td>
+                    <td class="text-center">{{ Math.ceil(parseFloat(item.meta_estabelecida)) }}</td>
                     <td class="text-center">{{ metaAlcancada(item.atividades) }}</td>
                     <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.atividades)) + '%' }}
                     <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.atividades)) > 99 ? 'green' : 'red'">
@@ -57,7 +57,7 @@
                               v-if="getStatusDescription(item.fl_relatorio_enviado,item.gestoravaliacaojustificativa)"
                               small
                               class="ma-2"
-                              :color="getColor(item.gestoravaliacaojustificativa)"
+                              :color="getColor(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa)"
                               dense
                             >
                               <span class="text-uppercase white--text" >{{ getStatusDescription(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa) }}</span>
@@ -68,7 +68,7 @@
                     <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
                     <td class="text-right">
                       <v-btn
-                        v-if="isGestor && !item.gestoravaliacaojustificativa"
+                        v-if="isGestor && item.fl_relatorio_enviado"
                           fab
                           dark
                           x-small
@@ -80,7 +80,88 @@
                         </v-icon>
                       </v-btn>
                       <v-btn
-                        v-else
+                          fab
+                          dark
+                          x-small
+                          color="green"
+                          @click="verificar(item)"
+                        >
+                        <v-icon color="white">
+                          mdi-eye
+                        </v-icon>
+                      </v-btn>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+            <v-simple-table v-else dense height="600px">
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      Período
+                    </th>
+                    <th class="text-center">
+                      Meta Estabelecida
+                    </th>
+                    <th class="text-center">
+                      Meta alcançada
+                    </th>
+                    <th class="text-center">
+                      % de cumprimento
+                    </th>
+                    <th class="text-center">
+                      Status
+                    </th>
+                    <th class="text-center">
+                      Justificativa de meta nao atingida
+                    </th>
+                    <th class="text-right">
+                      Relatório
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="item in getUserSelectedMeta"
+                    :key="item.name"
+                  >
+                    <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
+                    <td class="text-center">{{ Math.ceil(parseFloat(item.meta_estabelecida)) }}</td>
+                    <td class="text-center">{{ item.meta_alcancada ? item.meta_alcancada.pontos : 0 }}</td>
+                    <td class="text-center">{{ calculaAlcancouMeta(parseInt(item.meta_estabelecida), parseInt(item.meta_alcancada ? item.meta_alcancada.pontos : 0)) + '%' }}
+                    <v-icon :color="calculaAlcancouMeta(parseInt(item.meta_estabelecida) , parseInt(item.meta_alcancada ? item.meta_alcancada.pontos : 0)) > 99 ? 'green' : 'red'">
+                      mdi-check-circle
+                    </v-icon>
+                    <td class="text-center">
+                      <v-chip
+                              v-if="getStatusDescription(item.fl_relatorio_enviado,item.gestoravaliacaojustificativa)"
+                              small
+                              class="ma-2"
+                              :color="getColor(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa)"
+                              dense
+                            >
+                              <span class="text-uppercase white--text" >{{ getStatusDescription(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa) }}</span>
+                            </v-chip>
+                            <span v-else>
+                              -
+                            </span></td>
+                    <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+                    <td class="text-right">
+                      <v-btn
+                        v-if="isGestor && item.fl_relatorio_enviado"
+                          fab
+                          dark
+                          x-small
+                          color="primary"
+                          @click="avaliar(item)"
+                        >
+                        <v-icon color="white">
+                          mdi-playlist-check
+                        </v-icon>
+                      </v-btn>
+                      <v-btn
                           fab
                           dark
                           x-small
@@ -157,7 +238,10 @@ export default {
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),
      ...mapActions('modal', ['setModalJustificativaServidor','setModalAvaliacao']),
-     getColor(status){
+     getColor(flagAguardandoAvaliacao, status){
+      if(flagAguardandoAvaliacao){
+        return 'primary'
+      }
       if(status && status.status_avaliacao.id == 1){
         return 'green';
       }else if(status && status.status_avaliacao.id == 2){
@@ -191,7 +275,6 @@ export default {
       return (Math.round((meta_alcancada / meta_estabelecida) * 100))
     },
     justificar(item){
-      console.log(item)
       this.setModalJustificativaServidor({
         show: true
       })

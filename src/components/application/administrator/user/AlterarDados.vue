@@ -79,8 +79,8 @@ export default {
     }
   },
   async mounted(){
-    this.areas = await this.fetchAreasList();
-    this.unidades = await this.fetchUnidadesList();
+    // this.areas = await this.fetchAreasList();
+    // this.unidades = await this.fetchUnidadesList();
     await Promise.all([this.fetchAreasList, this.fetchUnidadesList])
   },
   methods: {

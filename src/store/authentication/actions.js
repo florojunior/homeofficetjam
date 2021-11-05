@@ -35,7 +35,6 @@ export const actions = {
         },
         { root: true }
       );
-      console.log(response.data.data);
       localStorage.setItem('token_sistema', response.data.data.token.token);
       localStorage.setItem('sistema_perfil', payload.perfil);
       localStorage.setItem('token_sistema_user_name', response.data.data.userData.nomeUsuario);
@@ -71,8 +70,8 @@ export const actions = {
     try {
       const response = await authentication.checkUserInformation(payload);
       localStorage.setItem('token_sistema_user_data', JSON.stringify(response.data));
-      if (response.data.data.id_unidade != null || payload.isGestor) {
-        return response.data.data.cpf_usuario;
+      if (payload || response.data.data.grupousuario[0].grupo.unidade != null) {
+        return payload ? response.data.data.cpf_gestor : response.data.data.cpf_usuario;
       }else{
         if (!payload){
           state.dispatch(

@@ -23,14 +23,6 @@
                 :label="`${formLabels.login}`"
                 outlined
               ></v-text-field>
-
-              <v-text-field
-                v-model="cpf"
-                outlined
-                name="cpf"
-                label="CPF"
-                :rules="[cpfRules.required, cpfRules.validCpf]"
-              ></v-text-field>
               <v-text-field
                 v-model="password"
                 name="password"
@@ -92,9 +84,6 @@ import { mapActions, mapGetters } from 'vuex';
 import router from '@/router';
 
 import { loginRules, passwordRules } from '@/validations';
-import {
-  cpfRules
-} from '@/validations';
 
 
 import Logo from '@/components/template/Logo.vue';
@@ -105,7 +94,6 @@ export default {
   },
   data() {
     return {
-      cpfRules,
       perfil: 'SERVIDOR',
       perfis:[
         {
@@ -115,10 +103,6 @@ export default {
         {
           id: 'GESTOR',
           name: 'Gestor'
-        },
-        {
-          id: 'ADM',
-          name: 'Administrador'
         }
       ],
       card: {
@@ -161,7 +145,7 @@ export default {
           const usuario =  await this.checkUserInformation(!!this.isGestor);
         if(usuario){
           if(this.perfil == 'GESTOR'){
-            await this.getManagerInformation(this.cpf);
+            await this.getManagerInformation();
             router.push('/users',{});
           }else{
             router.push('/home/servidor',{});

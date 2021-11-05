@@ -4,8 +4,8 @@
     height="100%"
   >
     <p class="sidebar--text">
-      Sistema de<br />Controle<br />
-      Teletrabalho.
+      Sistema de<br />Gestão do<br />
+      Teletrabalho
     </p>
   </v-sheet>
 </template>

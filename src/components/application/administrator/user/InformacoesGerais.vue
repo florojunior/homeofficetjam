@@ -32,7 +32,7 @@
             dense
             readonly
             outlined
-            :value="getUnidadeName ? getUnidadeName.nm_unidade : ''"
+            :value="getUnidadeName"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -41,7 +41,7 @@
             dense
             readonly
             outlined
-            :value="getGrupos ? getGrupos.nm_grupo : ''"
+            :value="getGrupo.nm_grupo"
           ></v-text-field>
         </v-col>
         <v-col cols=6 class="pb-0 pt-0">
@@ -111,14 +111,17 @@ export default {
       return this.areas.find((element) => element.id == this.userSelected.id_area)
     },
     getUnidadeName(){
-      return this.unidades.find((element) => element.id == this.userSelected.id_unidade)
+      return this.userSelected.grupousuario[0].grupo.unidade.nm_unidade;
     },
     getGestor(){
       return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)
     },
     getGrupos(){
         return this.grupos.find((element) => element.id == this.userSelected.grupousuario[0].id_grupo)
-    }
+    },
+    getGrupo(){
+      return this.userSelected.grupousuario[0].grupo;
+    },
   },
   methods: {
     ...mapActions('administration', ['fetchUserByCpf','fetchUserGroupByCPF', 'fetchUsePeriodByCPF','fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),

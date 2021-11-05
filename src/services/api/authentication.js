@@ -50,7 +50,7 @@ const checkUserInformation = async (isGestor) =>{
   //httpClient.get('/usuario/byName/' + nome );
 
 
-const getManagerInformation = async (cpf) =>
+const getManagerInformation = async () =>
   httpClient.get('/gestor/');
 
 export default { loginUser, checkUserInformation, getManagerInformation, loginUserServidor, loginUserGestor };

@@ -16,7 +16,121 @@
           </PageWrapper>
           <v-col cols=12 class="pa-0">
             <PageWrapper class="pa-0">
-              <v-card>
+
+              <!-- area adminstrativa -->
+
+              <v-card v-if="isAreaAdministrativa">
+                <v-card-text>
+                  <v-simple-table dense>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">
+                            Período
+                          </th>
+                          <th class="text-center">
+                            Meta Estabelecida
+                          </th>
+                          <th class="text-center">
+                            Meta alcançada
+                          </th>
+                          <th class="text-center">
+                            % de cumprimento
+                          </th>
+                          <th class="text-center">
+                            Status
+                          </th>
+                          <th class="text-center">
+                            Justificativa de meta nao atingida
+                          </th>
+                          <th class="text-center">
+                            Avaliação
+                          </th>
+                          <th class="text-right">
+                            Relatório
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="item in getUserSelectedMeta"
+                          :key="item.name"
+                        >
+                          <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
+                          <td class="text-center">{{ Math.ceil(parseFloat(item.meta_estabelecida)) }}</td>
+                          <td class="text-center">{{ metaAlcancada(item.atividades) }}</td>
+                          <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.atividades)) + '%' }}
+                          <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.atividades)) > 99 ? 'green' : 'red'">
+                            mdi-check-circle
+                          </v-icon>
+                          <td class="text-center">
+                            <v-chip
+                              v-if="getStatusDescription(item.fl_relatorio_enviado,item.gestoravaliacaojustificativa)"
+                              small
+                              class="ma-2"
+                              :color="getColor(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa)"
+                              dense
+                            >
+                              <span class="text-uppercase white--text" >{{ getStatusDescription(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa) }}</span>
+                            </v-chip>
+                            <span v-else>
+                              -
+                            </span>
+                          </td>
+                          <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+                          <td class="text-center">{{ item.gestoravaliacaojustificativa ? item.gestoravaliacaojustificativa.descricao : '-'}}</td>
+
+                          <td class="text-right">
+                            <v-btn
+                              v-if="isAreaAdministrativa"
+                              :disabled="(item.gestoravaliacaojustificativa && (item.gestoravaliacaojustificativa.status_avaliacao.id  == 1 || item.gestoravaliacaojustificativa.status_avaliacao.id  == 2))"
+                              fab
+                              dark
+                              x-small
+                              color="primary"
+                              @click="editMeta(item)"
+                            >
+                              <v-icon color="white">
+                                mdi-pencil
+                              </v-icon>
+                            </v-btn>
+                              <v-btn
+                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 1"
+                                fab
+                                dark
+                                x-small
+                                color="green"
+
+                              >
+                              <v-icon color="white">
+                                mdi-check
+                              </v-icon>
+                            </v-btn>
+                            <v-btn
+                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 2"
+                                fab
+                                dark
+                                x-small
+                                color="red"
+
+                              >
+                              <v-icon color="white">
+                                mdi-close
+                              </v-icon>
+                            </v-btn>
+
+
+                            </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </v-card-text>
+              </v-card>
+
+              <!-- area judiciaria -->
+
+              <v-card v-if="!isAreaAdministrativa">
                 <v-card-text>
                   <v-simple-table dense>
                     <template v-slot:default>
@@ -51,10 +165,10 @@
                           :key="item.name"
                         >
                           <td class="text-left">{{ `${getPeriodo(item.mes_meta,item.ano_meta)}` }}</td>
-                          <td class="text-center">{{ Math.floor(item.meta_estabelecida) }}</td>
-                          <td class="text-center">{{ metaAlcancada(item.atividades) }}</td>
-                          <td class="text-center">{{ calculaAlcancouMeta(item.meta_estabelecida, metaAlcancada(item.atividades)) + '%' }}
-                          <v-icon :color="calculaAlcancouMeta((item.meta_estabelecida) , metaAlcancada(item.atividades)) > 99 ? 'green' : 'red'">
+                          <td class="text-center">{{ Math.ceil(parseFloat(item.meta_estabelecida)) }}</td>
+                          <td class="text-center">{{ item.meta_alcancada ? item.meta_alcancada.pontos : 0 }}</td>
+                          <td class="text-center">{{ calculaAlcancouMeta(parseInt(item.meta_estabelecida), parseInt(item.meta_alcancada ? item.meta_alcancada.pontos : 0)) + '%' }}
+                          <v-icon :color="calculaAlcancouMeta(parseInt(item.meta_estabelecida) , parseInt(item.meta_alcancada ? item.meta_alcancada.pontos : 0)) > 99 ? 'green' : 'red'">
                             mdi-check-circle
                           </v-icon>
                           <td class="text-center">
@@ -62,7 +176,7 @@
                               v-if="getStatusDescription(item.fl_relatorio_enviado,item.gestoravaliacaojustificativa)"
                               small
                               class="ma-2"
-                              :color="getColor(item.gestoravaliacaojustificativa)"
+                              :color="getColor(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa)"
                               dense
                             >
                               <span class="text-uppercase white--text" >{{ getStatusDescription(item.fl_relatorio_enviado, item.gestoravaliacaojustificativa) }}</span>
@@ -76,8 +190,14 @@
 
                           <td class="text-right">
                             <v-btn
-                              v-if="isAreaAdministrativa"
-                              :disabled="(item.gestoravaliacaojustificativa && (item.gestoravaliacaojustificativa.status_avaliacao.id  == 1 || item.gestoravaliacaojustificativa.status_avaliacao.id  == 2))"
+                              v-if="((item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 3)
+                              || (item.meta_alcancada && parseInt(item.meta_estabelecida) > parseInt(item.meta_alcancada.pontos))
+                              || !item.meta_alcancada)
+                              &&
+                              (!item.gestoravaliacaojustificativa || (item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 3))
+                              &&
+                              (!item.fl_relatorio_enviado)
+                              "
                               fab
                               dark
                               x-small
@@ -181,7 +301,11 @@ export default {
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),
     ...mapActions('modal', ['setModalMeta']),
-    getColor(status){
+    getColor(flagAguardandoAvaliacao, status){
+      if(flagAguardandoAvaliacao){
+        return 'primary'
+      }
+
       if(status && status.status_avaliacao.id == 1){
         return 'green';
       }else if(status && status.status_avaliacao.id == 2){

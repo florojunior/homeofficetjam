@@ -64,7 +64,6 @@ const getUsePeriodByCPF = async (cpf) => {
  * API to get user period
  */
 const getUsetMetaByCPF = async (cpf) => {
-  console.log(2)
   return httpClient.get(`/metausuario/cpf/${cpf}`);
 };
 
@@ -88,8 +87,13 @@ const updateUserRegister = async (user) => {
 /**
  * API to send a assess
  */
-const sendAvaliacao = async (assess) => {
-  return httpClient.post('/gestoravaliacaojustificativa/add', assess);
+const sendAvaliacao = async (model) => {
+  if (model.metaUsuario.gestoravaliacaojustificativa && model.metaUsuario.gestoravaliacaojustificativa.id){
+    return httpClient.post('/gestoravaliacaojustificativa/update', { ...model, id: model.metaUsuario.gestoravaliacaojustificativa.id});
+  }else{
+    return httpClient.post('/gestoravaliacaojustificativa/add', model);
+  }
+
 };
 
 /**

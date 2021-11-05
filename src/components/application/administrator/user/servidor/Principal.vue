@@ -86,7 +86,6 @@ export default {
   },
   computed: {
     userSelectedComp(){
-      console.log(JSON.parse(localStorage.getItem('token_sistema_user_data')).data);
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data;
     },
     isGestor(){

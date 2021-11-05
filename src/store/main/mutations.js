@@ -3,7 +3,6 @@ export const mutations = {
     state.mensagemSucesso = mensagemSucesso;
   },
   setAuthenticated(state, authenticated) {
-    console.log('chamou ' + authenticated)
     state.authenticated = authenticated;
   },
 };

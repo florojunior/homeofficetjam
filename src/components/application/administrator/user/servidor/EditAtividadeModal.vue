@@ -171,6 +171,10 @@ import { nameRules, fieldRules, birthdateRules,dateRules } from '@/validations';
 export default {
   name: 'EditAtividadeModal',
   props: {
+    cpfServidor:{
+      type: String,
+      default: () => null,
+    },
     ano: {
       type: String,
       default: () => null,
@@ -224,7 +228,7 @@ export default {
         this.editAtividadeModel.descricao_atividade = this.atividade.descricao_atividade;
         this.editAtividadeModel.mes_periodo = this.atividade.mes_periodo;
         this.editAtividadeModel.ano_periodo = this.atividade.ano_periodo;
-        this.editAtividadeModel.cpf_usuario = this.getUserData.cpf_usuario;
+        this.editAtividadeModel.cpf_usuario = this.getUserData.cpf_usuario ? this.getUserData.cpf_usuario : this.cpfServidor;
     }
   },
   created() {
@@ -251,7 +255,6 @@ export default {
       this.loading = false;
     },
     getDate(param){
-      console.log(param);
       const date = new Date(param.replace("Z",""));
       return `${('0' + parseInt(date.getDate())).slice(-2)}/${('0' + (parseInt(date.getMonth())+1)).slice(-2)}/${date.getFullYear()}`;
     },

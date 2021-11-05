@@ -8,7 +8,6 @@ export const actions = {
     });
   },
   setAuthenticated(state, authenticated) {
-    console.log(authenticated)
     state.commit('setAuthenticated', authenticated);
   },
   handleLogOut(state) {

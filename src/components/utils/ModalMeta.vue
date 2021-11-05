@@ -37,7 +37,7 @@
 
                     <v-card-actions>
                       <p class="pl-2 text-h4">
-                        {{parseFloat(metaSelected.meta_estabelecida).toFixed(0)}}
+                        {{metaSelected.meta_estabelecida ? Math.ceil(parseFloat(metaSelected.meta_estabelecida)) : 0}}
                       </p>
 
                     </v-card-actions>
@@ -56,7 +56,7 @@
 
                     <v-card-actions>
                       <p class="pl-2 text-h4">
-                        {{getTotalProdutividade ? getTotalProdutividade : 0}}
+                        {{metaSelected.meta_alcancada ? metaSelected.meta_alcancada.pontos : 0}}
                       </p>
                     </v-card-actions>
                   </v-card>
@@ -74,7 +74,7 @@
 
                     <v-card-actions>
                       <p class="pl-2 text-h4">
-                        {{((getTotalProdutividade / parseFloat(metaSelected.meta_estabelecida).toFixed(0))*100).toFixed(0) }} %
+                        {{(( (metaSelected.meta_alcancada ? metaSelected.meta_alcancada.pontos : 0) / parseFloat(metaSelected.meta_estabelecida).toFixed(0))*100).toFixed(0) }} %
                       </p>
                     </v-card-actions>
                   </v-card>
@@ -130,11 +130,13 @@
             </v-col>
             <v-col v-if="getUserData.id_area == 2" cols=12>
               <v-textarea
+                v-if="!isAreaAdministrativa"
                 v-model="model.tx_relatorio"
                 :disabled="metaSelected.fl_relatorio_enviado"
                 outlined
                 label="Relatório mensal"
                 :value="metaSelected.tx_relatorio"
+
                 >
               </v-textarea>
             </v-col>
@@ -144,9 +146,10 @@
       </v-card-text>
 
       <v-card-actions class="pb-4">
+        {{dirty}}
         <v-spacer></v-spacer>
         <v-btn v-if="!metaSelected.fl_relatorio_enviado" color="green" :loading="loading" @click="enviarRelatorio()"> <span class="white--text">ENVIAR RELATORIO</span> </v-btn>
-        <v-btn color="primary" @click="save()">ATUALIZAR</v-btn>
+        <v-btn v-if="dirty" color="primary" @click="save()">ATUALIZAR</v-btn>
         <v-btn color="primary" text @click="handleClose()">FECHAR</v-btn>
       </v-card-actions>
     </v-card>
@@ -180,15 +183,8 @@ export default {
       loading: false,
       show: true,
       status_devolvido : 3,
-      model:{
-
-        meta_estabelecida: '',
-        justificativa_meta_estabelecida: '',
-        meta_ajustada: '',
-        justificativa_meta_ajustada: '',
-        tx_relatorio: '',
-        fl_afastamento_legal: false
-      }
+      model:null,
+      dirty: false
     };
   },
   mounted(){
@@ -196,6 +192,7 @@ export default {
       ...this.metaSelected
     }
     this.model.meta_estabelecida = Math.floor(this.model.meta_estabelecida);
+    this.dirty = false;
   },
   computed: {
     ...mapGetters('atividade', [
@@ -235,6 +232,12 @@ export default {
     getUserData(){
       return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
     },
+    getUnidade(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data.id_area;
+    },
+    isAreaAdministrativa(){
+      return this.getUnidade == 1;
+    }
   },
   watch:{
     metaSelected(){
@@ -242,6 +245,15 @@ export default {
         ...this.metaSelected
       };
       this.model.meta_estabelecida = Math.floor(this.model.meta_estabelecida);
+    },
+    model:
+    {
+      handler(newVal, oldVal)
+      {
+        if(oldVal)
+        this.dirty = true;
+      },
+      deep: true
     }
   },
   methods: {
@@ -254,6 +266,7 @@ export default {
     },
     async enviarRelatorio(){
       this.loading = true;
+      await this.fetchJustificativa(this.modelJSON);
       await this.fetchEnviarRelatorio(this.metaSelected.id);
       await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
       this.loading = false;

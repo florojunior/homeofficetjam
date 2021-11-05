@@ -109,17 +109,12 @@ export default {
               descricao: 'Usuarios',
               path: '/users'
             },
-            {
-              descricao: 'Grupos',
-              path: '/groups'
-            },
           ]
         });
     }else{
       this.menu.push({
           descricao: 'Cadastros',
           menu: [
-
             {
               descricao: 'Unidades',
               path: '/units'
@@ -127,7 +122,11 @@ export default {
             {
               descricao: 'Gestor',
               path: '/gestor'
-            }
+            },
+             {
+              descricao: 'Grupos',
+              path: '/groups'
+            },
           ]
         });
     }

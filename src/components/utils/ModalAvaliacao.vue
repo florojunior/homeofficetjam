@@ -36,7 +36,7 @@
 
                     <v-card-actions>
                       <p class="pl-2 text-h4">
-                        {{parseFloat(metaSelected.meta_estabelecida).toFixed(0)}}
+                        {{metaSelected.meta_estabelecida ? Math.ceil(parseFloat(metaSelected.meta_estabelecida)) : 0}}
                       </p>
 
                     </v-card-actions>
@@ -55,7 +55,7 @@
 
                     <v-card-actions>
                       <p class="pl-2 text-h4">
-                        {{getTotalProdutividade ? getTotalProdutividade : 0}}
+                        {{metaSelected.meta_alcancada ? metaSelected.meta_alcancada.pontos : 0}}
                       </p>
                     </v-card-actions>
                   </v-card>
@@ -73,7 +73,7 @@
 
                     <v-card-actions>
                       <p class="pl-2 text-h4">
-                        {{((getTotalProdutividade / parseFloat(metaSelected.meta_estabelecida).toFixed(0))*100).toFixed(0) }} %
+                        {{(( (metaSelected.meta_alcancada ? metaSelected.meta_alcancada.pontos : 0) / parseFloat(metaSelected.meta_estabelecida).toFixed(0))*100).toFixed(0) }} %
                       </p>
                     </v-card-actions>
                   </v-card>
@@ -125,10 +125,11 @@
           </v-col>
           <v-col>
             <v-textarea
+              v-if="!isAreaAdministrativa"
               v-model="model.tx_relatorio"
               disabled
               dense
-              label="Relatório Mensal"
+               label="Relatório Mensal"
               >
             </v-textarea>
           </v-col>
@@ -256,11 +257,11 @@
       </v-card-text>
 
       <v-card-actions class="d-flex justify-center">
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="#69F0AE" outlined @click="dialogConfirmar =  true">
+        <v-btn v-if="metaSelected.fl_relatorio_enviado" color="#69F0AE" outlined @click="dialogConfirmar =  true">
           <span class="green-accent-2--text">Aprovar Relatório</span> <v-icon color="69F0AE">mdi-check</v-icon></v-btn>
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="yellow darken-1" text  @click="dialogDevolver =  true">
+        <v-btn v-if="metaSelected.fl_relatorio_enviado" color="yellow darken-1" text  @click="dialogDevolver =  true">
           Devolver Relatório<v-icon color="yellow darken-1">mdi-cancel</v-icon></v-btn>
-        <v-btn v-if="!metaSelected.gestoravaliacaojustificativa" color="red" text  @click="dialogRejeitar=true; model.descricao = null">
+        <v-btn v-if="metaSelected.fl_relatorio_enviado" color="red" text  @click="dialogRejeitar=true; model.descricao = null">
           Rejeitar Relatório<v-icon color="red">mdi-cancel</v-icon></v-btn>
         <v-btn color="primary" text @click="handleClose()">VOLTAR<v-icon color="primary">mdi-close</v-icon></v-btn>
       </v-card-actions>
@@ -351,11 +352,16 @@ components:{
         descricao: this.model.descricao,
         id_gestor: this.getGestor.id
       }
+    },
+    getUnidade(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data.id_area;
+    },
+    isAreaAdministrativa(){
+      return this.userSelected.id_area == 1;
     }
   },
   watch:{
     metaSelected(novosDados){
-      console.log('chamou');
       this.model.descricao = novosDados.gestoravaliacaojustificativa ? novosDados.gestoravaliacaojustificativa.descricao : "";
       this.model.justificativa_meta_nao_cumprida = novosDados.justificativa_meta_nao_cumprida;
     },

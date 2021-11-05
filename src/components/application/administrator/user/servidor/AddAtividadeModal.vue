@@ -119,6 +119,7 @@
                 class="mb-4"
               ></v-text-field>
             </v-col>
+            {{newAtividade.id_grupo}}
             <v-col cols=12 class="pb-0 pt-0">
               <v-textarea
                 v-model="newAtividade.descricao_atividade"
@@ -167,6 +168,10 @@ import { nameRules, fieldRules, birthdateRules,dateRules } from '@/validations';
 export default {
   name: 'AddAtividadeModal',
   props: {
+    cpfServidor: {
+      type: String,
+      default: () => null,
+    },
     ano: {
       type: Number,
       default: () => null,
@@ -206,8 +211,9 @@ export default {
       if (action.type === 'modal/addAtividade') {
         this.newAtividade.mes_periodo = this.mes;
         this.newAtividade.ano_periodo = this.ano;
-        this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario;
+        this.newAtividade.cpf_usuario = this.getUserData.cpf_usuario ? this.getUserData.cpf_usuario : this.cpfServidor;
         this.newAtividade.qtde_atividade = 1;
+        this.newAtividade.id_grupo = this.getUserData.grupousuario[0].grupo.id;
         this.visible = true;
       }
     });
@@ -239,7 +245,7 @@ export default {
           await this.createAtividade(
             {
               ...this.newAtividade,
-              id_grupo: this.getUserData.grupousuario[0].id_grupo,
+              id_grupo: this.getUserData.grupousuario[0].grupo.id,
               dt_inicio_atividade: this.formatDateToSave(this.newAtividade.dt_inicio_atividade),
               dt_fim_atividade: this.formatDateToSave(this.newAtividade.dt_fim_atividade)
             }

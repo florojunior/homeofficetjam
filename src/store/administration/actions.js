@@ -182,8 +182,6 @@ export const actions = {
   async fetchUserGroupByCPF(state, idGroup) {
     try {
       //const dataUsers = await getUserGroupByCPF(cpf);
-      console.log('chamou group cpff');
-      console.log(JSON.parse(localStorage.getItem('token_sistema_user_data')).data.grupousuario[0]);
       state.commit('setUserGroup', {
         id: JSON.parse(localStorage.getItem('token_sistema_user_data')).data.grupousuario[0]
       });

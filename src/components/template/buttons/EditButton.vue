@@ -7,8 +7,7 @@
     :disabled="disabled"
     @click="onClick"
   >
-    <v-icon left small color="tertiary lighten-2"> mdi-pencil </v-icon>
-    <span class="text-caption font-weight-bold"> {{nome ? nome : 'Visualizar'}} </span>
+    <span class="text-caption font-weight-bold"> {{nome ? nome : 'Editar'}} </span>
   </v-btn>
 </template>
 

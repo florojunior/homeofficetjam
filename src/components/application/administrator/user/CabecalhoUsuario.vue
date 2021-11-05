@@ -41,7 +41,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-0">{{getUnidadeName ? getUnidadeName.nm_unidade : ""}}</p>
+            <p class="mb-0 pa-0">{{getUnidadeName}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -59,7 +59,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-0">{{getGrupos ? getGrupos.nm_grupo : ""}}</p>
+            <p class="mb-0 pa-0">{{getGrupo.nm_grupo}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -185,7 +185,10 @@ export default {
       return this.areas.find((element) => element.id == this.userSelected.id_area)
     },
     getUnidadeName(){
-      return this.unidades.find((element) => element.id == this.userSelected.id_unidade)
+      return this.userSelected.grupousuario[0].grupo.unidade.nm_unidade;
+    },
+    getGrupo(){
+      return this.userSelected.grupousuario[0].grupo;
     },
     getGestor(){
       return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)

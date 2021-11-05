@@ -159,7 +159,6 @@ export default {
       'avaliarAtividade'
     ]),
     handleEdit(item) {
-      console.log(item);
       this.userSelected = item;
       this.editMetas();
     },
