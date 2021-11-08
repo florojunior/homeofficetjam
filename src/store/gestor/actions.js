@@ -41,7 +41,7 @@ export const actions = {
   },
   async createGestor (state, payload){
     try {
-      const dataGroups = await createGestor(payload);
+      await createGestor(payload);
       await state.dispatch('getAll');
 
       state.dispatch(

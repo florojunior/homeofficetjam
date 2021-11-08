@@ -21,6 +21,7 @@ export default {
       required: true,
     },
     loading: {
+      type: Boolean,
       required: false,
     },
     disabled: Boolean,

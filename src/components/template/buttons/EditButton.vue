@@ -21,6 +21,7 @@ export default {
     nome: {
       type: String,
       required: false,
+      default: ""
     },
     disabled: {
       type: Boolean,

@@ -102,7 +102,6 @@
 import { mapActions, mapGetters } from 'vuex';
 import PageHeader from '@/components/template/PageHeader.vue';
 import PageWrapper from '@/components/template/PageWrapper.vue';
-import PageContent from '@/components/template/PageContent.vue';
 import AddButton from '@/components/template/buttons/AddButton.vue';
 import DeleteButton from '@/components/template/buttons/DeleteButton.vue';
 import AddAtividadeModal from '@/components/application/administrator/user/servidor/AddAtividadeModal.vue';
@@ -114,7 +113,6 @@ export default {
   components: {
     PageWrapper,
     PageHeader,
-    PageContent,
     AddAtividadeModal,
     EditAtividadeModal,
     DeleteAtividadeModal,

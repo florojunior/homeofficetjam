@@ -3,7 +3,7 @@ import httpClient from '@/plugins/axios';
 /**
  * API to list users
  */
-const listUsers = async (cpf) => {
+const listUsers = async () => {
   return httpClient.get(`/gestorusuario/cpfgestor/`);
 };
 

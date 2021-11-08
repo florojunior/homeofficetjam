@@ -36,6 +36,7 @@ import { nameRules, radioGroupRules } from '@/validations';
 export default {
   name: 'DeleteAtividadeModal',
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     atividadeSelected: Object,
   },
   data() {

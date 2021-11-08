@@ -71,7 +71,7 @@
 
 <script>
 
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import date from '@/utils/date';
 
 export default {
@@ -101,27 +101,6 @@ export default {
     this.grupos = await this.fetchGruposList();
     this.gestores = await this.fetchGestorList();
     this.userInformation = await this.fetchUserByCpf(this.userSelectedTable ? this.userSelectedTable.usuario.cpf_usuario : this.getUserData.cpf_usuario);
-  },
-  computed: {
-    ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedPeriod']),
-    getUserData(){
-      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
-    },
-    getAreaName(){
-      return this.areas.find((element) => element.id == this.userSelected.id_area)
-    },
-    getUnidadeName(){
-      return this.userSelected.grupousuario[0].grupo.unidade.nm_unidade;
-    },
-    getGestor(){
-      return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)
-    },
-    getGrupos(){
-        return this.grupos.find((element) => element.id == this.userSelected.grupousuario[0].id_grupo)
-    },
-    getGrupo(){
-      return this.userSelected.grupousuario[0].grupo;
-    },
   },
   methods: {
     ...mapActions('administration', ['fetchUserByCpf','fetchUserGroupByCPF', 'fetchUsePeriodByCPF','fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),

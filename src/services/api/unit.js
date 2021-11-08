@@ -19,7 +19,7 @@ httpClient.delete('/unidade',{
 /**
  * Protocol: 0061 - Create a new Group
  */
-const createUnit = async (Group) =>
+const create = async (Group) =>
   httpClient.post('/unidade/add', Group);
 
   /**
@@ -31,6 +31,6 @@ const updateUnit = async (Group) =>
 export {
   getAllUnits,
   deleteGroup,
-  createUnit,
+  create,
   updateUnit
 };

@@ -230,14 +230,12 @@
 import CabecalhoUsuario from './CabecalhoUsuario.vue'
 import { mapActions, mapGetters } from 'vuex';
 import ModalMeta from '@/components/utils/ModalMeta.vue';
-import List from '../user/servidor/List.vue'
 import PageWrapper from '@/components/template/PageWrapper.vue';
 
 export default {
   components: {
     CabecalhoUsuario,
     ModalMeta,
-    List,
     PageWrapper
   },
   props: {
@@ -255,14 +253,6 @@ export default {
       metaSelected: null
     }
   },
-  watch: {
-    async tab() {
-    }
-  },
-  async mounted() {
-    await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
-
-  },
   computed: {
     ...mapGetters('modal', ['getModalMeta']),
     ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta']),
@@ -273,6 +263,14 @@ export default {
     isAreaAdministrativa(){
       return this.getUnidade == 1;
     }
+  },
+  watch: {
+    async tab() {
+    }
+  },
+  async mounted() {
+    await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
+
   },
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),

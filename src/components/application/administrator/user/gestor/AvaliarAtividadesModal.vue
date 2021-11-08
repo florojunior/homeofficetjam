@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import unmaskText from '@/utils/unmaskText';
 import formattedBirthdate from '@/utils/formattedBirthdate';
 export default {

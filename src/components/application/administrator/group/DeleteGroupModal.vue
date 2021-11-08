@@ -36,6 +36,7 @@ import { nameRules, radioGroupRules } from '@/validations';
 export default {
   name: 'DeleteGroupModal',
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     healthCareSelected: Object,
   },
   data() {

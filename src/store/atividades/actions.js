@@ -62,7 +62,7 @@ export const actions = {
   },
   async createAtividade (state, payload){
     try {
-      const dataGroups = await createAtividade(payload);
+      await createAtividade(payload);
       //await state.dispatch('getAll');
 
       state.dispatch(

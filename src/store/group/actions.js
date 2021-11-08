@@ -23,7 +23,7 @@ export const actions = {
   },
   async createGroup(state, payload) {
     try {
-      const dataGroups = await createGroup(payload);
+      await createGroup(payload);
       await state.dispatch('getAll');
 
       state.dispatch(

@@ -189,13 +189,6 @@ export default {
       dirty: false
     };
   },
-  mounted(){
-    this.model = {
-      ...this.metaSelected
-    }
-    this.model.meta_estabelecida = Math.floor(this.model.meta_estabelecida);
-    this.dirty = false;
-  },
   computed: {
     ...mapGetters('atividade', [
       'getList'
@@ -258,6 +251,14 @@ export default {
       deep: true
     }
   },
+  mounted(){
+    this.model = {
+      ...this.metaSelected
+    }
+    this.model.meta_estabelecida = Math.floor(this.model.meta_estabelecida);
+    this.dirty = false;
+  },
+
   methods: {
     ...mapActions('modal', ['setModalMeta']),
     ...mapActions('administration', ['fetchJustificativa','fetchUseMetaByCPF','fetchEnviarRelatorio']),

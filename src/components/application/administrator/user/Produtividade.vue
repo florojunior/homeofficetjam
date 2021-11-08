@@ -227,6 +227,13 @@ export default {
       metaSelected: {}
     }
   },
+  computed: {
+    ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta']),
+    ...mapGetters('modal', ['getModalAvaliacao']),
+    isGestor(){
+      return localStorage.getItem('sistema_perfil') == 'GESTOR';
+    }
+  },
   watch: {
     async tab() {
       //await this.fetchUseMetaByCPF('49304178215');
@@ -237,13 +244,6 @@ export default {
     //await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
     //await this.fetchUseMetaByCPF('49304178215');
     await this.fetchUseMetaByCPF(this.userSelected.cpf_usuario);
-  },
-  computed: {
-    ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedMeta']),
-    ...mapGetters('modal', ['getModalAvaliacao']),
-    isGestor(){
-      return localStorage.getItem('sistema_perfil') == 'GESTOR';
-    }
   },
   methods: {
     ...mapActions('administration', ['fetchUseMetaByCPF']),

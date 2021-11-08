@@ -38,9 +38,6 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import unmaskText from '@/utils/unmaskText';
-import formattedBirthdate from '@/utils/formattedBirthdate';
-
 /*
 import {
   nameRules,

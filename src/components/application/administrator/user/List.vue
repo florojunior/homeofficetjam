@@ -68,7 +68,6 @@ import { mapActions, mapGetters } from 'vuex';
 import PageHeader from '@/components/template/PageHeader.vue';
 import PageWrapper from '@/components/template/PageWrapper.vue';
 import PageContent from '@/components/template/PageContent.vue';
-import AddButton from '@/components/template/buttons/AddButton.vue';
 import EditButton from '@/components/template/buttons/EditButton.vue';
 import EditUserModal from '@/components/application/administrator/user/EditUserModal.vue';
 import AvaliarAtividadesModal from '@/components/application/administrator/user/gestor/AvaliarAtividadesModal.vue';
@@ -84,7 +83,6 @@ export default {
     PageWrapper,
     PageHeader,
     PageContent,
-    AddButton,
     EditButton,
     EditUserModal,
     AvaliarAtividadesModal

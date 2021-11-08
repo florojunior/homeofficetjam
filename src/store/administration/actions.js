@@ -179,7 +179,7 @@ export const actions = {
       );
     }
   },
-  async fetchUserGroupByCPF(state, idGroup) {
+  async fetchUserGroupByCPF(state) {
     try {
       //const dataUsers = await getUserGroupByCPF(cpf);
       state.commit('setUserGroup', {
@@ -200,7 +200,7 @@ export const actions = {
       );
     }
   },
-  async fetchUsePeriodByCPF(state, cpf) {
+  async fetchUsePeriodByCPF(state) {
     try {
       //const dataUsers = await getUsePeriodByCPF(cpf);
       state.commit('setUserPeriod', {

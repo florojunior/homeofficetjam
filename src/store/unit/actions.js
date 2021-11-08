@@ -1,4 +1,4 @@
-import { getAllUnits, createUnit, updateUnit } from '@/services/api/unit.js';
+import { getAllUnits, create, updateUnit } from '@/services/api/unit.js';
 
 export const actions = {
 
@@ -23,7 +23,7 @@ export const actions = {
   },
   async createUnit (state, payload){
     try {
-      const dataGroups = await createUnit(payload);
+      await create(payload);
       await state.dispatch('getAll');
 
       state.dispatch(

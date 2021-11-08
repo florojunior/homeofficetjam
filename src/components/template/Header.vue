@@ -58,13 +58,13 @@ import router from '../../router';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  computed: {
-    ...mapGetters('authentication', ['menu']),
-  },
   data: () => ({
     drawer: false,
     itemMenu: true,
   }),
+  computed: {
+    ...mapGetters('authentication', ['menu']),
+  },
   created: function () {
     var usrAdm = localStorage.getItem('token_sistema_user_name');
     if (usrAdm == 'GESTOR') {

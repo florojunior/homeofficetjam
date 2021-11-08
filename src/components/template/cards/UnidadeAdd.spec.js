@@ -6,7 +6,6 @@ import UnidadeAdd from '@/components/template/cards/UnidadeAdd.vue';
 describe('UnidadeAdd.vue', () => {
   let wrapper, localVue, vuetify;
 
-  const cardUnidadeAddId = '[data-testid="card-unidade-add"]';
   const cardUnidadeIconId = '[data-testid="card-icon"]';
   const cardUnidadeTitleId = '[data-testid="card-title"]';
   const cardUnidadeDescriptionId = '[data-testid="card-description"]';

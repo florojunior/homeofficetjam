@@ -54,18 +54,16 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import unmaskText from '@/utils/unmaskText';
 import formattedBirthdate from '@/utils/formattedBirthdate';
 import InformacoesGerais from '../InformacoesGerais';
 import Meta from '../Meta';
-import Produtividade from '../Produtividade';
 
 export default {
   name: 'PatientForm',
   components: {
     InformacoesGerais,
-    Produtividade,
     Meta
   },
   props: {
