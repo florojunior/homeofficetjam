@@ -6,7 +6,7 @@
       <v-card-text class="text-body-2">
         <v-row class="pa-0 ma-0">
           <PageWrapper class="pa-0">
-            <v-col v-if="metaSelected.gestoravaliacaojustificativa && metaSelected.gestoravaliacaojustificativa.status_avaliacao.id == status_devolvido" cols=12 class="pa-0 pt-4">
+            <v-col v-if="metaSelected.gestoravaliacaojustificativa" cols=12 class="pa-0 pt-4">
               <v-alert border="bottom"
                   colored-border
                   type="warning"
@@ -16,8 +16,11 @@
                   <v-col cols=12>
                     <span class="font-weight-bold">Data de avaliação</span> - {{new Date(metaSelected.gestoravaliacaojustificativa.dt_avaliacao).toLocaleDateString()}}
                   </v-col>
-                  <v-col cols=12 class="pb-6">
+                  <v-col cols=12>
                     <span class="font-weight-bold">Descrição de Avaliação</span> - {{metaSelected.gestoravaliacaojustificativa.descricao}}
+                  </v-col>
+                  <v-col cols=12 class="pb-6">
+                    <span class="font-weight-bold">Status da ultima avaliação</span> - {{metaSelected.gestoravaliacaojustificativa.status_avaliacao.nm_status}}
                   </v-col>
                 </v-row>
               </v-alert>
@@ -90,7 +93,7 @@
         <v-row>
           <PageWrapper class="pa-0">
             <v-col cols=12 class="pa-0">
-              <List v-if="getUserData.id_area == 1" :ano="getAno" :mes="getMes" :disabled="metaSelected.fl_relatorio_enviado"/>
+              <List v-if="getUserData.id_area == 1" :ano="getAno" :mes="getMes" :disabled="metaSelected.fl_relatorio_enviado || getModalMeta.readonly" :total="metaSelected.meta_alcancada ? metaSelected.meta_alcancada.pontos : 0"/>
             </v-col>
 
             <v-col cols=12>
@@ -99,8 +102,8 @@
                   label="Servidor esteve durante o periodo em afastamento legal(periodo de atestados médicos, licenças, afastamentos, férias, outros)"
                 ></v-checkbox>
                 <v-text-field
-                v-if="model.fl_afastamento_legal"
-                v-model="model.nr_processo_afastamento_legal"
+                  v-if="model.fl_afastamento_legal"
+                  v-model="model.nr_processo_afastamento_legal"
                   dense
                   label="Numero processo"
                   :value="metaSelected.nr_processo_afastamento_legal"
@@ -121,7 +124,7 @@
             <v-col cols=12>
               <v-textarea
                 v-model="model.justificativa_meta_nao_cumprida"
-                :disabled="metaSelected.fl_relatorio_enviado"
+                :readonly="metaSelected.fl_relatorio_enviado || getModalMeta.readonly"
                 label="Justificativa de meta não cumprida "
                 :value="metaSelected.justificativa_meta_nao_cumprida"
                 outlined
@@ -132,7 +135,7 @@
               <v-textarea
                 v-if="!isAreaAdministrativa"
                 v-model="model.tx_relatorio"
-                :disabled="metaSelected.fl_relatorio_enviado"
+                :readonly="metaSelected.fl_relatorio_enviado || getModalMeta.readonly"
                 outlined
                 label="Relatório mensal"
                 :value="metaSelected.tx_relatorio"
@@ -146,9 +149,8 @@
       </v-card-text>
 
       <v-card-actions class="pb-4">
-        {{dirty}}
         <v-spacer></v-spacer>
-        <v-btn v-if="!metaSelected.fl_relatorio_enviado" color="green" :loading="loading" @click="enviarRelatorio()"> <span class="white--text">ENVIAR RELATORIO</span> </v-btn>
+        <v-btn v-if="!metaSelected.fl_relatorio_enviado" :disabled="getModalMeta.readonly" color="green" :loading="loading" @click="enviarRelatorio()"> <span class="white--text">ENVIAR RELATORIO</span> </v-btn>
         <v-btn v-if="dirty" color="primary" @click="save()">ATUALIZAR</v-btn>
         <v-btn color="primary" text @click="handleClose()">FECHAR</v-btn>
       </v-card-actions>

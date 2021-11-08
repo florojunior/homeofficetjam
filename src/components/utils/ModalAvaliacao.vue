@@ -5,7 +5,7 @@
       <v-card-text class="text-body-2">
         <v-divider></v-divider>
         <v-row class="pa-0 ma-0">
-          <v-col v-if="metaSelected.gestoravaliacaojustificativa && metaSelected.gestoravaliacaojustificativa.status_avaliacao.id == status_devolvido" cols=12 class="pa-0 pt-4">
+          <v-col v-if="metaSelected.gestoravaliacaojustificativa" cols=12 class="pa-0 pt-4">
             <v-alert border="bottom"
                 colored-border
                 type="warning"
@@ -15,8 +15,11 @@
                 <v-col cols=12>
                   <span class="font-weight-bold">Data de avaliação</span> - {{new Date(metaSelected.gestoravaliacaojustificativa.dt_avaliacao).toLocaleDateString()}}
                 </v-col>
-                <v-col cols=12 class="pb-6">
+                <v-col cols=12>
                   <span class="font-weight-bold">Descrição de Avaliação</span> - {{metaSelected.gestoravaliacaojustificativa.descricao}}
+                </v-col>
+                <v-col cols=12 class="pb-6">
+                  <span class="font-weight-bold">Status da ultima avaliação</span> - {{metaSelected.gestoravaliacaojustificativa.status_avaliacao.nm_status}}
                 </v-col>
               </v-row>
             </v-alert>
@@ -84,7 +87,7 @@
             <CabecalhoUsuario :userSelected="userSelected" :periodo="getPeriodo" :userSelectedTable="userSelectedTable" :totalMeta="getTotalProdutividade"/>
           </v-col>
           <v-col cols=12 class="">
-            <List v-if="userSelected.id_area == 1" :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario"/>
+            <List v-if="userSelected.id_area == 1" :ano="getAno" :mes="getMes" :cpfServidor="userSelected.cpf_usuario" :total="metaSelected.meta_alcancada ? metaSelected.meta_alcancada.pontos : 0"/>
           </v-col>
         </v-row>
         <v-row>
@@ -110,15 +113,10 @@
               </v-text-field>
 
           </v-col>
-          <v-col cols=12>
-            <p class="font-weight-bold">
-              1. Favor preencher o quadro abaixo com relação a meta.
-            </p>
-          </v-col>
           <v-col>
             <v-textarea
               v-model="model.justificativa_meta_nao_cumprida"
-              disabled
+              readonly
               dense
               label="Justificativa para o não-cumprimento da meta">
             </v-textarea>
@@ -127,7 +125,7 @@
             <v-textarea
               v-if="!isAreaAdministrativa"
               v-model="model.tx_relatorio"
-              disabled
+              readonly
               dense
                label="Relatório Mensal"
               >

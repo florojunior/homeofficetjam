@@ -77,8 +77,8 @@
                               -
                             </span>
                           </td>
-                          <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
-                          <td class="text-center">{{ item.gestoravaliacaojustificativa ? item.gestoravaliacaojustificativa.descricao : '-'}}</td>
+                          <td class="text-center"><p class="ellipsis-text">{{ item.justificativa_meta_nao_cumprida }}</p></td>
+                          <td class="text-center"><p class="ellipsis-text">{{ item.gestoravaliacaojustificativa ? item.gestoravaliacaojustificativa.descricao : '-'}}</p></td>
 
                           <td class="text-right">
                             <v-btn
@@ -94,32 +94,17 @@
                                 mdi-pencil
                               </v-icon>
                             </v-btn>
-                              <v-btn
-                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 1"
-                                fab
-                                dark
-                                x-small
-                                color="green"
-
-                              >
-                              <v-icon color="white">
-                                mdi-check
-                              </v-icon>
-                            </v-btn>
                             <v-btn
-                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 2"
-                                fab
-                                dark
-                                x-small
-                                color="red"
-
-                              >
+                              fab
+                              dark
+                              x-small
+                              color="green"
+                              @click="verificar(item)"
+                            >
                               <v-icon color="white">
-                                mdi-close
+                                mdi-eye
                               </v-icon>
                             </v-btn>
-
-
                             </td>
                         </tr>
                       </tbody>
@@ -154,6 +139,9 @@
                           <th class="text-center">
                             Justificativa de meta nao atingida
                           </th>
+                          <th class="text-center">
+                            Avaliação
+                          </th>
                           <th class="text-right">
                             Relatório
                           </th>
@@ -185,7 +173,8 @@
                               -
                             </span>
                           </td>
-                          <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+                          <td class="text-center"><p class="ellipsis-text">{{ item.justificativa_meta_nao_cumprida }}</p></td>
+                          <td class="text-center"><p class="ellipsis-text">{{ item.gestoravaliacaojustificativa ? item.gestoravaliacaojustificativa.descricao : '-'}}</p></td>
 
 
                           <td class="text-right">
@@ -209,27 +198,14 @@
                               </v-icon>
                             </v-btn>
                               <v-btn
-                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 1"
                                 fab
                                 dark
                                 x-small
                                 color="green"
-
+                                @click="verificar(item)"
                               >
                               <v-icon color="white">
-                                mdi-check
-                              </v-icon>
-                            </v-btn>
-                            <v-btn
-                                v-if="item.gestoravaliacaojustificativa && item.gestoravaliacaojustificativa.status_avaliacao.id  == 2"
-                                fab
-                                dark
-                                x-small
-                                color="red"
-
-                              >
-                              <v-icon color="white">
-                                mdi-close
+                                mdi-eye
                               </v-icon>
                             </v-btn>
 
@@ -316,6 +292,10 @@ export default {
         return 'primary';
       }
     },
+    verificar(item){
+      this.metaSelected = item;
+      this.setModalMeta({ show: true, readonly: true });
+    },
     getStatusDescription(flagAguardandoAvaliacao, gestorAvaliacao){
 
       if(flagAguardandoAvaliacao){
@@ -351,4 +331,11 @@ export default {
 </script>
 
 <style>
+    .ellipsis-text{
+      white-space: nowrap;
+      max-width: 300px;
+      overflow: hidden;              /* "overflow" value must be different from "visible" */
+
+      text-overflow:    ellipsis;
+    }
 </style>

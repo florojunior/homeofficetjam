@@ -8,6 +8,7 @@
       </template>
     </PageHeader>
       <v-card>
+
         <v-card-title>
           <v-container pa-0>
             <v-row no-gutters align="center" justify="center">
@@ -49,7 +50,7 @@
                   loading-text="Carregando..."
                 >
                   <template v-slot:item.pontuacao_atividade="{ item }">
-                      <span>
+                      <span v-if="item.id">
                         {{ item.pontuacao_atividade * item.qtde_atividade }}
                       </span>
                   </template>
@@ -79,6 +80,13 @@
                   </template>
 
                 </v-data-table>
+
+                <v-card class="pa-0">
+                  <v-card-text class="pa-4 d-flex justify-end align-center">
+                    <span class="pa-0 mr-4 text-h6 font-weight-bold">Total:</span>
+                    <span class="pa-0 ma-0 text-h6 font-weight-bold" >{{total}}</span>
+                  </v-card-text>
+                </v-card>
               </v-col>
             </v-row>
           </v-container>
@@ -121,6 +129,10 @@ export default {
     },
     mes: {
       type: Number,
+      default: () => null,
+    },
+    total: {
+      type: String,
       default: () => null,
     },
     cpfServidor: {
@@ -202,9 +214,11 @@ export default {
       return localStorage.getItem('sistema_perfil') == 'GESTOR';
     },
     getListFilteredByPeriod(){
-      return this.getList.filter((atividade) =>{
+      let listFiltered = this.getList.filter((atividade) =>{
         return atividade.mes_periodo == this.mes && atividade.ano_periodo == this.ano;
-      })
+      });
+
+      return listFiltered;
     }
   },
   async mounted() {

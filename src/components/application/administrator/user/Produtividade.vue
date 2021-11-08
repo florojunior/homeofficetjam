@@ -35,6 +35,9 @@
                     <th class="text-center">
                       Justificativa de meta nao atingida
                     </th>
+                    <th class="text-center">
+                      Avaliação
+                    </th>
                     <th class="text-right">
                       Relatório
                     </th>
@@ -65,7 +68,9 @@
                             <span v-else>
                               -
                             </span></td>
-                    <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+                    <td class="text-center"><p class="ellipsis-text">{{ item.justificativa_meta_nao_cumprida }}</p></td>
+                    <td class="text-center"><p class="ellipsis-text">{{ item.gestoravaliacaojustificativa ? item.gestoravaliacaojustificativa.descricao : '-'}}</p></td>
+
                     <td class="text-right">
                       <v-btn
                         v-if="isGestor && item.fl_relatorio_enviado"
@@ -117,6 +122,9 @@
                     <th class="text-center">
                       Justificativa de meta nao atingida
                     </th>
+                    <th class="text-center">
+                      Avaliação
+                    </th>
                     <th class="text-right">
                       Relatório
                     </th>
@@ -147,7 +155,9 @@
                             <span v-else>
                               -
                             </span></td>
-                    <td class="text-center">{{ item.justificativa_meta_nao_cumprida }}</td>
+                    <td class="text-center"><p class="ellipsis-text">{{ item.justificativa_meta_nao_cumprida }}</p></td>
+                    <td class="text-center"><p class="ellipsis-text">{{ item.gestoravaliacaojustificativa ? item.gestoravaliacaojustificativa.descricao : '-'}}</p></td>
+
                     <td class="text-right">
                       <v-btn
                         v-if="isGestor && item.fl_relatorio_enviado"
@@ -300,4 +310,11 @@ export default {
 </script>
 
 <style>
+    .ellipsis-text{
+      white-space: nowrap;
+      max-width: 300px;
+      overflow: hidden;              /* "overflow" value must be different from "visible" */
+
+      text-overflow:    ellipsis;
+    }
 </style>
