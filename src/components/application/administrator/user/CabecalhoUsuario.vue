@@ -59,7 +59,7 @@
             outlined
             tile
           >
-            <p class="mb-0 pa-0">{{getGrupo.nm_grupo}}</p>
+            <p class="mb-0 pa-0">{{getGrupo ? getGrupo.nm_grupo  : ''}}</p>
           </v-card>
         </v-col>
         <v-col cols=6 class="pt-0 pb-0 pr-0">
@@ -188,7 +188,7 @@ export default {
       return this.userSelected.grupousuario[0].grupo.unidade.nm_unidade;
     },
     getGrupo(){
-      return this.userSelected.grupousuario[0].grupo;
+      return this.userSelected.grupousuario ? this.userSelected.grupousuario[0].grupo : null;
     },
     getGestor(){
       return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)
@@ -207,7 +207,7 @@ export default {
     ...mapActions('administration', ['fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),
 
     formatDate(value) {
-      return date.formatToDDMMYYYY(value);
+      return date.formatToDDMMYYYY(value.replace('Z',''));
     }
   }
 }

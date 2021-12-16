@@ -56,6 +56,10 @@ export const mutations = {
   addAtividade() { },
   editAtividade() { },
 
+  addProposta(){},
+  editProposta(){},
+  closeProposta(){},
+
   avaliarAtividade() { },
   closeAvaliarAtividade() { }
 };

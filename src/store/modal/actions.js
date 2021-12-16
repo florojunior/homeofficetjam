@@ -71,6 +71,10 @@ export const actions = {
   editAtividade() { },
   deleteAtividade() { },
 
+  addProposta() { },
+  editProposta() { },
+
+
   avaliarAtividade() { },
   closeAvaliarAtividade() { },
 };

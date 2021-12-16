@@ -71,7 +71,7 @@
 
 <script>
 
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import date from '@/utils/date';
 
 export default {
@@ -95,6 +95,27 @@ export default {
       userInformation : {}
     };
   },
+  computed: {
+    ...mapGetters('administration', ['getUserSelectedGroup', 'getUserSelectedPeriod']),
+    getUserData(){
+      return JSON.parse(localStorage.getItem('token_sistema_user_data')).data
+    },
+    getAreaName(){
+      return this.areas.find((element) => element.id == this.userSelected.id_area)
+    },
+    getUnidadeName(){
+      return this.userSelected.grupousuario[0].grupo.unidade.nm_unidade;
+    },
+    getGestor(){
+      return this.gestores.find((element) => element.id == this.userSelected.gestorusuario[0].id_gestor)
+    },
+    getGrupos(){
+        return this.grupos.find((element) => element.id == this.userSelected.grupousuario[0].id_grupo)
+    },
+    getGrupo(){
+      return this.userSelected.grupousuario[0].grupo;
+    },
+  },
   async mounted() {
     this.areas = await this.fetchAreasList();
     this.unidades = await this.fetchUnidadesList();
@@ -105,7 +126,7 @@ export default {
   methods: {
     ...mapActions('administration', ['fetchUserByCpf','fetchUserGroupByCPF', 'fetchUsePeriodByCPF','fetchAreasList','fetchUnidadesList','fetchGruposList','fetchGestorList']),
     formatDate(value) {
-      return date.formatToDDMMYYYY(value);
+      return date.formatToDDMMYYYY(value.replace('Z',''));
     },
   }
 }

@@ -10,6 +10,7 @@ import { group } from './group/group';
 import { unit } from './unit/unit';
 import { gestor} from './gestor/gestor';
 import { atividade } from './atividades/atividade';
+import { proposta } from './proposta/proposta';
 
 Vue.use(Vuex);
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
     group,
     unit,
     gestor,
-    atividade
+    atividade,
+    proposta,
   },
 });

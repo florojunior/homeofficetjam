@@ -36,7 +36,7 @@ const router = new Router({
     },
     {
       path: '/groups',
-      name: 'Grupos',
+      name: 'Sistema de Gestão do Teletrabalho',
       component: () =>
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/group/Groups.vue'
@@ -44,7 +44,7 @@ const router = new Router({
     },
     {
       path: '/units',
-      name: 'Unidades',
+      name: 'Sistema de Gestão do Teletrabalho',
       component: () =>
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/unit/Units.vue'
@@ -52,7 +52,7 @@ const router = new Router({
     },
     {
       path: '/gestor',
-      name: 'Gestor',
+      name: 'Sistema de Gestão do Teletrabalho',
       component: () =>
         import(
           /* webpackChunkName: "patients" */ '@/views/administrator/gestor/Gestor.vue'
@@ -60,12 +60,29 @@ const router = new Router({
     },
     {
       path: '/listaAtividades',
-      name: 'Listas de Atividades',
+      name: 'Sistema de Gestão do Teletrabalho',
       component: () =>
         import(
           /* webpackChunkName: "listasAtividades" */ '@/views/administrator/user/ListasAtividades.vue'
         ),
+    },
+    {
+      path: '/propostas',
+      name: 'Sistema de Gestão do Teletrabalho',
+      component: () =>
+        import(
+          /* webpackChunkName: "listasAtividades" */ '@/views/administrator/proposta_meta/List.vue'
+        ),
+    },
+    {
+      path: '/propostas/avaliacao/:cpf',
+      name: 'Sistema de Gestão do Teletrabalho',
+      component: () =>
+        import(
+          /* webpackChunkName: "listasAtividades" */ '@/views/administrator/proposta_meta_avaliacao/List.vue'
+        ),
     }
+
   ],
 });
 

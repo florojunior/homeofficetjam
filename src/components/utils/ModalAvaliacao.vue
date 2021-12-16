@@ -113,7 +113,7 @@
               </v-text-field>
 
           </v-col>
-          <v-col>
+          <v-col cols="12">
             <v-textarea
               v-model="model.justificativa_meta_nao_cumprida"
               readonly
@@ -121,7 +121,7 @@
               label="Justificativa para o não-cumprimento da meta">
             </v-textarea>
           </v-col>
-          <v-col>
+          <v-col cols="12">
             <v-textarea
               v-if="!isAreaAdministrativa"
               v-model="model.tx_relatorio"

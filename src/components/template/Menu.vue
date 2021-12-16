@@ -97,6 +97,10 @@ export default {
             {
               descricao: 'Minhas Metas',
               path: '/home/servidor'
+            },
+            {
+              descricao: 'Proposta de Metas',
+              path: '/propostas'
             }
           ]
         });

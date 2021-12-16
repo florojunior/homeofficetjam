@@ -83,7 +83,7 @@
                           <td class="text-right">
                             <v-btn
                               v-if="isAreaAdministrativa"
-                              :disabled="(item.gestoravaliacaojustificativa && (item.gestoravaliacaojustificativa.status_avaliacao.id  == 1 || item.gestoravaliacaojustificativa.status_avaliacao.id  == 2))"
+                              :disabled="item.fl_relatorio_enviado || (item.gestoravaliacaojustificativa && (item.gestoravaliacaojustificativa.status_avaliacao.id  == 1 || item.gestoravaliacaojustificativa.status_avaliacao.id  == 2))"
                               fab
                               dark
                               x-small
