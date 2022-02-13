@@ -49,6 +49,11 @@
                       :nome="'Metas'"
                       :onClick="() => handleEdit(item)"
                     />
+                    <EditButton
+                      class="mr-1"
+                      :nome="'Planos'"
+                      :onClick="() => handlePlanos(item)"
+                    />
                   </template>
                 </v-data-table>
               </v-col>
@@ -159,6 +164,10 @@ export default {
     handleEdit(item) {
       this.userSelected = item;
       this.editMetas();
+    },
+    handlePlanos(item) {
+      console.log(item);
+      this.$router.push('/propostas/avaliacao/'+item.usuario.cpf_usuario, {});
     },
     openModalAvaliarAtividade(item){
       this.userSelected = item;

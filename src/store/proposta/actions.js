@@ -1,4 +1,6 @@
 import { getAllPropostaPeriodos, getAllPropostaStatus, createProposta, updateProposta, getPropostasByCpf, avalivarProposta  } from '@/services/api/proposta.js';
+import { getMetaSugerida } from '@/services/api/metasugerida.js';
+
 
 export const actions = {
 
@@ -92,6 +94,23 @@ export const actions = {
         { message: 'Adicionado com sucesso' },
         { root: true }
       );
+    } catch (error) {
+      state.dispatch(
+        'modal/showModal',
+        {
+          title: 'Erro ao processar a requisição!',
+          message: 'Se o problema persistir, favor contatar o suporte.',
+          buttonText: 'VOLTAR',
+        },
+        {
+          root: true,
+        }
+      );
+    }
+  },
+  async getSugerida(state, payload){
+    try {
+      return await getMetaSugerida(payload);
     } catch (error) {
       state.dispatch(
         'modal/showModal',

@@ -32,14 +32,14 @@
             <v-col cols=6>
               <v-checkbox
                   v-model="alterarMeta"
-                  label="Gostaria de Alterar a meta?"
+                  label="Alterou a meta?"
                   readonly
                 ></v-checkbox>
             </v-col>
             <v-col v-if="alterarMeta" cols="12">
               <v-textarea
               v-model="justificativa_meta_proposta"
-              disabled
+              readonly
               label="Justificativa de Alteração de meta"
                 outlined>
                 </v-textarea>
@@ -72,6 +72,7 @@
           color="secondary darken-1"
           class="mx-0 ml-sm-2"
           :loading="loading"
+          :disabled="propostaSelected.status_avaliacao.id == 3"
           @click="dialogConfirmarDevolucao = true;"
         >
           <v-icon>mdi-close</v-icon>
@@ -81,6 +82,7 @@
           type="submit"
           form="form"
           class="info mx-0 ml-sm-2"
+          :disabled="propostaSelected.status_avaliacao.id == 3"
           :loading="loading"
           @click="dialogConfirmar = true;"
         >
@@ -225,6 +227,10 @@ export default {
           this.periodo = this.propostaSelected.periodo.id;
           this.meta = this.propostaSelected.meta_proposta;
           this.plano_trabalho = this.propostaSelected.plano_trabalho;
+          this.justificativa_meta_proposta = this.propostaSelected.justificativa_meta_proposta;
+          if(this.justificativa_meta_proposta){
+            this.alterarMeta =  true;
+          }
           this.visible = true;
         }
       },

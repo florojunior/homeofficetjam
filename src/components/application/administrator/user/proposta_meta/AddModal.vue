@@ -17,6 +17,7 @@
                 item-value="id"
                 outlined
                 label="Selecione o período"
+                @change="changePeriodo()"
               ></v-select>
             </v-col>
             <v-col cols=6>
@@ -25,6 +26,7 @@
                   :rules="[fieldRules.required]"
                   label="Meta"
                   outlined
+                  :disabled="!alterarMeta"
                 ></v-text-field>
             </v-col>
             <v-col cols=6>
@@ -97,7 +99,7 @@ export default {
     };
   },
   computed:{
-    ...mapGetters('proposta', ['getPeriodoList']),
+    ...mapGetters('proposta', ['getPeriodoList','getMeta']),
     periodos(){
       return this.getPeriodoList.map((item) =>{
         return {
@@ -121,9 +123,15 @@ export default {
     this.unsubscribe();
   },
   methods: {
-    ...mapActions('proposta', ['getByCpf', 'create']),
+    ...mapActions('proposta', ['getByCpf','getMetaByCpf', 'create', 'getSugerida']),
     keepModalOpen() {
       this.loading = false;
+    },
+    async changePeriodo(){
+      const { data } = await this.getSugerida(this.periodo);
+      if(data.data){
+        this.meta = data.data.meta_calculada;
+      }
     },
     async closeModal() {
       await this.getByCpf(this.getUserData.cpf_usuario);

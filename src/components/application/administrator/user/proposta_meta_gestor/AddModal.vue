@@ -30,7 +30,7 @@
             <v-col cols=6>
               <v-checkbox
                   v-model="alterarMeta"
-                  label="Gostaria de Alterar a meta?"
+                  label="Alterou a meta?"
                 ></v-checkbox>
             </v-col>
             <v-col v-if="alterarMeta" cols="12">

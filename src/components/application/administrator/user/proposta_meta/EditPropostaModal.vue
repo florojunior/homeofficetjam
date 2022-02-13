@@ -26,6 +26,7 @@
                   :rules="[fieldRules.required]"
                   label="Meta"
                   outlined
+                  :disabled="!alterarMeta"
                 ></v-text-field>
             </v-col>
             <v-col cols=6>
@@ -130,6 +131,9 @@ export default {
           this.periodo = this.propostaSelected.periodo.id;
           this.meta = this.propostaSelected.meta_proposta;
           this.plano_trabalho = this.propostaSelected.plano_trabalho;
+          if(this.propostaSelected.justificativa_meta_proposta){
+            this.justificativa_meta_proposta = this.propostaSelected.justificativa_meta_proposta;
+          }
           this.visible = true;
         }
       },
